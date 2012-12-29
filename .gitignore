@@ -1,0 +1,38 @@
+*.gem
+*.rbc
+*~
+.bundle
+.config
+coverage
+InstalledFiles
+lib/bundler/man
+pkg
+rdoc
+spec/reports
+test/tmp
+test/version_tmp
+tmp
+*.pid
+
+# python
+*.pyc
+*.pyo
+
+# YARD artifacts
+.yardoc
+_yardoc
+doc/
+
+# env
+.idea
+werk
+*.iml
+
+# lib
+Gemfile.lock
+
+# vcr cassettes
+spec/cassettes
+
+# output
+output/
