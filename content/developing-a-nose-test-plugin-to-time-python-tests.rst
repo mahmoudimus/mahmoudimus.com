@@ -3,6 +3,7 @@ Developing a nose-test plugin to time python tests
 :date: 2011-02-28 14:28
 :author: Mahmoud
 :tags: python
+:excerpt: Writing a simple nose test plugin that times python tests, based of XUnit.
 
 `Nose`_ is a fantastic testing framework. What surprises me though, is
 that there's no out of the box plugin to time tests to see which tests

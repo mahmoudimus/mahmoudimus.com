@@ -3,6 +3,7 @@ Reading and Writing Null-Terminated CSV Files in Python
 :date: 2010-09-12 18:42
 :author: Mahmoud
 :tags: linux, programming, python
+:excerpt: Extending Python's `CSV module`_
 
 I've recently had to do some work that required sorting a very large CSV
 file, containing fields with embedded newlines, quickly. As it turns

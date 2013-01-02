@@ -1,8 +1,10 @@
-@import url(https://fonts.googleapis.com/css?family=Lato:300italic,700italic,300,700);
+/* @import url(https://fonts.googleapis.com/css?family=Lato:300italic,700italic,300,700); */
+/* @import url(http://fonts.googleapis.com/css?family=Ubuntu+Mono:400,400italic,700,700italic); */
+@import url(http://fonts.googleapis.com/css?family=Merriweather:400,300);
 
 body {
-  padding:50px;
-  font:14px/1.5 Lato, "Helvetica Neue", Helvetica, Arial, sans-serif;
+  padding:15px;
+  font: 15px/1.75 'Merriweather', "Helvetica Neue", Helvetica, Arial, serif;
   color:#777;
   font-weight:300;
 }
@@ -65,9 +67,9 @@ blockquote {
 }
 
 code, pre {
-  font-family:Monaco, Bitstream Vera Sans Mono, Lucida Console, Terminal;
+  font-family: Consolas, Monaco, Bitstream Vera Sans Mono, Lucida Console, Terminal,monospace;
   color:#333;
-  font-size:12px;
+  font-size: 0.9em;
 }
 
 pre {
@@ -113,6 +115,10 @@ header {
   position:fixed;
 }
 
+header img {
+  margin-left: 50px;
+}
+
 header ul {
   list-style:none;
   padding:0;
@@ -149,26 +155,29 @@ header li:last-child a {
 */
 
 header ul a {
-  line-height: 0.5;
+  line-height: 2;
   font-size: 16px;
-  color:#999;
   display:block;
   text-align:left;
   height:25px;
   padding-left: 2px;
 }
+/*
 
 header ul a:hover {
-  color:#999;
+*/
 /*
+  color:#999;
   background: -moz-linear-gradient(top, #fff 0%, #ddd 100%);
   background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#fff), color-stop(100%,#ddd));
   background: -webkit-linear-gradient(top, #fff 0%,#ddd 100%);
   background: -o-linear-gradient(top, #fff 0%,#ddd 100%);
   background: -ms-linear-gradient(top, #fff 0%,#ddd 100%);
   background: linear-gradient(top, #fff 0%,#ddd 100%);
-*/
+*//*
+
 }
+*/
 
 /*
 header ul a:active {
@@ -204,6 +213,49 @@ section .tags {
   float: right;
 }
 
+section div.entry-overview {
+  margin: 25px 0;
+}
+
+section div.entry-overview h1,
+section div.entry-overview div.summary,
+section div.entry-overview div.summary p {
+  display: inline;
+  line-height: 25px;
+}
+
+section div.entry-overview h1 {
+  margin: 0;
+  font-size: 20px;
+}
+
+section div.entry-overview div.summary,
+section div.entry-overview div.date,
+section div.entry-overview div.summary p {
+  margin: 0;
+  padding: 0;
+}
+
+section div.entry-overview div.detail {
+  margin-left: 140px;
+}
+
+section div.entry-overview div.date {
+  float: left;
+  width: 120px;
+  color: #7a8fd9;
+  text-align: right;
+  font-size: 13px;
+}
+
+section div.entry-overview h1 {
+  font-weight: normal;
+}
+
+section div.entry-overview h1::after {
+  content: " —";
+}
+
 small {
   font-size:11px;
 }
@@ -224,6 +276,7 @@ footer {
 
 footer p {
   margin: 0;
+  font-size: 12px;
 }
 
 footer .social {
