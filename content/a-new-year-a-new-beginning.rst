@@ -96,7 +96,7 @@ Some achievable goals in the short term are:
 So it's the same way as going to the gym. Just publish consistently
 and eventually it'll become second nature. Point taken.
 
-I'm also going to try to focus to share my mistakes - I find that I
+I'm also going to try to focus on sharing my mistakes - I find that I
 can open up more when I talk about getting things wrong, and it's a
 personal touch that many writing journals lack.
 
