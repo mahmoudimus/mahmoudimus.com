@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*- #
 
 AUTHOR = u'mahmoudimus'
+FULL_AUTHOR_NAME = u'Mahmoud Abdelkader'
 SITENAME = u'Hacker Moleskine'
 FEED_DOMAIN = u'http://mahmoudimus.com'
 SITEURL = u'blog'
