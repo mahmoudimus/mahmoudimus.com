@@ -8,7 +8,7 @@ A New Year -- a New Beginning
 As we say goodbye to 2012 and welcome 2013, I'd like to reflect on the
 opportunities ahead, but first, I want to say a few words about last
 year. Last year has been a tremendous blessing for me, as I've seen
-personal grownth in both leadership and overall as a person.
+personal growth in both leadership and overall as a person.
 
 On 2012
 -------
