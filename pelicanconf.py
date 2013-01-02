@@ -45,7 +45,13 @@ GOOGLE_ANALYTICS_ACCOUNT = 'UA-10868702-1'
 MAIL_USERNAME = 'mabdelkader'
 MAIL_HOST = 'gmail.com'
 
-THEME = 'themes/easy'
+THEME = 'themes/minimal'
+
+import hashlib
+
+GRAVATAR_EMAIL = '{}@{}'.format(MAIL_USERNAME, MAIL_HOST).strip().lower()
+GRAVATAR_HASH = hashlib.md5(GRAVATAR_EMAIL).hexdigest()
+GRAVATAR_URL = 'http://www.gravatar.com/avatar/{}.jpg'.format(GRAVATAR_HASH)
 
 # static paths will be copied under the same name
 STATIC_PATHS = ['images']
