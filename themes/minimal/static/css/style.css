@@ -200,6 +200,10 @@ section {
   padding-bottom:50px;
 }
 
+section .tags {
+  float: right;
+}
+
 small {
   font-size:11px;
 }
@@ -236,10 +240,6 @@ footer .social ul li {
   display: inline;
   margin: 0 2px;
   padding: 0;
-}
-
-footer .tags {
-  float: right;
 }
 
 .avatar {
