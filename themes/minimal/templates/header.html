@@ -1,0 +1,14 @@
+      <header>
+        <a href="/">
+          <img class="avatar" src="{{ GRAVATAR_URL }}?s=150">
+        </a>
+
+        <h2> {{ AUTHOR }} </h2>
+
+        <ul>
+          {% for section in SECTIONS %}
+            <li><a href="{{ SITEURL }}/{{ section[1]}}">{{ section[0] }}</a> </li>
+          {% endfor %}
+        </ul>
+
+      </header>

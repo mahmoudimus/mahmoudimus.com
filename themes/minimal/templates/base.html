@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>{% block title %} {{ AUTHOR }}'s Page{% endblock %}</title>
+
+    <link rel="stylesheet" href="{{ SITEURL }}/theme/css/style.css" type="text/css" />
+    <link rel="stylesheet" href="{{ SITEURL }}/theme/css/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="{{ SITEURL }}/theme/css/font-awesome.css" type="text/css"/>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+  </head>
+
+  <body>
+
+    <div class="wrapper">
+        {% block header %}
+            {% include "header.html" %}
+        {% endblock %}
+
+        <section>
+          {% block content %} {% endblock %}
+        </section>
+
+        {% block footer %}
+            {% include "footer.html" %}
+        {% endblock %}
+    </div>
+
+    <!-- javascripts -->
+    <script type="text/javascript">
+      var _gaq = _gaq || [];
+      _gaq.push(['_setAccount', '{{ GOOGLE_ANALYTICS_ACCOUNT }}']);
+      _gaq.push(['_trackPageview']);
+
+      (function() {
+        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+      })();
+    </script>
+    <script src="{{ SITEURL }}/theme/scale.fix.js"></script>
+
+  </body>
+</html>
+
