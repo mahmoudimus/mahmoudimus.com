@@ -1,5 +1,5 @@
-A pythonic n-wise iterator for any iterable
-###########################################
+A Pythonic ``n``-wise Iterator for Any Iterable
+###############################################
 :date: 2010-06-01 00:48
 :author: Mahmoud
 :tags: programming, python

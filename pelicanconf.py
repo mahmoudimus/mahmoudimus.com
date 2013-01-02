@@ -4,28 +4,29 @@
 AUTHOR = u'mahmoudimus'
 FULL_AUTHOR_NAME = u'Mahmoud Abdelkader'
 SITENAME = u'Hacker Moleskine'
-FEED_DOMAIN = u'http://mahmoudimus.com'
-SITEURL = u'blog'
+FEED_DOMAIN = u'http://mahmoudimus.com/blog'
+SITEURL = u'http://mahmoudimus.com/blog'
 TIMEZONE = u'America/Los_Angeles'
 
 DEFAULT_LANG = u'en'
 LOCALE = ''
+
+DATE_FORMAT = {
+    'en': '%d %m %Y'
+}
+DEFAULT_DATE_FORMAT = '%d %m %Y'
+DEFAULT_CATEGORY = 'Uncategorized'
+
 
 #Navigation sections and relative URL:
 SECTIONS = [
     ('Blog', 'index.html'),
     ('Archive', 'archives.html'),
     ('Tags', 'tags.html'),
+    ('About', 'pages/about.html'),
 ]
 
-DEFAULT_CATEGORY = 'Uncategorized'
-
-DATE_FORMAT = {
-    'en': '%d %m %Y'
-}
-
-DEFAULT_DATE_FORMAT = '%d %m %Y'
-
+PAGE_DIR = 'pages'
 ARTICLE_URL = '{date:%Y}/{date:%m}/{slug}/'
 ARTICLE_SAVE_AS = '{date:%Y}/{date:%m}/{slug}/index.html'
 
@@ -58,7 +59,9 @@ GRAVATAR_URL = 'http://www.gravatar.com/avatar/{}.jpg'.format(GRAVATAR_HASH)
 STATIC_PATHS = ['images']
 
 # A list of files to copy from the source to the destination
-#FILES_TO_COPY = (('extra/robots.txt', 'robots.txt'),)
+FILES_TO_COPY = (
+    ('extra/favicon.ico', 'favicon.ico'),
+)
 
 # imports
 import rst_gist

@@ -115,6 +115,9 @@ header {
   position:fixed;
 }
 
+header h2 {
+  text-transform: lowercase;
+}
 header img {
   margin-left: 50px;
 }
@@ -123,36 +126,12 @@ header ul {
   list-style:none;
   padding:0;
   margin: 0;
-/*  height:40px;
-  background: #eee;
-  background: -moz-linear-gradient(top, #f8f8f8 0%, #dddddd 100%);
-  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#f8f8f8), color-stop(100%,#dddddd));
-  background: -webkit-linear-gradient(top, #f8f8f8 0%,#dddddd 100%);
-  background: -o-linear-gradient(top, #f8f8f8 0%,#dddddd 100%);
-  background: -ms-linear-gradient(top, #f8f8f8 0%,#dddddd 100%);
-  background: linear-gradient(top, #f8f8f8 0%,#dddddd 100%);
-
-  border-radius:5px;
-  border:1px solid #d2d2d2;
-  box-shadow:inset #fff 0 1px 0, inset rgba(0,0,0,0.03) 0 -1px 0;
-  width:270px;*/
+  text-transform: lowercase;
 }
 
 header li {
   width:89px;
-/*  border-right:1px solid #d2d2d2;
-  height:40px;*/
 }
-
-/*
-header li:first-child a {
-  border-radius:5px 0 0 5px;
-}
-
-header li:last-child a {
-  border-radius:0 5px 5px 0;
-}
-*/
 
 header ul a {
   line-height: 2;
@@ -162,40 +141,6 @@ header ul a {
   height:25px;
   padding-left: 2px;
 }
-/*
-
-header ul a:hover {
-*/
-/*
-  color:#999;
-  background: -moz-linear-gradient(top, #fff 0%, #ddd 100%);
-  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#fff), color-stop(100%,#ddd));
-  background: -webkit-linear-gradient(top, #fff 0%,#ddd 100%);
-  background: -o-linear-gradient(top, #fff 0%,#ddd 100%);
-  background: -ms-linear-gradient(top, #fff 0%,#ddd 100%);
-  background: linear-gradient(top, #fff 0%,#ddd 100%);
-*//*
-
-}
-*/
-
-/*
-header ul a:active {
-  -webkit-box-shadow: inset 0px 2px 2px 0px #ddd;
-  -moz-box-shadow: inset 0px 2px 2px 0px #ddd;
-  box-shadow: inset 0px 2px 2px 0px #ddd;
-}
-
-header ul li + li {
-  width:88px;
-  border-left:1px solid #fff;
-}
-
-header ul li + li + li {
-  border-right:none;
-  width:89px;
-}
-*/
 
 header ul a strong {
   font-size:14px;
@@ -405,4 +350,11 @@ footer .social ul li {
   -webkit-border-top-left-radius: 10px;
   -moz-border-radius-topright: 10px;
   -webkit-border-top-right-radius: 10px;
+}
+
+/* docutils literals */
+
+.about .docutils.literal {
+  background: #eee;
+  color: #000;
 }

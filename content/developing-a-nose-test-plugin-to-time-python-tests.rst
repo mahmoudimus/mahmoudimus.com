@@ -1,5 +1,5 @@
-Developing a nose-test plugin to time python tests
-##################################################
+Developing a ``nose`` Test Plugin to Time Python Tests
+######################################################
 :date: 2011-02-28 14:28
 :author: Mahmoud
 :tags: python
