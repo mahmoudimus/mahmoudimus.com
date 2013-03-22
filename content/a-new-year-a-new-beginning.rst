@@ -1,6 +1,6 @@
 A New Year -- a New Beginning
 #############################
-:date: 2012-01-02
+:date: 2013-01-02
 :author: Mahmoud
 :tags: reflections
 :excerpt: On the transition from Maker to Manager
