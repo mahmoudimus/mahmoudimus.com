@@ -42,7 +42,7 @@ This way, you can just execute your tests as normal, like so:
 
 and you get a nice little output of test times :)
 
-.. _Nose: http://somethingaboutorange.com/mrl/projects/nose/1.0.0/
+.. _Nose: https://nose.readthedocs.io/en/latest/
 .. _insightful google-groups post: http://groups.google.com/group/nose-users/browse_thread/thread/ad51415d14bda06e
-.. _xunit nose plugin: https://bitbucket.org/jpellerin/nose/src/734bc7bc40ab/nose/plugins/xunit.py
-.. _just dynamically add it during run-time: http://somethingaboutorange.com/mrl/projects/nose/0.11.2/plugins/writing.html#registering-a-plugin-without-setuptools
+.. _xunit nose plugin: https://github.com/nose-devs/nose/blob/master/nose/plugins/xunit.py
+.. _just dynamically add it during run-time: https://nose.readthedocs.io/en/latest/plugins/writing.html#registering-a-plugin-without-setuptools

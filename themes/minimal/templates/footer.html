@@ -11,9 +11,9 @@
       <a href="http://twitter.com/{{ TWITTER_USERNAME }}" target="_blank"> <li> <i class="icon-twitter-sign icon-large"> </li></i> </a>
       <a href="{{ LINKEDIN_URL }}"><li><i class="icon-linkedin-sign icon-large" ></i></li></a>
       <a href="{{ GITHUB_URL }}" target="_blank"> <li> <i class="icon-github-sign icon-large"></i> </li> </a>
-      <a href="{{ SITEURL }}/feeds/all.rss.xml" rel="alternate" title="Recent Blog Posts"><li> <i class="icon-rss icon-large"></i> </li></a>
+      <a href="{{ OVERRIDEN_SITEURL if OVERRIDEN_SITEURL else SITEURL }}/blog/feeds/all.rss.xml" rel="alternate" title="Recent Blog Posts"><li> <i class="icon-rss icon-large"></i> </li></a>
     </ul>
   </div>
-  <p>&copy; Copyright 2012 by {{ AUTHOR }}</p>
+  <p>&copy; Copyright {{ CURRENT_YEAR }} by {{ AUTHOR }}</p>
   <p> Powered by <a href="http://pypi.python.org/pypi/pelican/" target="_blank">Pelican</a>. </p>
 </footer>

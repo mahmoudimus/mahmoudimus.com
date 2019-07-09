@@ -358,3 +358,11 @@ footer .social ul li {
   background: #eee;
   color: #000;
 }
+
+/* mahmoud insertions */
+.command {
+    text-align: center;
+}
+.command img {
+    border: 1px solid #000;
+}

@@ -1,10 +1,14 @@
 About
 #####
-:title: About Me
-:slug: about
+
+:title: mahmoudimus.com
+:slug: /
+:Save_as: index.html
 
 Hi! I'm Mahmoud Abdelkader (`pronounced`_ `mæħˈmuːd æbdəlkeɪdər`_), but, my
 usual nickname is *mahmoudimus*.
+
+Welcome to my Hacker Moleskine!
 
 I'm a software engineer living in San Francisco, CA. I'm the co-founder and CTO
 of `Balanced Payments`_, a graduate of the `Y\-Combinator`_ Winter of 2011 class.
@@ -25,6 +29,17 @@ If you want to contact me, my footer has all the usual communication mediums. Yo
 most likely find me hanging out on the ``#balanced`` irc channel on `freenode`_ helping
 developers with their `Balanced`_ integrations.
 
+.. container:: command
+
+   .. image:: {static}/images/mycommandcenter.png
+      :alt: command center
+
+   note my command center, filled with my tower of Coke Zero:)
+
+   nothing to see here, move along now.
+   incoming soon!
+
+   `mahmoud(AT-NOSPAM)linux(DOT)com`_
 
 .. _pronounced: http://inogolo.com/audio/Mahmoud_4331.mp3
 .. _mæħˈmuːd æbdəlkeɪdər: http://en.wikipedia.org/wiki/Wikipedia:IPA_for_Egyptian_Arabic
@@ -38,5 +53,5 @@ developers with their `Balanced`_ integrations.
 .. _eBay: http://ebay.com
 .. _Y-Combinator: http://ycombinator.com
 .. _Wells Fargo Securities: https://www.wellsfargo.com/com/securities/
-
-
+.. _my blog: http://mahmoudimus.com/blog
+.. _mahmoud(AT-NOSPAM)linux(DOT)com: mailto:mahmoud(AT-NOSPAM)linux(DOT)com
