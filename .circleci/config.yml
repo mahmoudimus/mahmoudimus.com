@@ -71,6 +71,7 @@ workflows:
     jobs:
       - build
       - deploy-job:
+          context: aws-s3-secrets
           requires:
             - build
           filters:
