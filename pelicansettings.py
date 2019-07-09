@@ -6,8 +6,8 @@ import datetime
 _now = datetime.datetime.now()
 AUTHOR = 'Mahmoud Abdelkader'
 SITENAME = 'Hacker Moleskine'
-SITEURL = 'http://mahmoudimus.com'
-SITEURL = 'http://0.0.0.0:8000'
+SITEURL = '//mahmoudimus.com'
+#SITEURL = 'http://0.0.0.0:8000'
 CURRENT_YEAR = _now.year
 TIMEZONE = 'America/Los_Angeles'
 

@@ -63,7 +63,7 @@ jobs:
             --exclude ".git/*" \
             --exclude ".gitignore" \
             --exclude ".circleci/*" \
-          overwrite: true
+          overwrite: false
 
 workflows:
   version: 2
