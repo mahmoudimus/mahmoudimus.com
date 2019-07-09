@@ -55,8 +55,8 @@ jobs:
 
       - aws-s3/sync:
           from: .
-          to: 's3://www.mahmoudimus.com.s3-website-us-east-1.amazonaws.com'
-          aws-region: "us-east-1"
+          to: 's3://www.mahmoudimus.com/'
+          aws-region: us-east-1
           arguments: |
             --acl public-read \
             --cache-control "max-age=86400" \
