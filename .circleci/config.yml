@@ -6,9 +6,53 @@ jobs:
   build:
     docker:
       - image: 'circleci/python:latest'
-
+    working_directory: /tmp/blog
     steps:
       - checkout
+      - run:
+          name: Create workspace directory
+          command: |
+            mkdir -p /tmp/workspace/published
+
+      - restore_cache:
+          name: Restore Python virtual environment cache
+          keys:
+          - v1-venv-build-content-{{ .Branch }}-{{ checksum "./requirements.txt" }}-
+          - v1-venv-build-content-{{ .Branch }}-
+          - v1-venv-build-content-
+      - run:
+          name: Create virtualenv
+          command: |
+            python3 -m venv /tmp/venv
+      - run:
+          name: Install dependencies
+          command: |
+            source /tmp/venv/bin/activate
+            pip install --no-input --compile --exists-action=a --use-wheel -r ./requirements.txt
+      - run:
+          name: Build Pelican content
+          command: |
+            source /tmp/venv/bin/activate
+            pelican -s pelicanconf-blog.py -D -o /tmp/workspace/published/blog
+            pelican -s pelicanconf-site.py -D -o /tmp/workspace/published/
+      - save_cache:
+          paths:
+            - /tmp/venv/
+          key: v1-venv-build-content-{{ .Branch }}-{{ checksum "./requirements.txt" }}-{{ epoch }}
+
+      - persist_to_workspace:
+          root: /tmp/workspace
+          paths:
+            - published
+
+  deploy-job:
+    docker:
+      - image: 'circleci/python:latest'
+    working_directory: /tmp/workspace/published
+    steps:
+      - attach_workspace:
+          at: /tmp/workspace
+
       - aws-s3/sync:
           from: .
           to: 's3://www.mahmoudimus.com.s3-website-us-east-1.amazonaws.com'
@@ -20,3 +64,15 @@ jobs:
             --exclude ".gitignore" \
             --exclude ".circleci/*" \
           overwrite: true
+
+workflows:
+  version: 2
+  build-deploy:
+    jobs:
+      - build:
+      - deploy-job:
+          requires:
+            - build
+          filters:
+            branches:
+              only: master
