@@ -48,15 +48,15 @@ jobs:
   deploy-job:
     docker:
       - image: 'circleci/python:latest'
+    environment:
+      AWS_REGION: us-east-1
     working_directory: /tmp/workspace/published
     steps:
       - attach_workspace:
           at: /tmp/workspace
-
       - aws-s3/sync:
           from: .
           to: 's3://www.mahmoudimus.com/'
-          aws-region: us-east-1
           arguments: |
             --acl public-read \
             --cache-control "max-age=86400" \
