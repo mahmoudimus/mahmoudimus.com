@@ -1,0 +1,46 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "mahmoudimus-blog"
+version = "0.1.0"
+description = "mahmoud abdelkader's weblog"
+readme = "README.md"
+requires-python = ">=3.10"
+license = {text = "MIT"}
+authors = [
+    {name = "Mahmoud Abdelkader", email = "mabdelkader@gmail.com"}
+]
+dependencies = [
+    "pelican",
+    "invoke",
+    "markdown",
+    "jinja2",
+    "pygments",
+    "docutils",
+]
+
+[project.optional-dependencies]
+dev = [
+    "black",
+    "flake8",
+    "pytest",
+]
+
+[tool.setuptools]
+packages = ["blog", "site", "plugins"]
+include-package-data = true
+
+[tool.setuptools.package-data]
+plugins = ["*.py"]
+themes = ["*"]
+
+[tool.black]
+line-length = 88
+target-version = ["py310"]
+
+[project.scripts]
+blog-build = "tasks:build"
+blog-serve = "tasks:serve"
+blog-publish = "tasks:publish" 
