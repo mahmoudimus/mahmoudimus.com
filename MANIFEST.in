@@ -1,0 +1,15 @@
+include LICENSE
+include README.md
+include pyproject.toml
+include setup.cfg
+include requirements.txt
+include Makefile
+include *.py
+
+recursive-include themes *
+recursive-include plugins *
+recursive-include blog *
+recursive-include site *
+recursive-include content *
+
+global-exclude *.py[cod] __pycache__ *.so .DS_Store 
