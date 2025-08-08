@@ -11,7 +11,7 @@
       <a href="http://twitter.com/{{ TWITTER_USERNAME }}" target="_blank"> <li> <i class="icon-twitter-sign icon-large"> </li></i> </a>
       <a href="{{ LINKEDIN_URL }}"><li><i class="icon-linkedin-sign icon-large" ></i></li></a>
       <a href="{{ GITHUB_URL }}" target="_blank"> <li> <i class="icon-github-sign icon-large"></i> </li> </a>
-      <a href="{{ OVERRIDEN_SITEURL if OVERRIDEN_SITEURL else SITEURL }}/blog/feeds/all.rss.xml" rel="alternate" title="Recent Blog Posts"><li> <i class="icon-rss icon-large"></i> </li></a>
+      <a href="{{ OVERRIDDEN_SITEURL if OVERRIDDEN_SITEURL else SITEURL }}/blog/feeds/all.rss.xml" rel="alternate" title="Recent Blog Posts"><li> <i class="icon-rss icon-large"></i> </li></a>
     </ul>
   </div>
   <p>&copy; Copyright {{ CURRENT_YEAR }} by {{ AUTHOR }}</p>

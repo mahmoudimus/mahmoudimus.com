@@ -53,4 +53,4 @@ pip install -e ".[dev]"
 
 ## License
 
-MIT 
+MIT

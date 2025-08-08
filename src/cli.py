@@ -84,7 +84,7 @@ class PelicanSettings:
     TEMPLATE_PAGES: dict[str, str] = field(default_factory=dict)
     PATH: str = field(default_factory=lambda: "blog")
     RELATIVE_URLS: bool = True
-    OVERRIDEN_SITEURL: str | None = None
+    OVERRIDDEN_SITEURL: str | None = None
     OUTPUT_PATH: str = "output"
 
     # Computed properties
@@ -127,7 +127,7 @@ WeblogSettings = PelicanSettings(
     PATH=str(cwd / "content"),
     PAGE_PATHS=["blog"],
     RELATIVE_URLS=True,
-    OVERRIDEN_SITEURL=PelicanSettings.SITEURL,
+    OVERRIDDEN_SITEURL=PelicanSettings.SITEURL,
     OUTPUT_PATH="output/{0}".format("blog"),
     SECTIONS=[
         ("Blog", ""),
