@@ -3,6 +3,7 @@ Arbitrary Stack Trace in Python
 :date: 2011-02-11 15:52
 :author: Mahmoud
 :tags: programming, python
+:classification: blog
 :excerpt: How to take an arbitrary stack trace in Python
 
 I had a need to trace a function's call stack to identify call chain

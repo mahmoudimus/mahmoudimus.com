@@ -3,6 +3,7 @@ A Pythonic ``n``-wise Iterator for Any Iterable
 :date: 2010-06-01 00:48
 :author: Mahmoud
 :tags: programming, python
+:classification: blog
 :excerpt: Extending python's `itertools`_ module
 
 Over the weekend, I was working on upgrading `python-ngrams`_ because I

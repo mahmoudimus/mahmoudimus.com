@@ -4,6 +4,7 @@ Python 2.6.4 and Twisted 9 on OS X 10.6 Snow Leopard
 :author: Mahmoud
 :tags: programming, python, software
 :slug: python-2-6-4-and-twisted-9-on-os-x-10-6-snow-leopard
+:classification: blog
 :excerpt: MacOSX architecture flags for Python have really crappy defaults
 
 I just recently purchased a MacBook Pro, which comes with Snow Leopard

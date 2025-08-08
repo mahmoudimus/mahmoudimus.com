@@ -3,6 +3,7 @@ A New Year -- a New Beginning
 :date: 2013-01-02
 :author: Mahmoud
 :tags: reflections
+:classification: blog
 :excerpt: On the transition from Maker to Manager
 
 As we say goodbye to 2012 and welcome 2013, I'd like to reflect on the

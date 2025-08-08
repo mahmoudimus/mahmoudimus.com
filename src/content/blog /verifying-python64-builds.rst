@@ -3,6 +3,7 @@ Verifying Python64 builds
 :date: 2009-07-06 11:24
 :author: Mahmoud
 :tags: linux, programming, python
+:classification: blog
 :excerpt: Verifying if python was built correctly on 64bit machines that have a 32bit default
 
 At work, I'm migrating over `python`_ to our 64bit machines and one
