@@ -31,7 +31,7 @@ developers with their `Balanced`_ integrations.
 
 .. container:: command
 
-   .. image:: {static}/images/mycommandcenter.png
+   .. image:: {static}/media/images/mycommandcenter.png
       :alt: command center
 
    note my command center, filled with my tower of Coke Zero:)
