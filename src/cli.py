@@ -74,6 +74,9 @@ class PelicanSettings:
     # Other settings
     PDF_GENERATOR: bool = False
     PAGE_PATHS: list[str] = field(default_factory=lambda: ["pages"])
+    PAGE_EXCLUDES: list[str] = field(default_factory=lambda: [])
+    ARTICLE_PATHS: list[str] = field(default_factory=lambda: [])
+    ARTICLE_EXCLUDES: list[str] = field(default_factory=lambda: [])
     DIRECT_TEMPLATES: list[str] = field(
         default_factory=lambda: ["index", "tags", "categories", "authors", "archives"]
     )
@@ -114,7 +117,9 @@ class PelicanSettings:
 
 LandingPageSettings = PelicanSettings(
     PATH=str(cwd / "content"),
-    PAGE_PATHS=["landing"],
+    PAGE_PATHS=[],
+    # ARTICLE_PATHS=["landing"],
+    ARTICLE_EXCLUDES=["blog", "extra", "media", "til"],
     DIRECT_TEMPLATES=["index"],
     SECTIONS=[("blog", "blog")],
     STATIC_PATHS=["media", "extra"],
@@ -125,7 +130,7 @@ LandingPageSettings = PelicanSettings(
 
 WeblogSettings = PelicanSettings(
     PATH=str(cwd / "content"),
-    PAGE_PATHS=["blog"],
+    ARTICLE_PATHS=["blog"],
     RELATIVE_URLS=True,
     OVERRIDDEN_SITEURL=PelicanSettings.SITEURL,
     OUTPUT_PATH="output/{0}".format("blog"),
