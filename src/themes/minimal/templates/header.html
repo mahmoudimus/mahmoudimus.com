@@ -1,5 +1,5 @@
 <header>
-    <a href="{{ OVERRIDDEN_SITEURL if OVERRIDDEN_SITEURL is defined else SITEURL }}">
+    <a href="{{ OVERRIDDEN_SITEURL or SITEURL }}">
           <img class="avatar" src="{{ GRAVATAR_URL }}?s=150">
         </a>
 
