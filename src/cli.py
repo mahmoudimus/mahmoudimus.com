@@ -89,6 +89,9 @@ class PelicanSettings:
     RELATIVE_URLS: bool = True
     OVERRIDDEN_SITEURL: str | None = None
     OUTPUT_PATH: str = "output"
+    # Subdirectory under OUTPUT_PATH for this specific site (e.g., "blog", "til").
+    # The landing site should leave this as an empty string.
+    OUTPUT_SUBDIR: str = ""
 
     # Computed properties
     @property
@@ -117,11 +120,11 @@ class PelicanSettings:
 
 LandingPageSettings = PelicanSettings(
     PATH=str(cwd / "content"),
-    PAGE_PATHS=[],
+    PAGE_PATHS=["landing"],
     # ARTICLE_PATHS=["landing"],
     ARTICLE_EXCLUDES=["blog", "extra", "media", "til"],
     DIRECT_TEMPLATES=["index"],
-    SECTIONS=[("blog", "blog")],
+    SECTIONS=[("Blog", "blog"), ("TIL", "til")],
     STATIC_PATHS=["media", "extra"],
     EXTRA_PATH_METADATA={"extra/favicon.ico": {"path": "favicon.ico"}},
     READERS={"html": None},
@@ -131,11 +134,28 @@ LandingPageSettings = PelicanSettings(
 WeblogSettings = PelicanSettings(
     PATH=str(cwd / "content"),
     ARTICLE_PATHS=["blog"],
-    RELATIVE_URLS=True,
+    RELATIVE_URLS=False,
+    SITEURL="/blog",
     OVERRIDDEN_SITEURL=PelicanSettings.SITEURL,
-    OUTPUT_PATH="output/{0}".format("blog"),
+    OUTPUT_SUBDIR="blog",
     SECTIONS=[
         ("Blog", ""),
+        ("Archives", "archives"),
+        ("Tags", "tags"),
+    ],
+    DIRECT_TEMPLATES=["index", "tags", "archives"],
+)
+
+
+TILSettings = PelicanSettings(
+    PATH=str(cwd / "content"),
+    ARTICLE_PATHS=["til"],
+    RELATIVE_URLS=False,
+    SITEURL="/til",
+    OVERRIDDEN_SITEURL=PelicanSettings.SITEURL,
+    OUTPUT_SUBDIR="til",
+    SECTIONS=[
+        ("TIL", ""),
         ("Archives", "archives"),
         ("Tags", "tags"),
     ],
@@ -149,15 +169,26 @@ def get_instance(args, settings: PelicanSettings):
         config_file = pelican.DEFAULT_CONFIG_NAME
         args.settings = pelican.DEFAULT_CONFIG_NAME
 
-    # read the default settings
-    overrides = pelican.settings.DEFAULT_CONFIG.copy()
-    # override the default settings with the user's settings from cmd line
-    overrides.update(pelican.get_config(args))
-    # finally, override the default settings with the user's settings from the settings file
-    overrides.update(settings.to_dict())
-    # print(default_settings)
+    # Build overrides, letting CLI args override dataclass defaults where provided
+    site_settings = settings.to_dict()
+    cli_overrides = pelican.get_config(args)
+
+    # Determine the base output path (CLI takes precedence if set)
+    base_output = cli_overrides.get(
+        "OUTPUT_PATH", site_settings.get("OUTPUT_PATH", "output")
+    )
+    base_output = os.path.abspath(os.path.expanduser(base_output))
+    # Compute per-site output path under base output
+    output_subdir = site_settings.get("OUTPUT_SUBDIR", "")
+    computed_output = (
+        os.path.join(base_output, output_subdir) if output_subdir else base_output
+    )
+
+    overrides = site_settings.copy()
+    overrides.update(cli_overrides)
+    overrides["OUTPUT_PATH"] = computed_output
+
     settings = pelican.read_settings(None, override=overrides)
-    print(settings)
     cls = settings["PELICAN_CLASS"]
     if isinstance(cls, str):
         module, cls_name = cls.rsplit(".", 1)
@@ -238,14 +269,17 @@ def main(argv=None):
 
     try:
         instances = []
-        for settings in [LandingPageSettings, WeblogSettings]:
+        for settings in [LandingPageSettings, WeblogSettings, TILSettings]:
             instances.append(PelicanInstance(*get_instance(args, settings)))
 
         if args.autoreload and args.listen:
             excqueue = multiprocessing.Queue()
             p1 = multiprocessing.Process(
                 target=autoreload,
-                args=((args, [LandingPageSettings, WeblogSettings]), excqueue),
+                args=(
+                    (args, [LandingPageSettings, WeblogSettings, TILSettings]),
+                    excqueue,
+                ),
             )
             p2 = multiprocessing.Process(
                 target=pelican.listen,
