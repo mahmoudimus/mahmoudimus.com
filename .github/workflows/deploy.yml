@@ -24,7 +24,7 @@ jobs:
         run: |
           python -m venv venv
           source venv/bin/activate
-          pip install --no-input --compile --exists-action=a -r ./requirements.txt
+          pip install .
 
       - name: Build Pelican content
         run: |
