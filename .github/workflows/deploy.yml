@@ -42,7 +42,7 @@ jobs:
 
       - name: Deploy static site to S3 bucket
         run: |
-          aws s3 sync published ${{ env.S3_BUCKET }}/ \
+          aws s3 sync published ${{ vars.S3_BUCKET }}/ \
             --acl public-read \
             --cache-control "max-age=86400" \
             --exclude ".git/*" \
