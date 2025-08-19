@@ -2,9 +2,17 @@
 {% block title %}{{ SITENAME }} Tags {% endblock %}
 {% block content %}
 <h1> Tags </h1>
+{% if tag_cloud %}
 <ul class=tagcloud>
-    {% for tag in tag_cloud %}
-        <li class="tag-{{ tag.1 }}"><a href="{{ SITEURL }}/tag/{{ tag.0 }}.html">{{ tag.0 }}</a></li>
+    {% for tag, size in tag_cloud %}
+        <li class="tag-{{ size }}"><a href="{{ SITEURL }}/tag/{{ tag }}.html">{{ tag }}</a></li>
     {% endfor %}
 </ul>
+{% else %}
+<ul class=tags>
+    {% for tag, articles in tags %}
+        <li><a href="{{ SITEURL }}/{{ tag.url }}">{{ tag.name }} ({{ articles|length }})</a></li>
+    {% endfor %}
+</ul>
+{% endif %}
 {% endblock %}

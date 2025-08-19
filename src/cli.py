@@ -20,7 +20,9 @@ class PelicanSettings:
     # Basic settings
     AUTHOR: str = "Mahmoud Abdelkader"
     SITENAME: str = "Hacker Moleskine"
-    SITEURL: str = "http://127.0.0.1:8000"  # Using the last defined value
+    SITEURL: str = field(
+        default_factory=lambda: os.environ.get("SITEURL", "http://127.0.0.1:8000")
+    )
     CURRENT_YEAR: int = field(default_factory=lambda: datetime.datetime.now().year)
     TIMEZONE: str = "America/Los_Angeles"
     DEFAULT_LANG: str = "en"
@@ -136,7 +138,7 @@ WeblogSettings = PelicanSettings(
     ARTICLE_PATHS=["blog"],
     RELATIVE_URLS=False,
     SITEURL="/blog",
-    OVERRIDDEN_SITEURL=PelicanSettings.SITEURL,
+    OVERRIDDEN_SITEURL=os.environ.get("SITEURL", "http://127.0.0.1:8000"),
     OUTPUT_SUBDIR="blog",
     SECTIONS=[
         ("Blog", ""),
@@ -152,7 +154,7 @@ TILSettings = PelicanSettings(
     ARTICLE_PATHS=["til"],
     RELATIVE_URLS=False,
     SITEURL="/til",
-    OVERRIDDEN_SITEURL=PelicanSettings.SITEURL,
+    OVERRIDDEN_SITEURL=os.environ.get("SITEURL", "http://127.0.0.1:8000"),
     OUTPUT_SUBDIR="til",
     SECTIONS=[
         ("TIL", ""),
