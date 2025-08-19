@@ -38,9 +38,7 @@ jobs:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ${{ env.AWS_REGION }}
-          use-existing-credentials: true
-          output-env-credentials: false
-          output-credentials: false
+
 
       - name: Deploy static site to S3 bucket
         run: |
