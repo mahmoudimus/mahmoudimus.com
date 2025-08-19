@@ -33,8 +33,9 @@ jobs:
           name: Build Pelican content
           command: |
             source /tmp/venv/bin/activate
-            pelican -s pelicanconf-blog.py -D -o /tmp/workspace/published/blog
-            pelican -s pelicanconf-site.py -D -o /tmp/workspace/published/
+            env SITEURL="http://mahmoudimus.com" python src/cli.py \
+              --output /tmp/workspace/published \
+              --delete-output-directory
       - save_cache:
           paths:
             - /tmp/venv/
