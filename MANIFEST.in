@@ -8,8 +8,6 @@ include *.py
 
 recursive-include themes *
 recursive-include plugins *
-recursive-include blog *
-recursive-include site *
-recursive-include content *
+recursive-include src *
 
 global-exclude *.py[cod] __pycache__ *.so .DS_Store 
