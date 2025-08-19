@@ -8,7 +8,7 @@ version = "0.1.0"
 description = "mahmoud abdelkader's weblog"
 readme = "README.md"
 requires-python = ">=3.10"
-license = {text = "MIT"}
+license = "MIT"
 authors = [
     {name = "Mahmoud Abdelkader", email = "mabdelkader@gmail.com"}
 ]
@@ -29,8 +29,11 @@ dev = [
 ]
 
 [tool.setuptools]
-packages = ["blog", "site", "plugins"]
+package-dir = {"" = "src"}
 include-package-data = true
+
+[tool.setuptools.packages.find]
+where = ["src"]
 
 [tool.setuptools.package-data]
 plugins = ["*.py"]

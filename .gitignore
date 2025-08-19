@@ -36,3 +36,4 @@ spec/cassettes
 
 # output
 output/
+build/
