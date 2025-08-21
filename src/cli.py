@@ -1,3 +1,4 @@
+import argparse
 import datetime
 import hashlib
 import logging
@@ -199,26 +200,35 @@ def get_instance(args, settings: PelicanSettings):
     return cls(settings), settings
 
 
-def autoreload(args, excqueue=None):
+def autoreload(
+    cli_args: argparse.Namespace,
+    settings_classes: list[PelicanSettings],
+    excqueue: "multiprocessing.Queue | None" = None,
+):
     pelican.console.print(
         "  --- AutoReload Mode: Monitoring `content`, `theme` and"
         " `settings` for changes. ---"
     )
-    args, settings_classes = args
+    print(cli_args)
+    print(settings_classes)
+    print(excqueue)
+    args = cli_args
     pelican_instances = []
+    debug = False
     for _settings in settings_classes:
+        debug = debug or getattr(_settings, "DEBUG", False)
         pelican_instance = PelicanInstance(*get_instance(args, _settings))
         pelican_instances.append(pelican_instance)
 
-    settings_file = os.path.abspath(args.settings)
+    settings_file = str(pathlib.Path(__file__))
     while True:
         try:
             for pelican_instance in pelican_instances:
                 pelican_instance.instance.run()
 
-            changed_files = pelican.wait_for_changes(args.settings, pelican.settings)
+            changed_files = pelican.wait_for_changes(settings_file, pelican.settings)
             changed_files = {c[1] for c in changed_files}
-
+            print("changed_files:", changed_files)
             if settings_file in changed_files:
                 for pelican_instance in pelican_instances:
                     pelican_instance.instance, pelican_instance.settings = get_instance(
@@ -244,7 +254,7 @@ def autoreload(args, excqueue=None):
             logger.warning(
                 'Caught exception:\n"%s".',
                 e,
-                exc_info=pelican.settings.get("DEBUG", False),
+                exc_info=debug,
             )
 
 
@@ -255,32 +265,33 @@ class PelicanInstance:
 
 
 def main(argv=None):
-    args = pelican.parse_arguments(argv)
-    logs_dedup_min_level = getattr(logging, args.logs_dedup_min_level)
+    cli_args = pelican.parse_arguments(argv)
+    logs_dedup_min_level = getattr(logging, cli_args.logs_dedup_min_level)
     pelican.init_logging(
-        level=args.verbosity,
-        fatal=args.fatal,
+        level=cli_args.verbosity,
+        fatal=cli_args.fatal,
         name=__name__,
-        handler=pelican.LOG_HANDLERS[args.log_handler],
+        handler=pelican.LOG_HANDLERS[cli_args.log_handler],
         logs_dedup_min_level=logs_dedup_min_level,
     )
 
     logger.debug("Pelican version: %s", pelican.__version__)
     logger.debug("Python version: %s", sys.version.split()[0])
-
+    _SETTINGS = [LandingPageSettings, WeblogSettings, TILSettings]
     try:
         instances = []
-        for settings in [LandingPageSettings, WeblogSettings, TILSettings]:
-            instances.append(PelicanInstance(*get_instance(args, settings)))
+        for settings in _SETTINGS:
+            instances.append(PelicanInstance(*get_instance(cli_args, settings)))
 
-        if args.autoreload and args.listen:
+        if cli_args.autoreload and cli_args.listen:
             excqueue = multiprocessing.Queue()
             p1 = multiprocessing.Process(
                 target=autoreload,
-                args=(
-                    (args, [LandingPageSettings, WeblogSettings, TILSettings]),
-                    excqueue,
-                ),
+                kwargs={
+                    "cli_args": cli_args,
+                    "settings_classes": _SETTINGS,
+                    "excqueue": excqueue,
+                },
             )
             p2 = multiprocessing.Process(
                 target=pelican.listen,
@@ -300,9 +311,9 @@ def main(argv=None):
             finally:
                 p1.terminate()
                 p2.terminate()
-        elif args.autoreload:
-            autoreload(args)
-        elif args.listen:
+        elif cli_args.autoreload:
+            autoreload(cli_args=cli_args, settings_classes=_SETTINGS)
+        elif cli_args.listen:
             pelican.listen(
                 instances[0].settings.get("BIND"),
                 instances[0].settings.get("PORT"),
@@ -317,7 +328,7 @@ def main(argv=None):
     except Exception as e:
         logger.critical("%s: %s", e.__class__.__name__, e, exc_info=True)
 
-        if args.verbosity == logging.DEBUG:
+        if cli_args.verbosity == logging.DEBUG:
             pelican.console.print_exception()
         sys.exit(getattr(e, "exitcode", 1))
 

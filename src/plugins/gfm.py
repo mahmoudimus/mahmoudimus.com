@@ -129,8 +129,6 @@ class GFMReader(pelican.readers.MarkdownReader):
     def _parse_metadata(self, metadata):
         """Return the dict containing document metadata"""
         formatted_fields = self.settings["FORMATTED_FIELDS"]
-        print("FORMATTED FIELDS:", formatted_fields)
-        print("DUPLICATES_DEFINITIONS_ALLOWED", DUPLICATES_DEFINITIONS_ALLOWED)
         meta = {}
         for line in metadata.splitlines():
             if not line.strip():
@@ -146,7 +144,6 @@ class GFMReader(pelican.readers.MarkdownReader):
 
         output = {}
         for name, value in meta.items():
-            print("NAME:", name, "VALUE:", value)
             name = name.lower()
             if name in formatted_fields:
                 # formatted metadata is special case and join all list values
