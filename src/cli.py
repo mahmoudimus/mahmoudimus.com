@@ -46,6 +46,8 @@ class PelicanSettings:
     DEFAULT_DATE_FORMAT: str = "%d %m %Y"
     DEFAULT_CATEGORY: str = "Uncategorized"
 
+    # FORMATTED_FIELDS: list[str] = field(default_factory=lambda: ["summary", "tags"])
+
     # URL and save path settings
     ARTICLE_URL: str = "{date:%Y}/{date:%m}/{slug}/"
     ARTICLE_SAVE_AS: str = "{date:%Y}/{date:%m}/{slug}/index.html"
@@ -60,8 +62,8 @@ class PelicanSettings:
     # Social settings
     DISQUS_SITENAME: str = "hackermoleskine"
     TWITTER_USERNAME: str = "mahmoudimus"
-    LINKEDIN_URL: str = "http://linkedin.com/in/mabdelkader"
-    GITHUB_URL: str = "http://github.com/mahmoudimus"
+    LINKEDIN_URL: str = "https://linkedin.com/in/mahmoudimus"
+    GITHUB_URL: str = "https://github.com/mahmoudimus"
     GOOGLE_ANALYTICS_ACCOUNT: str = "UA-10868702-1"
 
     # Email settings
@@ -71,7 +73,7 @@ class PelicanSettings:
     # Theme and plugins
     THEME: str = str(cwd / "themes/minimal")
     PLUGIN_PATHS: list = field(default_factory=lambda: [str(cwd / "plugins")])
-    PLUGINS: list = field(default_factory=lambda: ["rst_gist"])
+    PLUGINS: list = field(default_factory=lambda: ["rst_gist", "gfm"])
 
     # Other settings
     PDF_GENERATOR: bool = False
@@ -106,7 +108,7 @@ class PelicanSettings:
 
     @property
     def GRAVATAR_URL(self) -> str:
-        return f"http://www.gravatar.com/avatar/{self.GRAVATAR_HASH}.jpg"
+        return f"https://www.gravatar.com/avatar/{self.GRAVATAR_HASH}.jpg"
 
     def to_dict(self):
         # Get all fields as a dictionary
@@ -123,7 +125,6 @@ class PelicanSettings:
 LandingPageSettings = PelicanSettings(
     PATH=str(cwd / "content"),
     PAGE_PATHS=["landing"],
-    # ARTICLE_PATHS=["landing"],
     ARTICLE_EXCLUDES=["blog", "extra", "media", "til"],
     DIRECT_TEMPLATES=["index"],
     SECTIONS=[("Blog", "blog"), ("TIL", "til")],
@@ -166,9 +167,7 @@ TILSettings = PelicanSettings(
 
 
 def get_instance(args, settings: PelicanSettings):
-    config_file = args.settings
-    if config_file is None and os.path.isfile(pelican.DEFAULT_CONFIG_NAME):
-        config_file = pelican.DEFAULT_CONFIG_NAME
+    if args.settings is None and os.path.isfile(pelican.DEFAULT_CONFIG_NAME):
         args.settings = pelican.DEFAULT_CONFIG_NAME
 
     # Build overrides, letting CLI args override dataclass defaults where provided
@@ -316,7 +315,7 @@ def main(argv=None):
     except KeyboardInterrupt:
         logger.warning("Keyboard interrupt received. Exiting.")
     except Exception as e:
-        logger.critical("%s: %s", e.__class__.__name__, e)
+        logger.critical("%s: %s", e.__class__.__name__, e, exc_info=True)
 
         if args.verbosity == logging.DEBUG:
             pelican.console.print_exception()
