@@ -41,7 +41,7 @@ developers with their `Balanced`_ integrations.
 
    `mahmoud(AT-NOSPAM)linux(DOT)com`_
 
-.. _pronounced: http://inogolo.com/audio/Mahmoud_4331.mp3
+.. _pronounced: media/misc/mahmoud-pronunciation.mp3
 .. _mæħˈmuːd æbdəlkeɪdər: http://en.wikipedia.org/wiki/Wikipedia:IPA_for_Egyptian_Arabic
 .. _Balanced:
 .. _Balanced Payments: https://balancedpayments.com
