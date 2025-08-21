@@ -15,10 +15,10 @@ authors = [
 dependencies = [
     "pelican",
     "invoke",
-    "markdown",
     "jinja2",
     "pygments",
     "docutils",
+    "cmarkgfm", # not pycmarkgfm
 ]
 
 [project.optional-dependencies]
