@@ -125,7 +125,7 @@ class PelicanSettings:
 
 LandingPageSettings = PelicanSettings(
     PATH=str(cwd / "content"),
-    PAGE_PATHS=["landing"],
+    PAGE_PATHS=["www"],
     ARTICLE_EXCLUDES=["blog", "extra", "media", "til"],
     DIRECT_TEMPLATES=["index"],
     SECTIONS=[("Blog", "blog"), ("TIL", "til")],
@@ -209,9 +209,6 @@ def autoreload(
         "  --- AutoReload Mode: Monitoring `content`, `theme` and"
         " `settings` for changes. ---"
     )
-    print(cli_args)
-    print(settings_classes)
-    print(excqueue)
     args = cli_args
     pelican_instances = []
     debug = False
