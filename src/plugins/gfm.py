@@ -18,109 +18,98 @@
 # under the License.
 #
 #
-# gfm_reader.py -- GitHub-Flavored Markdown reader for Pelican
+# gfm.py -- GitHub-Flavored Markdown reader for Pelican
 #
-
-# from: https://github.com/apache/infrastructure-pelican/blob/master/plugins/gfm.py
-import ctypes
-import os.path
-import platform
+import html
+import logging
 import re
-import sys
 
 import pelican.plugins.signals
 import pelican.readers
 import pelican.utils
+import pygments
 
-_LIBDIR = os.environ["LIBCMARKDIR"]
-if platform.system() == "Darwin":
-    _LIBEXT = ".dylib"
-else:
-    _LIBEXT = ".so"
-_LIBCMARK = f"libcmark-gfm{_LIBEXT}"
 try:
-    cmark = ctypes.CDLL(os.path.join(_LIBDIR, _LIBCMARK))
-except OSError as e:
-    raise ImportError("%s not found. See build-cmark.sh. Error:\n%s" % (_LIBCMARK, e))
+    import cmarkgfm
+    from cmarkgfm.cmark import Options as cmarkgfm_options
+except ImportError:
+    cmarkgfm = None
+    cmarkgfm_options = None
 
-# Newer releases have different naming for this library. Try it first.
-try:
-    cmark_ext = ctypes.CDLL(os.path.join(_LIBDIR, f"libcmark-gfm-extensions{_LIBEXT}"))
-    ENSURE_REGISTERED = "cmark_gfm_core_extensions_ensure_registered"
-except OSError:
-    # Try the older name for the library.
-    try:
-        cmark_ext = ctypes.CDLL(
-            os.path.join(_LIBDIR, f"libcmark-gfmextensions{_LIBEXT}")
-        )
-        ENSURE_REGISTERED = "core_extensions_ensure_registered"
-    except OSError:
-        # print('LIBDIR:', _LIBDIR)
-        raise ImportError("GFM Extensions not found. See build-cmark.sh")
-# print(f'USING: {ENSURE_REGISTERED}')
+DUPLICATES_DEFINITIONS_ALLOWED = pelican.readers.DUPLICATES_DEFINITIONS_ALLOWED
+logger = logging.getLogger(__name__)
 
 
-# Use ctypes to access the functions in libcmark-gfm
-F_cmark_parser_new = cmark.cmark_parser_new
-F_cmark_parser_new.restype = ctypes.c_void_p
-F_cmark_parser_new.argtypes = (ctypes.c_int,)
-
-F_cmark_parser_feed = cmark.cmark_parser_feed
-F_cmark_parser_feed.restype = None
-F_cmark_parser_feed.argtypes = (ctypes.c_void_p, ctypes.c_char_p, ctypes.c_size_t)
-
-F_cmark_parser_finish = cmark.cmark_parser_finish
-F_cmark_parser_finish.restype = ctypes.c_void_p
-F_cmark_parser_finish.argtypes = (ctypes.c_void_p,)
-
-F_cmark_parser_attach_syntax_extension = cmark.cmark_parser_attach_syntax_extension
-F_cmark_parser_attach_syntax_extension.restype = ctypes.c_int
-F_cmark_parser_attach_syntax_extension.argtypes = (ctypes.c_void_p, ctypes.c_void_p)
-
-F_cmark_parser_get_syntax_extensions = cmark.cmark_parser_get_syntax_extensions
-F_cmark_parser_get_syntax_extensions.restype = ctypes.c_void_p
-F_cmark_parser_get_syntax_extensions.argtypes = (ctypes.c_void_p,)
-
-F_cmark_parser_free = cmark.cmark_parser_free
-F_cmark_parser_free.restype = None
-F_cmark_parser_free.argtypes = (ctypes.c_void_p,)
-
-F_cmark_node_free = cmark.cmark_node_free
-F_cmark_node_free.restype = None
-F_cmark_node_free.argtypes = (ctypes.c_void_p,)
-
-F_cmark_find_syntax_extension = cmark.cmark_find_syntax_extension
-F_cmark_find_syntax_extension.restype = ctypes.c_void_p
-F_cmark_find_syntax_extension.argtypes = (ctypes.c_char_p,)
-
-F_cmark_render_html = cmark.cmark_render_html
-F_cmark_render_html.restype = ctypes.c_char_p
-F_cmark_render_html.argtypes = (ctypes.c_void_p, ctypes.c_int, ctypes.c_void_p)
-
-
-# Set up the libcmark-gfm library and its extensions
-F_register = getattr(cmark_ext, ENSURE_REGISTERED)
-F_register.restype = None
-F_register.argtypes = ()
-F_register()
-
-### technically, maybe install an atexit() to release the plugins
-
-# Options for the GFM rendering call
-### this could be moved into SETTINGS or somesuch, but meh. not needed now.
-OPTS = 0
-
-# The GFM extensions that we want to use
-EXTENSIONS = (
-    "autolink",
-    "table",
-    "strikethrough",
-    "tagfilter",
+FRONTMATTER_RE = re.compile(
+    r"\s*^\+\+\+|\-\-\-+$"  # File starts with a line of "+++" or "---" (preceeding blank lines accepted)
+    r"(?P<metadata>.+?)"
+    r"^(?:\+\+\+|\-\-\-|\.\.\.)$"  # metadata section ends with a line of "+++" or "---" or "..."
+    r"(?P<content>.*)",
+    re.MULTILINE | re.DOTALL,
 )
 
 
-class GFMReader(pelican.readers.BaseReader):
-    enabled = True
+# NOTE: the builtin MarkdownReader should be disabled to ensure it is not used!
+# You can do this by not installing the markdown module.
+
+pelican.readers.MarkdownReader.enabled = bool(cmarkgfm)
+
+# Make code fences with `python` as the language default to highlighting as
+# Python 3.
+_LANG_ALIASES = {
+    "python": "python3",
+}
+
+
+def _highlight(html_content):
+    """Syntax-highlights HTML-rendered Markdown.
+
+    Plucks sections to highlight that conform the the GitHub fenced code info
+    string as defined at https://github.github.com/gfm/#info-string.
+
+    This is a big hack, and it's not very good. Should probably use real XML
+    parsing instead.
+
+    Args:
+        html (str): The rendered HTML.
+
+    Returns:
+        str: The HTML with Pygments syntax highlighting applied to all code
+            blocks.
+    """
+
+    formatter = pygments.formatters.HtmlFormatter(nowrap=True)
+
+    code_expr = re.compile(
+        r'<pre lang="(?P<lang>.+?)"><code>(?P<code>.+?)' r"</code></pre>",
+        re.DOTALL,
+    )
+
+    def replacer(match):
+        try:
+            lang = match.group("lang")
+            lang = _LANG_ALIASES.get(lang, lang)
+            lexer = pygments.lexers.get_lexer_by_name(lang)
+        except ValueError:
+            lexer = pygments.lexers.TextLexer()
+
+        code = match.group("code")
+
+        # Decode html entities in the code. cmark tries to be helpful and
+        # translate '"' to '&quot;', but it confuses pygments. Pygments will
+        # escape any html entities when re-writing the code, and we run
+        # everything through bleach after.
+        code = html.unescape(code)
+
+        highlighted = pygments.highlight(code, lexer, formatter)
+
+        return "<div class='highlight'><pre>{}</pre></div>".format(highlighted)
+
+    result = code_expr.sub(replacer, html_content)
+    return result
+
+
+class GFMReader(pelican.readers.MarkdownReader):
     """GFM-flavored Reader for the Pelican system.
 
     Pelican looks for all subclasses of BaseReader, and automatically
@@ -128,112 +117,87 @@ class GFMReader(pelican.readers.BaseReader):
     further is required by users of this Reader.
     """
 
-    # NOTE: the builtin MarkdownReader must be disabled. Otherwise, it will be
-    #       non-deterministic which Reader will be used for these files.
-    file_extensions = ["md", "markdown", "mkd", "mdown"]
+    enabled = bool(cmarkgfm)
+    file_extensions = pelican.readers.MarkdownReader.file_extensions
 
-    # Metadata is specified as a single, colon-separated line, such as:
-    #
-    # Title: this is the title
-    #
-    # Note: name starts in column 0, no whitespace before colon, will be
-    #       made lower-case, and value will be stripped
-    #
-    RE_METADATA = re.compile("^([A-za-z]+): (.*)$")
+    def _convert(self, text):
+        return cmarkgfm.github_flavored_markdown_to_html(
+            text,
+            options=cmarkgfm_options.CMARK_OPT_UNSAFE,
+        )
 
-    def read_source(self, source_path):
-        "Read metadata and content from the source."
-
-        # Prepare the "slug", which is the target file name. It will be the
-        # same as the source file, minus the leading ".../content/(articles|pages)"
-        # and with the extension removed (Pelican will add .html)
-        relpath = os.path.relpath(source_path, self.settings["PATH"])
-        parts = relpath.split(os.sep)
-        parts[-1] = os.path.splitext(parts[-1])[0]  # split off ext, keep base
-        slug = os.sep.join(parts[1:])
-
-        metadata = {
-            "slug": slug,
-        }
-        # Fetch the source content, with a few appropriate tweaks
-        with pelican.utils.pelican_open(source_path) as text:
-
-            # Extract the metadata from the header of the text
-            lines = text.splitlines()
-            i = 0  # See https://github.com/apache/infrastructure-pelican/issues/70
-            for i in range(len(lines)):
-                line = lines[i]
-                match = GFMReader.RE_METADATA.match(line)
-                if match:
-                    name = match.group(1).strip().lower()
-                    if name != "slug":
-                        value = match.group(2).strip()
-                        if name == "date":
-                            value = pelican.utils.get_date(value)
-                    metadata[name] = value
-                    # if name != 'title':
-                    #  print 'META:', name, value
-                elif not line.strip():
-                    # blank line
-                    continue
-                else:
-                    # reached actual content
-                    break
-
-            # Redo the slug for articles.
-            # depending on pelicanconf.py this will change the output filename
-            if parts[0] == "articles" and "title" in metadata:
-                metadata["slug"] = pelican.utils.slugify(
-                    metadata["title"], self.settings.get("SLUG_SUBSTITUTIONS", ())
+    def _parse_metadata(self, metadata):
+        """Return the dict containing document metadata"""
+        formatted_fields = self.settings["FORMATTED_FIELDS"]
+        print("FORMATTED FIELDS:", formatted_fields)
+        print("DUPLICATES_DEFINITIONS_ALLOWED", DUPLICATES_DEFINITIONS_ALLOWED)
+        meta = {}
+        for line in metadata.splitlines():
+            if not line.strip():
+                continue
+            try:
+                name, value = line.split(":", 1)
+            except ValueError:
+                logger.warning(
+                    "Malformed metadata line: %s, missing colon (':'). Skipping.", line
                 )
+                continue
+            meta[name.strip()] = [value.strip()]
 
-            # Reassemble content, minus the metadata
-            text = "\n".join(lines[i:])
-
-            return text, metadata
+        output = {}
+        for name, value in meta.items():
+            print("NAME:", name, "VALUE:", value)
+            name = name.lower()
+            if name in formatted_fields:
+                # formatted metadata is special case and join all list values
+                formatted_values = "\n".join(value)
+                formatted = self._convert(formatted_values)
+                output[name] = self.process_metadata(name, formatted)
+            elif not DUPLICATES_DEFINITIONS_ALLOWED.get(name, True):
+                if len(value) > 1:
+                    logger.warning(
+                        "Duplicate definition of `%s` for %s. Using first one.",
+                        name,
+                        self._source_path,
+                    )
+                output[name] = self.process_metadata(name, value[0])
+            elif len(value) > 1:
+                # handle list metadata as list of string
+                output[name] = self.process_metadata(name, value)
+            else:
+                # otherwise, handle metadata as single string
+                output[name] = self.process_metadata(name, value[0])
+        return output
 
     def read(self, source_path):
         "Read metadata and content then render into HTML."
 
         # read metadata and markdown content
-        text, metadata = self.read_source(source_path)
-        assert text, "Text must not be empty"
-        assert metadata, "Metadata must not be empty"
-        # Render the markdown into HTML
-        if sys.version_info >= (3, 0):
-            text = text.encode("utf-8")
-            content = self.render(text).decode("utf-8")
-        else:
-            content = self.render(text)
-        assert content, "Did not expect content to be empty"
+        self._source_path = source_path
+        with pelican.utils.pelican_open(source_path) as text:
+            match = FRONTMATTER_RE.match(text)
+            if match:
+                metadata = self._parse_metadata(match.group("metadata"))
+                content = match.group("content")
+            else:
+                metadata = {}
+                content = text
+            content = self._convert(content)
+            content = _highlight(content)
 
+        assert content, "Did not expect content to be empty"
         return content, metadata
 
-    def render(self, text):
-        "Use cmark-gfm to render the Markdown into an HTML fragment."
-
-        parser = F_cmark_parser_new(OPTS)
-        assert parser, "Failed to initialise parser"
-        for name in EXTENSIONS:
-            ext = F_cmark_find_syntax_extension(name.encode("utf-8"))
-            assert ext, "Failed to find UTF-8 extension"
-            rv = F_cmark_parser_attach_syntax_extension(parser, ext)
-            assert rv, "Failed to attach the UTF-8 extension"
-        exts = F_cmark_parser_get_syntax_extensions(parser)
-        F_cmark_parser_feed(parser, text, len(text))
-        doc = F_cmark_parser_finish(parser)
-        assert doc, "Did not expect rendered output to be empty"
-
-        output = F_cmark_render_html(doc, OPTS, exts)
-
-        F_cmark_parser_free(parser)
-        F_cmark_node_free(doc)
-
-        return output
+    def disabled_message(self) -> str:
+        return (
+            "Could not import 'cmarkgfm'. "
+            "Have you installed the 'cmarkgfm' package? pip install cmarkgfm"
+        )
 
 
 def add_readers(readers):
-    readers.reader_classes["md"] = GFMReader
+    for ext in GFMReader.file_extensions:
+        readers.reader_classes[ext] = GFMReader
 
 
 def register():
