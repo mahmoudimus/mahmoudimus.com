@@ -41,11 +41,12 @@ logger = logging.getLogger(__name__)
 
 
 FRONTMATTER_RE = re.compile(
-    r"\s*^\+\+\+|\-\-\-+$"  # File starts with a line of "+++" or "---" (preceeding blank lines accepted)
-    r"(?P<metadata>.+?)"
-    r"^(?:\+\+\+|\-\-\-|\.\.\.)$"  # metadata section ends with a line of "+++" or "---" or "..."
-    r"(?P<content>.*)",
-    re.MULTILINE | re.DOTALL,
+    r"^(?:\s*\n)*"  # preceeding blank lines
+    r"(?:\+\+\+|---)\s*\n"  # +++ OR ---
+    r"(?P<metadata>.*?)"  # capture everything here (non-greedy)
+    r"^(?:\+\+\+|---|\.\.\.)\s*\n"  # +++ OR --- OR ...
+    r"(?P<content>.*)",  # capture everything here
+    re.DOTALL | re.MULTILINE,
 )
 
 
@@ -129,6 +130,7 @@ class GFMReader(pelican.readers.MarkdownReader):
     def _parse_metadata(self, metadata):
         """Return the dict containing document metadata"""
         formatted_fields = self.settings["FORMATTED_FIELDS"]
+        print("metadata:", metadata)
         meta = {}
         for line in metadata.splitlines():
             if not line.strip():
@@ -174,6 +176,9 @@ class GFMReader(pelican.readers.MarkdownReader):
         with pelican.utils.pelican_open(source_path) as text:
             match = FRONTMATTER_RE.match(text)
             if match:
+                print(text)
+                print(match)
+                print(match.groups())
                 metadata = self._parse_metadata(match.group("metadata"))
                 content = match.group("content")
             else:
