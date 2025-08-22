@@ -7,10 +7,13 @@ import os
 import pathlib
 import sys
 import traceback
+import typing
 from dataclasses import asdict, dataclass, field
 
 import pelican
 import pelican.settings
+
+import jinja_filters
 
 logger = pelican.logger
 cwd = pathlib.Path(__file__).parent
@@ -70,6 +73,14 @@ class PelicanSettings:
     # Email settings
     MAIL_USERNAME: str = "mabdelkader"
     MAIL_HOST: str = "gmail.com"
+
+    # Jinja2 settings
+    JINJA_FILTERS: dict[str, typing.Callable] = field(
+        default_factory=lambda: {
+            "striptags_nl": jinja_filters.striptags_nl,
+            "untagify": jinja_filters.untagify,
+        }
+    )
 
     # Theme and plugins
     THEME: str = str(cwd / "themes/minimal")
@@ -150,7 +161,6 @@ WeblogSettings = PelicanSettings(
     DIRECT_TEMPLATES=["index", "tags", "archives"],
 )
 
-
 TILSettings = PelicanSettings(
     PATH=str(cwd / "content"),
     ARTICLE_PATHS=["til"],
@@ -164,6 +174,19 @@ TILSettings = PelicanSettings(
         ("Tags", "tags"),
     ],
     DIRECT_TEMPLATES=["index", "tags", "archives"],
+)
+
+WellKnownSettings = PelicanSettings(
+    PATH=str(cwd / "content"),
+    PAGE_PATHS=[".well-known"],
+    RELATIVE_URLS=False,
+    SITEURL="/.well-known",
+    OVERRIDDEN_SITEURL=os.environ.get("SITEURL", "http://127.0.0.1:8000"),
+    OUTPUT_SUBDIR=".well-known",
+    THEME=str(cwd / "themes/raw"),
+    FEED_RSS=None,
+    CATEGORY_FEED_RSS=None,
+    DIRECT_TEMPLATES=[],
 )
 
 
@@ -274,7 +297,7 @@ def main(argv=None):
 
     logger.debug("Pelican version: %s", pelican.__version__)
     logger.debug("Python version: %s", sys.version.split()[0])
-    _SETTINGS = [LandingPageSettings, WeblogSettings, TILSettings]
+    _SETTINGS = [LandingPageSettings, WeblogSettings, TILSettings, WellKnownSettings]
     try:
         instances = []
         for settings in _SETTINGS:
