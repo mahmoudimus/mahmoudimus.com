@@ -1,7 +1,7 @@
 +++
 Title: Passing the baton of leadership at VGS (f.k.a. Very Good Security)
 Date: 2022-11-16 11:50
-Tags: Leadership
+Tags: leadership, entrepreneurship, very-good-security, vgs
 Classification: blog
 Excerpt: Reflections on founding VGS, the challenges of leadership, and the transition to new hands after seven years at the helm.
 +++
