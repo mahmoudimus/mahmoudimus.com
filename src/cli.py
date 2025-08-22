@@ -68,7 +68,7 @@ class PelicanSettings:
     TWITTER_USERNAME: str = "mahmoudimus"
     LINKEDIN_URL: str = "https://linkedin.com/in/mahmoudimus"
     GITHUB_URL: str = "https://github.com/mahmoudimus"
-    GOOGLE_ANALYTICS_ACCOUNT: str = "UA-10868702-1"
+    GOOGLE_ANALYTICS_ACCOUNT: str = "G-Y601RJQVDT"
 
     # Email settings
     MAIL_USERNAME: str = "mabdelkader"
