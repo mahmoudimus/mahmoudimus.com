@@ -388,10 +388,6 @@ footer .social ul li {
   border: none;
   cursor: pointer;
   padding: 10px;
-  position: absolute;
-  top: 15px;
-  right: 15px;
-  z-index: 1000;
   flex-direction: column;
   justify-content: space-around;
   width: 30px;
@@ -421,8 +417,8 @@ footer .social ul li {
 
 @media print, screen and (max-width: 720px) {
   .menu-toggle {
-    display: flex;
-    position: fixed;
+    display: flex !important;
+    position: fixed !important;
     top: 15px;
     right: 15px;
     z-index: 1001;
