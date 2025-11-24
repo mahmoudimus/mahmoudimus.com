@@ -5,7 +5,13 @@
 
         <h2> {{ FULL_AUTHOR_NAME }} </h2>
 
-        <ul>
+        <button class="menu-toggle" aria-label="Toggle menu" aria-expanded="false">
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+
+        <ul class="nav-menu">
           {% for section in SECTIONS %}
             <li><a href="{{ SITEURL }}/{{ section[1]}}">{{ section[0] }}</a> </li>
           {% endfor %}
