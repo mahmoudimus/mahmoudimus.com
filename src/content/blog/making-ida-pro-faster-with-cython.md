@@ -2,7 +2,6 @@
 Title: IDA Pro and Cython: super-charging the work-horse of reverse engineering
 Date: 2025-08-01
 Author: Mahmoud
-Status: draft
 Tags: reverse engineering, cython, ida pro
 Classification: blog
 Excerpt: Cython and IDA Python for super fast reversing tools
