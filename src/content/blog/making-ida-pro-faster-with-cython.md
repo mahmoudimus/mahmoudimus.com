@@ -205,9 +205,10 @@ def fnv1a_hash(data):
 ```
 
 There are a few important details here:
- * We disable bounds checking and negative index wraparound at the top of the file. That removes safety checks from the hot loop.
- * We declare all locals with concrete C types: `Py_ssize_t` for indices, `uchar` for bytes, `ulonglong` for the 64-bit hash state.
- * We normalize the input once at the Python level (handling `str` and type checks) and then stay in C for the loop.
+
+* We disable bounds checking and negative index wraparound at the top of the file. That removes safety checks from the hot loop.
+* We declare all locals with concrete C types: `Py_ssize_t` for indices, `uchar` for bytes, `ulonglong` for the 64-bit hash state.
+* We normalize the input once at the Python level (handling `str` and type checks) and then stay in C for the loop.
 
 From Python or IDAPython, you would import this just like any other module:
 
@@ -265,8 +266,9 @@ if __name__ == "__main__":
 Run it once with just the pure Python implementation available, and once with the compiled Cython module on your `PATH`. On a typical desktop you should see a clear improvement in the Cython version, especially as you bump up the number of iterations.
 
 In an IDA context, the pattern looks like this:
- * use pure Python for all the glue logic (enumerating segments, walking imports, updating comments)
- * call into a small Cython module like `fnv1a_hash` for tight inner loops
+
+* use pure Python for all the glue logic (enumerating segments, walking imports, updating comments)
+* call into a small Cython module like `fnv1a_hash` for tight inner loops
 
 This is the same pattern used in ida-sigmaker: you cross the Python/C boundary once, do a lot of work in Cython (or C++), and then return a simple result to IDA.
 
@@ -285,16 +287,18 @@ The result is a binary extension that still uses the Python C API for every oper
 This technique will not magically optimize everything. Dictionary lookups, for example, still use Python's `dict` implementation. But for tight loops over simple data types it often yields a 2x or 3x improvement, which is more than enough to see if it is worth investing in deeper type annotations.
 
 Once you have that first bump, you can use a profiler to identify hotspots and then selectively:
- * add `cdef` declarations for local variables
- * convert hot functions to `cdef` or `cpdef`
- * move heavy string and bytes processing into C loops
- * call out to C or C++ helper functions from Cython
+
+* add `cdef` declarations for local variables
+* convert hot functions to `cdef` or `cpdef`
+* move heavy string and bytes processing into C loops
+* call out to C or C++ helper functions from Cython
 
 The pattern that works best for high performance IDA plugins is:
- * gather inputs at the Python or `IDAPython` level
- * cross the Python/C boundary exactly once
- * run the heavy algorithm entirely in Cython (calling C or C++ as needed)
- * return a simple result back to Python
+
+* gather inputs at the Python or `IDAPython` level
+* cross the Python/C boundary exactly once
+* run the heavy algorithm entirely in Cython (calling C or C++ as needed)
+* return a simple result back to Python
 
 The ida-sigmaker speedups and the FNV-1a example both follow this pattern.
 
@@ -328,15 +332,17 @@ If you have never used Cython before, the terminology can be confusing. This is 
 ### Files and modules
 
 Cython code is usually split into:
- * interface files: `*.pxd`
- * implementation or wrapper files: `*.pyx`
- * optional pure Python modules: `*.py`
+
+* interface files: `*.pxd`
+* implementation or wrapper files: `*.pyx`
+* optional pure Python modules: `*.py`
 
 A `.pxd` file declares the C functions, types, and structs you want to expose to Cython. It is roughly the Cython equivalent of a C header file. A `.pyx` file contains the Python visible logic and uses `cimport` to pull in declarations from `.pxd` files.
 
 After compilation you get:
- * `.so` files on Linux and macOS
- * `.pyd` files on Windows
+
+* `.so` files on Linux and macOS
+* `.pyd` files on Windows
 
 These behave like normal extension modules from the point of view of Python and `IDAPython`: you import them, and Python loads the shared object.
 
@@ -410,11 +416,12 @@ The important takeaway is that you do not need to Cythonize your entire plugin a
 This post focused on why Cython is a good fit for IDA Pro plugins and walked through a concrete example in ida-sigmaker, plus a smaller FNV-1a example that you can benchmark yourself.
 
 In part 2, I will switch from theory to practice and build a minimal Cython accelerated IDA plugin from scratch:
- * creating the folder layout
- * writing the smallest useful `.pyx` file
- * compiling it into a `.pyd` or `.so`
- * loading it inside IDA
- * comparing pure Python vs compiled performance
- * adding the first `cdef` based optimization
+
+* creating the folder layout
+* writing the smallest useful `.pyx` file
+* compiling it into a `.pyd` or `.so`
+* loading it inside IDA
+* comparing pure Python vs compiled performance
+* adding the first `cdef` based optimization
 
 If you have ever wanted to ship a faster IDA plugin without touching the IDA SDK directly, part 2 is for you.
