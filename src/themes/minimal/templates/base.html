@@ -16,6 +16,31 @@
       <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
 
+    {% if (article is defined and article.math) or (page is defined and page.math) %}
+    {# Opt-in math: set `Math: true` in a post's frontmatter. cmarkgfm passes
+       $...$ / $$...$$ through verbatim, so MathJax typesets it client-side
+       regardless of the reader. `code`/`pre` are skipped by MathJax's defaults,
+       so inline shell `$VAR` and big-O written in code spans are left alone. #}
+    <script>
+      window.MathJax = {
+        tex: {
+          inlineMath: [['$', '$']],
+          displayMath: [['$$', '$$']],
+          processEscapes: true
+        }
+      };
+    </script>
+    <script id="MathJax-script" async
+            src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    {% endif %}
+
+    {% if (article is defined and article.viz) or (page is defined and page.viz) %}
+    {# Opt-in interactive figures: set `Viz: true` in a post's frontmatter.
+       sig-viz.js scans for [data-sig-viz] mounts and renders them. No deps. #}
+    <link rel="stylesheet" href="{{ SITEURL }}/theme/css/sig-viz.css" type="text/css" />
+    <script defer src="{{ SITEURL }}/theme/js/sig-viz.js"></script>
+    {% endif %}
+
   </head>
 
   <body {% block body_attrs %} {% endblock %}>
