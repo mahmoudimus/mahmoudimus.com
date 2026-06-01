@@ -1,0 +1,372 @@
+/* sig-viz.css -- styling for the signature-search interactive figures.
+   Loaded only on posts with `Viz: true`. Minimal, theme-friendly, and
+   degrades to instant state changes under prefers-reduced-motion. */
+
+.sigviz {
+  margin: 1.8em 0;
+  padding: 0;
+  --sv-bg: #e7e9ee;
+  --sv-edge: #f1f2f5;
+  --sv-on: #2f6fb0;
+  --sv-win: #e0982a;
+  --sv-ink: #333;
+  --sv-mut: #777;
+}
+
+/* pattern chips */
+.sigviz-pattern {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  margin-bottom: 10px;
+  font-family: Menlo, Consolas, monospace;
+}
+.sigviz-chip {
+  min-width: 1.6em;
+  text-align: center;
+  padding: 3px 6px;
+  border-radius: 4px;
+  font-size: 13px;
+  color: var(--sv-mut);
+  background: var(--sv-edge);
+  border: 1px solid #dcdee3;
+  opacity: 0.5;
+  transition: all 0.25s ease;
+}
+.sigviz-chip.seen {
+  opacity: 1;
+  color: #fff;
+  background: var(--sv-on);
+  border-color: var(--sv-on);
+}
+.sigviz-chip.wild.seen {
+  background: #9aa3af;
+  border-color: #9aa3af;
+}
+.sigviz-chip.active {
+  box-shadow: 0 0 0 2px var(--sv-win);
+  transform: translateY(-2px);
+}
+
+/* the database grid */
+.sigviz-grid {
+  display: block;
+  width: 100%;
+  max-width: 520px;
+  height: auto;
+}
+.sigviz-grid .cell {
+  fill: var(--sv-bg);
+  transition: fill 0.4s ease, opacity 0.4s ease;
+}
+.sigviz-grid .cell.edge {
+  fill: var(--sv-edge);
+}
+.sigviz-grid .cell.on {
+  fill: var(--sv-on);
+}
+.sigviz-grid .cell.win {
+  fill: var(--sv-win);
+}
+
+/* meta row: sparkline + controls */
+.sigviz-meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 14px;
+  margin-top: 12px;
+}
+.sigviz-spark {
+  width: 220px;
+  height: 54px;
+  flex: 0 0 auto;
+}
+.sigviz-spark .spark-line {
+  fill: none;
+  stroke: var(--sv-on);
+  stroke-width: 1.5;
+}
+.sigviz-spark .spark-dot {
+  fill: var(--sv-win);
+  transition: cx 0.4s ease, cy 0.4s ease;
+}
+
+.sigviz-controls {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+}
+.sigviz-controls button {
+  font: inherit;
+  font-size: 13px;
+  padding: 5px 10px;
+  border: 1px solid #cfd2d8;
+  border-radius: 5px;
+  background: #fafbfc;
+  color: var(--sv-ink);
+  cursor: pointer;
+}
+.sigviz-controls button:hover:not(:disabled) {
+  background: #f0f2f5;
+}
+.sigviz-controls button:disabled {
+  opacity: 0.4;
+  cursor: default;
+}
+.sigviz-count {
+  margin-left: 4px;
+  font-family: Menlo, Consolas, monospace;
+  font-weight: 600;
+  color: var(--sv-on);
+  min-width: 6em;
+}
+
+.sigviz figcaption {
+  margin-top: 10px;
+  font-size: 0.9em;
+  color: var(--sv-mut);
+  line-height: 1.45;
+}
+.sigviz figcaption code {
+  color: var(--sv-ink);
+}
+
+/* row labels (shared by the index + seed figures) */
+.sigviz-rowlabel {
+  font-size: 12px;
+  color: var(--sv-mut);
+  margin: 12px 0 4px;
+}
+
+/* byte strips (database + positions array) */
+.sigviz-strip {
+  display: block;
+  width: 100%;
+  max-width: 560px;
+  height: auto;
+}
+.dbcell,
+.poscell {
+  fill: #eef0f4;
+  stroke: #dcdee3;
+  stroke-width: 0.5;
+  transition: fill 0.25s ease;
+}
+.dblabel,
+.poslabel {
+  font: 10px Menlo, Consolas, monospace;
+  fill: var(--sv-ink);
+}
+.keylabel {
+  font: 9px Menlo, Consolas, monospace;
+  fill: var(--sv-mut);
+}
+.dbcell.hit-start {
+  fill: #f3b65a;
+}
+.dbcell.hit-cont {
+  fill: #fbe2bd;
+}
+.poscell.on {
+  fill: #bcd6ee;
+}
+
+/* key legend (index figure) */
+.sigviz-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+  margin: 8px 0;
+}
+.keybtn {
+  font: inherit;
+  font-size: 12px;
+  font-family: Menlo, Consolas, monospace;
+  padding: 3px 8px;
+  border: 1px solid #cfd2d8;
+  border-radius: 5px;
+  background: #fafbfc;
+  color: var(--sv-ink);
+  cursor: pointer;
+}
+.keybtn:hover {
+  background: #f0f2f5;
+}
+.keybtn.active {
+  background: var(--sv-on);
+  border-color: var(--sv-on);
+  color: #fff;
+}
+
+/* anchor bars (seed figure) */
+.sigviz-bars {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  margin: 10px 0;
+  max-width: 480px;
+}
+.sigviz-bar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  text-align: left;
+  background: none;
+  border: 1px solid transparent;
+  border-radius: 5px;
+  padding: 3px 6px;
+  cursor: pointer;
+  font: inherit;
+}
+.sigviz-bar:hover {
+  background: #f2f4f7;
+}
+.sigviz-bar.active {
+  border-color: #cfd2d8;
+  background: #f2f4f7;
+}
+.bar-label {
+  flex: 0 0 auto;
+  min-width: 7.5em;
+  white-space: nowrap;
+  font-family: Menlo, Consolas, monospace;
+  font-size: 13px;
+  color: var(--sv-ink);
+}
+.bar-track {
+  flex: 1;
+  height: 14px;
+  background: #eef0f4;
+  border-radius: 3px;
+  overflow: hidden;
+}
+.bar-fill {
+  display: block;
+  height: 100%;
+  background: #9bb6cf;
+}
+.sigviz-bar.chosen .bar-fill {
+  background: var(--sv-win);
+}
+.bar-num {
+  flex: 0 0 2.5em;
+  text-align: right;
+  font-family: Menlo, Consolas, monospace;
+  font-size: 12px;
+  color: var(--sv-mut);
+}
+.bar-tag {
+  flex: 0 0 auto;
+  font-size: 11px;
+  padding: 1px 7px;
+  border-radius: 9px;
+  background: var(--sv-win);
+  color: #fff;
+}
+
+/* positions band (seed figure: the contiguous-marginal visual) */
+.sigviz-band {
+  display: block;
+  width: 100%;
+  max-width: 600px;
+  height: 18px;
+  border-radius: 3px;
+  overflow: hidden;
+  border: 1px solid #dcdee3;
+}
+.bandcell {
+  transition: fill 0.2s ease;
+}
+.bandcell.lit {
+  fill: var(--sv-on);
+}
+
+/* cost-contrast figure (sliders + diverging bars) */
+.sigviz-sliders {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  margin: 8px 0 14px;
+}
+.sigviz-slider {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  color: var(--sv-ink);
+}
+.slider-name {
+  font-family: Menlo, Consolas, monospace;
+}
+.sigviz-slider input[type="range"] {
+  width: 150px;
+}
+.slider-val {
+  font-family: Menlo, Consolas, monospace;
+  font-weight: 600;
+  color: var(--sv-on);
+  min-width: 1.8em;
+  text-align: right;
+}
+.cost-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 7px 0;
+}
+.cost-name {
+  flex: 0 0 11em;
+  font-size: 12px;
+  color: var(--sv-mut);
+}
+.cost-track {
+  flex: 1;
+  height: 20px;
+  background: #eef0f4;
+  border-radius: 3px;
+  overflow: hidden;
+}
+.cost-fill {
+  display: block;
+  height: 100%;
+  min-width: 2px;
+  transition: width 0.3s ease;
+}
+.cost-fill.naive {
+  background: #cf6b5a;
+}
+.cost-fill.indexed {
+  background: #3a8a5a;
+}
+.cost-val {
+  flex: 0 0 11em;
+  font-size: 12.5px;
+  font-family: Menlo, Consolas, monospace;
+  color: var(--sv-ink);
+  line-height: 1.25;
+}
+.cost-sub {
+  display: block;
+  font-size: 11px;
+  color: var(--sv-mut);
+}
+.cost-ratio {
+  margin-top: 10px;
+  font-weight: 600;
+  color: var(--sv-on);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sigviz-grid .cell,
+  .sigviz-spark .spark-dot,
+  .sigviz-chip,
+  .dbcell,
+  .poscell,
+  .bandcell,
+  .cost-fill {
+    transition: none;
+  }
+}
