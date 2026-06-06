@@ -3,7 +3,7 @@
  * No dependencies, no build step. Loaded only on posts with `Viz: true`
  * (see base.html). Each figure is a `<figure data-sig-viz="NAME">` mount.
  *
- * The honest part: every frame is computed by actually running the
+ * Every frame is real: it is computed by actually running the
  * seed-then-refine match over a small synthetic byte database, the same
  * filter the real algorithm runs. The counts you see are real counts for
  * that input, not a faked geometric curve.

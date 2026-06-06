@@ -90,7 +90,7 @@ Before restructuring anything, there is one question worth more than the other t
 
 Vectorizing a loop makes the *computation* faster. It is only worth doing if the computation is the bottleneck. If the loop spends its time waiting for memory rather than computing, then making the compute four times wider just gets you to the waiting four times sooner. You would do real work, the benchmark would not move, and you would not understand why.
 
-The honest way to settle this is to measure whether the loop is compute-bound or memory-bound before touching it. On Linux with real hardware you would reach for `perf stat` and read the cache-miss and stall counters straight off the CPU. I work on an Apple machine and run the test matrix in an emulated-amd64 Docker image, so I have no real performance counters to read in either place. I needed a way to prove compute-bound versus memory-bound that does not depend on hardware counters at all.
+The way to settle this is to measure whether the loop is compute-bound or memory-bound before touching it. On Linux with real hardware you would reach for `perf stat` and read the cache-miss and stall counters straight off the CPU. I work on an Apple machine and run the test matrix in an emulated-amd64 Docker image, so I have no real performance counters to read in either place. I needed a way to prove compute-bound versus memory-bound that does not depend on hardware counters at all.
 
 ## Check 3: the working-set sweep
 
@@ -137,6 +137,6 @@ Not when it is fast. When you have checked the three things that can actually be
 
 `perf stat` and its cache-miss counters are the gold standard for that third check, and if you have real hardware and a real Linux box, use them. The sweep is what you do when you do not: it needs nothing but a loop you can feed inputs of different sizes, and it gives you the one bit you actually need, compute-bound or memory-bound, without a single hardware counter.
 
-The lesson I keep relearning is that the hardest part of optimization is not making code faster. It is knowing when to stop, and being able to prove to yourself that stopping is correct. Two of my three checks said the code was clean. The third said the thing I most wanted to optimize was already free, and that the honest move was to put the screwdriver down. The sweep that told me so is eight rows of a table and about ninety lines of Python, and it saved me from a weekend of beautiful, vectorized, pointless work.
+The lesson I keep relearning is that the hardest part of optimization is not making code faster. It is knowing when to stop, and being able to prove to yourself that stopping is correct. Two of my three checks said the code was clean. The third said the thing I most wanted to optimize was already free, and that the right move was to put the screwdriver down. The sweep that told me so is eight rows of a table and about ninety lines of Python, and it saved me from a weekend of beautiful, vectorized, pointless work.
 
 If you want to run it on your own kernel, the harness is in the repo at `tests/perf/working_set_sweep.py`. Point it at your loop, fix the iteration count, sweep the footprint, and read the last column.
