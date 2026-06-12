@@ -6,37 +6,25 @@
   <div class="noise" aria-hidden="true"></div>
 
   <div class="container">
-    <div class="footer-grid">
-      <div class="f-col f-brand">
-        <h3>{{ AUTHOR }} &copy; {{ CURRENT_YEAR }}</h3>
-        <hr>
-        <p>Built with <a href="https://getpelican.com/" target="_blank" rel="noopener">Pelican</a>
-           &middot; <a href="https://github.com/mahmoudimus/mahmoudimus.com" target="_blank" rel="noopener">Source</a></p>
-      </div>
-
-      <div class="f-col">
-        <h3>Site</h3>
-        <ul>
-          <li><a href="{{ OVERRIDDEN_SITEURL or SITEURL }}/">Home</a></li>
-          {% for section in SECTIONS %}
-          <li><a href="{{ SITEURL }}/{{ section[1] }}">{{ section[0] }}</a></li>
-          {% endfor %}
-          {% if FEED_RSS %}<li><a href="{{ OVERRIDDEN_SITEURL or SITEURL }}/{{ FEED_RSS }}">RSS</a></li>{% endif %}
-        </ul>
-      </div>
-
-      <div class="f-col">
-        <h3>Elsewhere</h3>
-        <ul>
-          {% if GITHUB_URL %}<li><a href="{{ GITHUB_URL }}" target="_blank" rel="me noopener">GitHub<span class="ext">&#8599;</span></a></li>{% endif %}
-          {% if TWITTER_USERNAME %}<li><a href="https://x.com/{{ TWITTER_USERNAME }}" target="_blank" rel="me noopener">X<span class="ext">&#8599;</span></a></li>{% endif %}
-          {% if LINKEDIN_URL %}<li><a href="{{ LINKEDIN_URL }}" target="_blank" rel="me noopener">LinkedIn<span class="ext">&#8599;</span></a></li>{% endif %}
-          {% if MAIL_USERNAME and MAIL_HOST %}<li><a href="mailto:{{ MAIL_USERNAME }}@{{ MAIL_HOST }}">Email</a></li>{% endif %}
-        </ul>
-      </div>
+    <div class="footer-compact">
+      <p class="f-line f-brand-line">{{ AUTHOR }} &copy; {{ CURRENT_YEAR }}
+        <span class="f-dim">&middot; built with <a href="https://getpelican.com/" target="_blank" rel="noopener">Pelican</a>
+        &middot; <a href="https://github.com/mahmoudimus/mahmoudimus.com" target="_blank" rel="noopener">source</a></span></p>
+      <nav class="f-line" aria-label="Site links">
+        <span class="f-label">Site</span>
+        <a href="{{ OVERRIDDEN_SITEURL or SITEURL }}/">Home</a>
+        {% for section in SECTIONS %}<a href="{{ SITEURL }}/{{ section[1] }}">{{ section[0] }}</a>{% endfor %}
+        {% if FEED_RSS %}<a href="{{ OVERRIDDEN_SITEURL or SITEURL }}/{{ FEED_RSS }}">RSS</a>{% endif %}
+      </nav>
+      <nav class="f-line" aria-label="Elsewhere">
+        <span class="f-label">Elsewhere</span>
+        {% if GITHUB_URL %}<a href="{{ GITHUB_URL }}" target="_blank" rel="me noopener">GitHub<span class="ext">&#8599;</span></a>{% endif %}
+        {% if TWITTER_USERNAME %}<a href="https://x.com/{{ TWITTER_USERNAME }}" target="_blank" rel="me noopener">X<span class="ext">&#8599;</span></a>{% endif %}
+        {% if LINKEDIN_URL %}<a href="{{ LINKEDIN_URL }}" target="_blank" rel="me noopener">LinkedIn<span class="ext">&#8599;</span></a>{% endif %}
+        {% if MAIL_USERNAME and MAIL_HOST %}<a href="mailto:{{ MAIL_USERNAME }}@{{ MAIL_HOST }}">Email</a>{% endif %}
+      </nav>
     </div>
 
-    {# zed-style outline wordmark on a downward-fading scanline pattern #}
     <div class="footer-mark" aria-hidden="true"><span>mahmoudimus</span></div>
   </div>
 </footer>

@@ -254,19 +254,21 @@ h1:first-child, h2:first-child { margin-top: 0; }
     currentColor 0, currentColor 4px, transparent 4px, transparent 8px);
 }
 
-.footer-grid {
-  display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 1.5rem;
-  padding: 2rem 0 1rem;
+.footer-compact {
+  padding: 1.25rem 0 .5rem;
+  display: flex; flex-direction: column; gap: .4rem;
 }
-.f-col + .f-col { border-left: 1px solid rgba(255, 255, 255, .1); padding-left: 1.5rem; }
-.f-col h3 {
-  font-family: var(--font-serif); font-weight: 400; color: #fff;
-  font-size: var(--text-base); margin: 0 0 .9rem; letter-spacing: 0;
+.f-line {
+  display: flex; flex-wrap: wrap; gap: .25rem 1rem; align-items: baseline;
+  font-size: var(--text-sm); margin: 0;
 }
-.f-brand hr { width: 5rem; margin: .8rem 0; border: none;
-  border-top: 1px solid rgba(255, 255, 255, .1); }
-.f-col ul { list-style: none; margin: 0; padding: 0;
-  display: flex; flex-direction: column; gap: .55rem; }
+.f-brand-line { font-family: var(--font-serif); color: #fff; }
+.f-dim { color: rgba(255, 255, 255, .65); font-family: var(--font-body);
+  font-size: var(--text-xs); }
+.f-label {
+  font-family: var(--font-mono); font-size: .625rem; text-transform: uppercase;
+  letter-spacing: .12em; color: rgba(255, 255, 255, .55); min-width: 5.5rem;
+}
 .site-footer a {
   color: #e3e4e7; text-decoration: underline;
   text-decoration-color: rgba(255, 255, 255, .2); text-underline-offset: 2px;
@@ -279,7 +281,7 @@ h1:first-child, h2:first-child { margin-top: 0; }
 .footer-mark {
   position: relative; display: flex; justify-content: center;
   border-top: 1px solid rgba(255, 255, 255, .1);
-  margin: 1rem 0 -2.5rem; padding: 1.6rem 0 0;
+  margin: .7rem 0 -1.1rem; padding: .8rem 0 0;
 }
 .footer-mark::before {
   content: ""; position: absolute; inset: 0;
@@ -298,9 +300,9 @@ h1:first-child, h2:first-child { margin-top: 0; }
 }
 .footer-mark span {
   position: relative; font-family: var(--font-serif);
-  font-size: clamp(3.5rem, 12vw, 8rem); line-height: 1; letter-spacing: -.02em;
+  font-size: clamp(1.8rem, 5vw, 3.25rem); line-height: 1; letter-spacing: -.02em;
   color: rgba(255, 255, 255, .03);
-  -webkit-text-stroke: 1.2px rgba(255, 255, 255, .22);
+  -webkit-text-stroke: 1px rgba(255, 255, 255, .22);
   opacity: .8; user-select: none; white-space: nowrap;
 }
 
@@ -433,8 +435,6 @@ body { overflow-x: clip; }
 
 @media (max-width: 720px) {
   .pf-gutter, .pf-rail, .znode, .f-rail { display: none; }
-  .footer-grid { grid-template-columns: 1fr; }
-  .f-col + .f-col { border-left: none; padding-left: 0; }
 }
 
 /* ============================================================================
