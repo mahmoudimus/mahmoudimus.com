@@ -105,6 +105,8 @@ class PelicanSettings:
     # Per-site index hero (zed theme); falls back to SITENAME / no tagline.
     INDEX_TITLE: str = ""
     INDEX_TAGLINE: str = ""
+    # Show the featured-cards band on the index (zed theme).
+    INDEX_CARDS: bool = True
     STATIC_PATHS: list[str] = field(default_factory=lambda: ["images"])
     EXTRA_PATH_METADATA: dict[str, dict[str, str]] = field(default_factory=dict)
     READERS: dict[str, None] = field(default_factory=lambda: {"html": None})
@@ -186,6 +188,7 @@ TILSettings = PelicanSettings(
     DIRECT_TEMPLATES=["index", "tags", "archives"],
     INDEX_TITLE="Today I Learned",
     INDEX_TAGLINE="Small discoveries, written down before I forget them.",
+    INDEX_CARDS=False,
 )
 
 WellKnownSettings = PelicanSettings(
