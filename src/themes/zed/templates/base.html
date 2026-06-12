@@ -48,15 +48,16 @@
   </head>
 
   <body{% block body_attrs %}{% endblock %}>
-    {# zed-style page frame: edge gutters carrying the 10px grid texture, plus
-       two seeded tick-rails (solid/dashed segments) at the content edges. #}
-    <div class="page-frame" aria-hidden="true">
-      <span class="pf-gutter pf-l"></span>
-      <span class="pf-rail pf-rail-l">{{ fr.ticks('rail-left') }}</span>
-      <span class="pf-rail pf-rail-r">{{ fr.ticks('rail-right') }}</span>
-      <span class="pf-gutter pf-r"></span>
-    </div>
     <div class="wrapper">
+      {# zed-style page frame: edge gutters carrying the 10px grid texture, plus
+         two seeded tick-rails. Inside .wrapper so it scrolls away with the
+         content to reveal the fixed footer behind it. #}
+      <div class="page-frame" aria-hidden="true">
+        <span class="pf-gutter pf-l"></span>
+        <span class="pf-rail pf-rail-l">{{ fr.ticks('rail-left') }}</span>
+        <span class="pf-rail pf-rail-r">{{ fr.ticks('rail-right') }}</span>
+        <span class="pf-gutter pf-r"></span>
+      </div>
       {% block header %}{% include "header.html" %}{% endblock %}
       <section>
         {% block content %}{% endblock %}
