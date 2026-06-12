@@ -42,8 +42,12 @@ h3 { font-size: var(--text-lg); }
 h1:first-child, h2:first-child { margin-top: 0; }
 
 /* ---- Layout ------------------------------------------------------------ */
-.wrapper { min-height: 100vh; display: flex; flex-direction: column; }
-.wrapper > section { flex: 1; }
+/* The page is exactly as tall as its content; the footer follows the last
+   section rather than being stretched to the viewport bottom. On very tall
+   screens (4K) that avoids a large empty gap opening up above the footer when
+   the page's content is short. */
+.wrapper { display: flex; flex-direction: column; }
+.wrapper > section { flex: 0 0 auto; }
 
 .container {
   width: 100%;
