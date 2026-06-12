@@ -414,6 +414,10 @@ body { overflow-x: clip; }
 
 /* ---- diamond nodes at section corners ----------------------------------- */
 .z-sec { position: relative; }
+/* inset a section's content off the page tick-rails (mirrors the footer); the
+   rails are hidden on mobile, so drop the inset there too. */
+.z-inset { padding-inline: 1.5rem; }
+@media (max-width: 720px) { .z-inset { padding-inline: 0; } }
 .znode {
   position: absolute; z-index: 9; width: 6px; height: 6px;
   transform: rotate(45deg); border: 1px solid var(--rail);
