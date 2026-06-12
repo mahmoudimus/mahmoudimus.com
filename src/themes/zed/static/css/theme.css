@@ -42,10 +42,9 @@ h3 { font-size: var(--text-lg); }
 h1:first-child, h2:first-child { margin-top: 0; }
 
 /* ---- Layout ------------------------------------------------------------ */
-/* The page is exactly as tall as its content; the footer follows the last
-   section rather than being stretched to the viewport bottom. On very tall
-   screens (4K) that avoids a large empty gap opening up above the footer when
-   the page's content is short. */
+/* Content-height wrapper: the endless footer (a sibling region after .wrapper —
+   see footer.html) handles anchoring the footer to the bottom of the viewport,
+   so the content area itself just sizes to its content. */
 .wrapper { display: flex; flex-direction: column; }
 .wrapper > section { flex: 0 0 auto; }
 
@@ -236,11 +235,19 @@ h1:first-child, h2:first-child { margin-top: 0; }
 /* noise texture + white/14 tick rails + serif column heads + divided link
    columns + a giant outlined wordmark on a downward-fading scanline pattern,
    cropped by the bottom edge — all lifted from zed's footer markup. */
-.site-footer {
-  position: relative; overflow: clip;
+/* endless footer: a tall reveal region; the sticky .ef-inner panel pins to fill the
+   viewport as the page content scrolls up past it. No overflow on the region itself
+   (overflow:clip/hidden/auto on a sticky ancestor breaks the sticky). */
+.site-footer.endless { position: relative; height: 200vh; color: #e3e4e7; }
+@media (max-width: 720px) { .site-footer.endless { height: 130vh; } }
+.ef-inner {
+  position: sticky; top: 0;
+  height: 100vh; height: 100svh;
+  display: flex; flex-direction: column; justify-content: space-between;
+  overflow: clip; isolation: isolate;
+  padding-top: clamp(2rem, 7vh, 5rem);
   border-top: 1px solid var(--rail);
-  background: var(--accent); color: #e3e4e7;
-  font-size: var(--text-sm); margin-top: 0; padding: 0;
+  background: var(--accent); color: #e3e4e7; font-size: var(--text-sm);
 }
 .site-footer .noise {
   position: absolute; inset: 0; pointer-events: none;
@@ -298,9 +305,8 @@ h1:first-child, h2:first-child { margin-top: 0; }
 
 /* outlined wordmark over fading scanlines + hatch, bleeding off the bottom */
 .footer-mark {
-  position: relative; display: flex; justify-content: center;
-  border-top: 1px solid rgba(255, 255, 255, .1);
-  margin: .7rem 0 -1.1rem; padding: .8rem 0 0;
+  position: relative; display: flex; justify-content: center; align-items: flex-end;
+  margin: 0; padding: 0; overflow: clip;
 }
 .footer-mark::before {
   content: ""; position: absolute; inset: 0;
@@ -319,10 +325,28 @@ h1:first-child, h2:first-child { margin-top: 0; }
 }
 .footer-mark span {
   position: relative; font-family: var(--font-serif);
-  font-size: clamp(1.8rem, 5vw, 3.25rem); line-height: 1; letter-spacing: -.02em;
-  color: rgba(255, 255, 255, .03);
-  -webkit-text-stroke: 1px rgba(255, 255, 255, .22);
-  opacity: .8; user-select: none; white-space: nowrap;
+  font-size: clamp(2.5rem, 16vw, 14rem); line-height: .92; letter-spacing: -.03em;
+  color: rgba(255, 255, 255, .035);
+  -webkit-text-stroke: 1.5px rgba(255, 255, 255, .26);
+  margin-bottom: -.06em; /* slight crop off the bottom edge */
+  opacity: .9; user-select: none; white-space: nowrap;
+}
+
+/* subtle scroll-linked reveal of the wordmark — progressive enhancement only;
+   without scroll-driven timelines the wordmark is simply shown (static reveal). */
+@supports (animation-timeline: view()) {
+  .ef-inner .footer-mark span {
+    animation: ef-rise linear both;
+    animation-timeline: view();
+    animation-range: entry 0% entry 100%;
+  }
+  @keyframes ef-rise {
+    from { opacity: .12; transform: translateY(38px); }
+    to   { opacity: .9;  transform: none; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .ef-inner .footer-mark span { animation: none; opacity: .9; transform: none; }
+  }
 }
 
 /* ---- Responsive -------------------------------------------------------- */
