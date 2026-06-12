@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% import "_macros.html" as m with context %}
 {% block title %}{{ article.title }} · {{ SITENAME }}{% endblock %}
 
 {% block content %}
@@ -9,6 +10,14 @@
       <div class="post-date">{{ article.date.strftime('%B %d, %Y') }}</div>
       {% endif %}
       <h1>{{ article.title }}</h1>
+      {% if article.link %}
+      <p class="article-source">
+        <a class="bm-source" href="{{ article.link }}" rel="noopener" target="_blank">
+          {{ m.avatar(article, 32) }} <span>Source: {{ article.link | domain }} &#8599;</span>
+        </a>
+        {% if article.via %}<a class="bm-via" href="{{ article.via }}" rel="noopener" target="_blank">via {{ article.via | domain }}</a>{% endif %}
+      </p>
+      {% endif %}
     </header>
 
     <div class="article-body">
