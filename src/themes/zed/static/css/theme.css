@@ -545,9 +545,11 @@ body.drawer-open .mobile-drawer { transform: translateY(0); }
 }
 .sidebar, .post-main { min-width: 0; }
 .post-row, .row-title { min-width: 0; }
-/* posts on the left, categories sidebar on the right */
-.post-main { grid-column: 1; }
-.sidebar { position: sticky; top: 84px; grid-column: 2; }
+/* posts on the left, categories sidebar on the right. grid-row:1 keeps both in
+   the same row — without it, sparse auto-placement bumps post-main (col 1, but
+   later in source than the col-2 sidebar) down into row 2, leaving a big gap. */
+.post-main { grid-column: 1; grid-row: 1; }
+.sidebar { position: sticky; top: 84px; grid-column: 2; grid-row: 1; }
 .sidebar h3 {
   font-family: var(--font-mono); font-size: var(--text-xs); font-weight: 400;
   text-transform: uppercase; letter-spacing: .14em; color: var(--text-faint);
@@ -623,9 +625,9 @@ body.drawer-open .mobile-drawer { transform: translateY(0); }
 
 @media (max-width: 720px) {
   .blog-layout { grid-template-columns: minmax(0, 1fr); gap: 1.5rem; }
-  /* single column on mobile: undo the desktop column placement so the category
-     nav stacks above the posts (source order) instead of in a 2nd column. */
-  .sidebar, .post-main { grid-column: auto; }
+  /* single column on mobile: undo the desktop row/column placement so the
+     category nav stacks above the posts (source order) instead of overlapping. */
+  .sidebar, .post-main { grid-column: auto; grid-row: auto; }
   .sidebar { position: static; }
 
   /* zed.dev structured category nav: one horizontal scroll row of equal cells
