@@ -515,7 +515,7 @@ body.drawer-open .mobile-drawer { transform: translateY(0); }
   background: var(--surface-2); color: var(--text); text-decoration: none;
 }
 .mobile-drawer .i-chevron {
-  width: 18px; height: 18px; margin-left: auto; color: var(--text-faint);
+  flex: none; width: 18px; height: 18px; margin-left: auto; color: var(--text-faint);
 }
 .mobile-drawer .drawer-sep hr {
   border: 0; border-top: 1px solid var(--border); margin: .4rem .25rem;
@@ -737,7 +737,7 @@ body.drawer-open .mobile-drawer { transform: translateY(0); }
   border-color: var(--border-strong); background: var(--surface-2);
   color: var(--text); text-decoration: none;
 }
-.btn-ghost .i-chevron { width: 16px; height: 16px; color: var(--text-faint); }
+.btn-ghost .i-chevron { flex: none; width: 16px; height: 16px; color: var(--text-faint); }
 @media (min-width: 721px) {
   .blog-teaser {
     flex-direction: row; align-items: center; justify-content: space-between;
