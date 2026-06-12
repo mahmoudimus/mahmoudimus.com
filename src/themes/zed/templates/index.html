@@ -16,8 +16,8 @@
         <h1>#{{ tag }}</h1>
         <p>Posts tagged <strong>{{ tag }}</strong>.</p>
       {% else %}
-        <h1>{{ SITENAME }}</h1>
-        <p>Notes on reverse engineering, systems, and writing fast code.</p>
+        <h1>{{ INDEX_TITLE or SITENAME }}</h1>
+        {% if INDEX_TAGLINE %}<p>{{ INDEX_TAGLINE }}</p>{% endif %}
       {% endif %}
     </div>
   </div>

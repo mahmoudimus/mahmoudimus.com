@@ -102,6 +102,9 @@ class PelicanSettings:
         default_factory=lambda: ["index", "tags", "categories", "authors", "archives"]
     )
     SECTIONS: list[tuple[str, str]] = field(default_factory=lambda: [("blog", "blog")])
+    # Per-site index hero (zed theme); falls back to SITENAME / no tagline.
+    INDEX_TITLE: str = ""
+    INDEX_TAGLINE: str = ""
     STATIC_PATHS: list[str] = field(default_factory=lambda: ["images"])
     EXTRA_PATH_METADATA: dict[str, dict[str, str]] = field(default_factory=dict)
     READERS: dict[str, None] = field(default_factory=lambda: {"html": None})
@@ -164,6 +167,8 @@ WeblogSettings = PelicanSettings(
         ("Tags", "tags"),
     ],
     DIRECT_TEMPLATES=["index", "tags", "archives"],
+    INDEX_TITLE="Hacker Moleskine",
+    INDEX_TAGLINE="Notes on reverse engineering, systems, and writing fast code.",
 )
 
 TILSettings = PelicanSettings(
@@ -179,6 +184,8 @@ TILSettings = PelicanSettings(
         ("Tags", "tags"),
     ],
     DIRECT_TEMPLATES=["index", "tags", "archives"],
+    INDEX_TITLE="Today I Learned",
+    INDEX_TAGLINE="Small discoveries, written down before I forget them.",
 )
 
 WellKnownSettings = PelicanSettings(
