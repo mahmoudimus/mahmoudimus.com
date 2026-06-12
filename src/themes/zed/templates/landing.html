@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% import "_macros.html" as m with context %}
+{% block title %}{{ page.title }}{% endblock %}
+{% block body_attrs %} class="page-landing"{% endblock %}
+
+{% block content %}
+<div class="container">
+  <div class="z-sec">
+    {{ m.znodes() }}
+    <div class="index-hero">
+      <div class="hero-hatch" aria-hidden="true"></div>
+      <h1>{{ page.title }}</h1>
+      {% if page.subtitle %}<p>{{ page.subtitle }}</p>{% endif %}
+    </div>
+  </div>
+
+  <div class="divider-hatch" aria-hidden="true"></div>
+
+  <div class="z-sec">
+    {{ m.znodes() }}
+    <div class="article-body page-body landing-body">
+      {{ page.content }}
+    </div>
+  </div>
+</div>
+{% endblock %}

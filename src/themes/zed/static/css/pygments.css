@@ -1,0 +1,61 @@
+/* ============================================================================
+   zed theme — Pygments syntax highlighting (adapts to light/dark)
+   ========================================================================== */
+:root, :root[data-theme="light"] {
+  --syn-comment: #8a8474;
+  --syn-keyword: #1348dc;
+  --syn-string:  #1f7a4d;
+  --syn-number:  #b3530b;
+  --syn-func:    #6b3fb0;
+  --syn-class:   #b3530b;
+  --syn-op:      #5c574a;
+  --syn-builtin: #0f6c8f;
+  --syn-var:     #25241f;
+}
+:root[data-theme="dark"] {
+  --syn-comment: #7a7565;
+  --syn-keyword: #7da7ff;
+  --syn-string:  #7bf1a8;
+  --syn-number:  #f9b06a;
+  --syn-func:    #c8a6ff;
+  --syn-class:   #f9b06a;
+  --syn-op:      #a8a290;
+  --syn-builtin: #6fd0e8;
+  --syn-var:     #e9e7df;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --syn-comment: #7a7565; --syn-keyword: #7da7ff; --syn-string: #7bf1a8;
+    --syn-number: #f9b06a; --syn-func: #c8a6ff; --syn-class: #f9b06a;
+    --syn-op: #a8a290; --syn-builtin: #6fd0e8; --syn-var: #e9e7df;
+  }
+}
+
+.highlight { color: var(--text); }
+.highlight .hll { background-color: var(--surface-2); }
+.highlight .c, .highlight .ch, .highlight .cm, .highlight .c1, .highlight .cs,
+.highlight .cp, .highlight .cpf { color: var(--syn-comment); font-style: italic; }
+.highlight .k, .highlight .kc, .highlight .kd, .highlight .kn, .highlight .kp,
+.highlight .kr, .highlight .kt { color: var(--syn-keyword); }
+.highlight .o, .highlight .ow { color: var(--syn-op); }
+.highlight .p { color: var(--syn-op); }
+.highlight .s, .highlight .sa, .highlight .sb, .highlight .sc, .highlight .dl,
+.highlight .sd, .highlight .s2, .highlight .se, .highlight .sh, .highlight .si,
+.highlight .sx, .highlight .sr, .highlight .s1, .highlight .ss { color: var(--syn-string); }
+.highlight .m, .highlight .mb, .highlight .mf, .highlight .mh, .highlight .mi,
+.highlight .il, .highlight .mo { color: var(--syn-number); }
+.highlight .na, .highlight .nf, .highlight .fm { color: var(--syn-func); }
+.highlight .nc, .highlight .nn, .highlight .no, .highlight .nd { color: var(--syn-class); }
+.highlight .nb, .highlight .bp { color: var(--syn-builtin); }
+.highlight .nv, .highlight .vc, .highlight .vg, .highlight .vi,
+.highlight .n, .highlight .nl, .highlight .nx, .highlight .py { color: var(--syn-var); }
+.highlight .nt { color: var(--syn-keyword); }
+.highlight .gd { color: #c0392b; }
+.highlight .gi { color: var(--syn-string); }
+.highlight .gh, .highlight .gu { color: var(--syn-keyword); font-weight: 700; }
+.highlight .gs { font-weight: 700; }
+.highlight .ge { font-style: italic; }
+.highlight .err { color: #e2504a; }
+/* line numbers */
+.highlight .linenos, .highlight .lineno { color: var(--text-faint);
+  -webkit-user-select: none; user-select: none; }

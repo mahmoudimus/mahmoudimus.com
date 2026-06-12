@@ -1,0 +1,130 @@
+/* ============================================================================
+   zed theme — design tokens
+   Fonts + color/space/type scale ported from zed.dev's design system.
+   Fonts: agrandir (display), iA Writer Quattro (body), IBM Plex Serif /
+   ZedSeason (serif), Lilex (mono). Self-hosted woff2 in ../fonts/.
+   ========================================================================== */
+
+/* ---- Fonts -------------------------------------------------------------- */
+@font-face { font-family: agrandir; font-weight: 200; font-style: normal;
+  font-display: swap; src: url("../fonts/agrandir-thin.woff2") format("woff2"); }
+@font-face { font-family: agrandir; font-weight: 200; font-style: italic;
+  font-display: swap; src: url("../fonts/agrandir-thin-italic.woff2") format("woff2"); }
+@font-face { font-family: agrandir; font-weight: 400; font-style: normal;
+  font-display: swap; src: url("../fonts/agrandir-regular.woff2") format("woff2"); }
+@font-face { font-family: agrandir; font-weight: 400; font-style: italic;
+  font-display: swap; src: url("../fonts/agrandir-italic.woff2") format("woff2"); }
+@font-face { font-family: agrandir; font-weight: 700; font-style: normal;
+  font-display: swap; src: url("../fonts/agrandir-bold.woff2") format("woff2"); }
+@font-face { font-family: agrandir; font-weight: 700; font-style: italic;
+  font-display: swap; src: url("../fonts/agrandir-bold-italic.woff2") format("woff2"); }
+
+@font-face { font-family: writer; font-weight: 400; font-style: normal;
+  font-display: swap; src: url("../fonts/writer-regular.woff2") format("woff2"); }
+@font-face { font-family: writer; font-weight: 400; font-style: italic;
+  font-display: swap; src: url("../fonts/writer-italic.woff2") format("woff2"); }
+@font-face { font-family: writer; font-weight: 700; font-style: normal;
+  font-display: swap; src: url("../fonts/writer-bold.woff2") format("woff2"); }
+@font-face { font-family: writer; font-weight: 700; font-style: italic;
+  font-display: swap; src: url("../fonts/writer-bold-italic.woff2") format("woff2"); }
+
+@font-face { font-family: "zed-season"; font-weight: 400 700; font-style: normal;
+  font-display: swap; src: url("../fonts/zed-season.woff2") format("woff2"); }
+@font-face { font-family: "plex-serif"; font-weight: 300 700; font-style: normal;
+  font-display: swap; src: url("../fonts/plex-serif.woff2") format("woff2"); }
+@font-face { font-family: "plex-sans"; font-weight: 400; font-style: normal;
+  font-display: swap; src: url("../fonts/plex-sans.woff2") format("woff2"); }
+@font-face { font-family: lilex; font-weight: 400; font-style: normal;
+  font-display: swap; src: url("../fonts/lilex.woff2") format("woff2"); }
+
+/* ---- Tokens (shared) ---------------------------------------------------- */
+:root {
+  --font-display: agrandir, "Helvetica Neue", Arial, sans-serif;
+  --font-body: writer, ui-monospace, "SF Mono", Menlo, monospace;
+  --font-serif: "zed-season", "plex-serif", Georgia, serif;
+  --font-sans: "plex-sans", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: lilex, ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+
+  /* type scale */
+  --text-xs: .78rem;
+  --text-sm: .875rem;
+  --text-base: 1.0625rem;
+  --text-lg: 1.25rem;
+  --text-xl: 1.6rem;
+  --text-2xl: 2.1rem;
+  --text-3xl: 2.9rem;
+  --text-hero: clamp(2.6rem, 6vw, 4.4rem);
+  --leading-body: 1.65;
+  --leading-tight: 1.1;
+
+  /* rhythm */
+  --content-width: 740px;
+  --wide-width: 1080px;
+  --space: 1rem;
+  --radius: 10px;
+  --radius-lg: 16px;
+
+  /* brand accents (mode-independent) */
+  --accent: #1348dc;            /* zed accent-blue */
+  --accent-2: #05df72;          /* zed green-400  */
+  --amber: #f99c00;             /* zed amber-500  */
+
+  color-scheme: light dark;
+}
+
+/* ---- Light (zed "cream") ----------------------------------------------- */
+:root,
+:root[data-theme="light"] {
+  --bg:        #f5f4f3;   /* cream-50 */
+  --bg-2:      #ffffff;
+  --surface:   #ffffff;
+  --surface-2: #f0eeea;
+  --text:      #25241f;   /* warm near-black */
+  --text-muted:#5c574a;   /* cream-700 */
+  --text-faint:#8a8474;
+  --border:    rgba(40, 36, 26, .12);
+  --border-strong: rgba(40, 36, 26, .22);
+  --link:      #1348dc;
+  --link-hover:#0f37a8;
+  --code-bg:   #f0eeea;
+  --selection: rgba(19, 72, 220, .16);
+  --shadow:    0 1px 2px rgba(40,36,26,.06), 0 8px 24px rgba(40,36,26,.06);
+}
+
+/* ---- Dark (zed warm charcoal) ------------------------------------------ */
+:root[data-theme="dark"] {
+  --bg:        #131210;   /* warm near-black */
+  --bg-2:      #1a1916;
+  --surface:   #1c1b17;
+  --surface-2: #232118;
+  --text:      #e9e7df;   /* warm off-white */
+  --text-muted:#a8a290;
+  --text-faint:#7a7565;
+  --border:    rgba(255, 250, 235, .10);
+  --border-strong: rgba(255, 250, 235, .20);
+  --link:      #7da7ff;   /* brighter blue for dark */
+  --link-hover:#a9c4ff;
+  --code-bg:   #1c1b17;
+  --selection: rgba(125, 167, 255, .22);
+  --shadow:    0 1px 2px rgba(0,0,0,.4), 0 12px 32px rgba(0,0,0,.45);
+}
+
+@media (prefers-color-scheme: dark) {
+  /* default to dark when the user hasn't explicitly chosen light */
+  :root:not([data-theme="light"]) {
+    --bg:        #131210;
+    --bg-2:      #1a1916;
+    --surface:   #1c1b17;
+    --surface-2: #232118;
+    --text:      #e9e7df;
+    --text-muted:#a8a290;
+    --text-faint:#7a7565;
+    --border:    rgba(255, 250, 235, .10);
+    --border-strong: rgba(255, 250, 235, .20);
+    --link:      #7da7ff;
+    --link-hover:#a9c4ff;
+    --code-bg:   #1c1b17;
+    --selection: rgba(125, 167, 255, .22);
+    --shadow:    0 1px 2px rgba(0,0,0,.4), 0 12px 32px rgba(0,0,0,.45);
+  }
+}
