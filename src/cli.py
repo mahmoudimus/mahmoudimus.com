@@ -107,6 +107,11 @@ class PelicanSettings:
     INDEX_TAGLINE: str = ""
     # Show the featured-cards band on the index (zed theme).
     INDEX_CARDS: bool = True
+    # Landing-only "latest from the blog" teaser band (heading + blurb + View
+    # Blog button) above the cards; also suppresses the full listing on that page.
+    INDEX_BLOG_TEASER: bool = False
+    INDEX_BLOG_TEASER_TITLE: str = ""
+    INDEX_BLOG_TEASER_BODY: str = ""
     STATIC_PATHS: list[str] = field(default_factory=lambda: ["images"])
     EXTRA_PATH_METADATA: dict[str, dict[str, str]] = field(default_factory=dict)
     READERS: dict[str, None] = field(default_factory=lambda: {"html": None})
@@ -118,6 +123,11 @@ class PelicanSettings:
     # Subdirectory under OUTPUT_PATH for this specific site (e.g., "blog", "til").
     # The landing site should leave this as an empty string.
     OUTPUT_SUBDIR: str = ""
+    # Per-site Pelican overrides applied verbatim (merged in get_instance). Escape
+    # hatch for settings not modeled as dataclass fields — e.g. the landing zeroes
+    # TAG/CATEGORY/AUTHOR_SAVE_AS so reading the blog posts for its teaser cards
+    # doesn't emit a duplicate taxonomy at the site root.
+    EXTRA_OVERRIDES: dict = field(default_factory=dict)
 
     # Computed properties
     @property
@@ -147,13 +157,31 @@ class PelicanSettings:
 LandingPageSettings = PelicanSettings(
     PATH=str(cwd / "content"),
     PAGE_PATHS=["www"],
-    ARTICLE_EXCLUDES=["blog", "extra", "media", "til"],
+    # Read the blog posts so the landing can tease the latest as cards, but don't
+    # re-emit the post pages (they live under /blog) — ARTICLE_SAVE_AS="". Card
+    # links resolve into the real /blog via ARTICLE_URL's "blog/" prefix.
+    ARTICLE_PATHS=["blog"],
+    ARTICLE_EXCLUDES=["extra", "media", "til"],
+    ARTICLE_SAVE_AS="",
+    ARTICLE_URL="blog/{date:%Y}/{date:%m}/{slug}/",
+    DEFAULT_PAGINATION=False,
     DIRECT_TEMPLATES=["index"],
     SECTIONS=[("Blog", "blog"), ("TIL", "til")],
     STATIC_PATHS=["media", "extra"],
     EXTRA_PATH_METADATA={"extra/favicon.ico": {"path": "favicon.ico"}},
     READERS={"html": None},
     TEMPLATE_PAGES={},
+    INDEX_BLOG_TEASER=True,
+    # The landing reads the blog posts only to tease the three newest as cards;
+    # don't emit their per-post or taxonomy pages at the site root.
+    EXTRA_OVERRIDES={
+        "TAG_SAVE_AS": "",
+        "CATEGORY_SAVE_AS": "",
+        "AUTHOR_SAVE_AS": "",
+        "ARTICLE_LANG_SAVE_AS": "",
+        "DRAFT_SAVE_AS": "",
+        "DRAFT_LANG_SAVE_AS": "",
+    },
 )
 
 WeblogSettings = PelicanSettings(
@@ -225,6 +253,7 @@ def get_instance(args, settings: PelicanSettings):
     )
 
     overrides = site_settings.copy()
+    overrides.update(overrides.pop("EXTRA_OVERRIDES", None) or {})
     overrides.update(cli_overrides)
     overrides["OUTPUT_PATH"] = computed_output
 

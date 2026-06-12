@@ -57,8 +57,13 @@ h1:first-child, h2:first-child { margin-top: 0; }
 .site-header {
   position: sticky; top: 0; z-index: 50;
   background: color-mix(in srgb, var(--bg) 86%, transparent);
+  -webkit-backdrop-filter: saturate(140%) blur(10px);
   backdrop-filter: saturate(140%) blur(10px);
   border-bottom: 1px solid var(--border);
+  /* Pin the blurred bar to its own GPU layer. Without this the backdrop blur
+     is re-rasterized on every scroll frame, and again when the .wrapper
+     transform settles on drawer close — both surface as a one-frame flicker. */
+  transform: translateZ(0);
 }
 .site-header .container {
   display: flex; align-items: center; gap: 1.25rem;
@@ -500,17 +505,28 @@ body.drawer-open .mobile-drawer { transform: translateY(0); }
   background: var(--border-strong); margin: .6rem auto .9rem;
 }
 .mobile-drawer ul { list-style: none; margin: 0; padding: 0; }
+/* zed.dev drawer rows: label left, chevron pushed right, hover fill. */
 .mobile-drawer a {
-  display: block; padding: .85rem .25rem;
-  font-family: var(--font-sans); font-size: var(--text-base);
-  color: var(--text); border-bottom: 1px solid var(--border);
+  display: flex; align-items: center; gap: .75rem;
+  padding: .7rem .75rem; border-radius: 8px;
+  font-family: var(--font-sans); font-size: var(--text-base); color: var(--text);
 }
-.mobile-drawer li:last-child a { border-bottom: none; }
-.mobile-drawer a:hover { color: var(--link); text-decoration: none; }
+.mobile-drawer a:hover, .mobile-drawer a:focus-visible {
+  background: var(--surface-2); color: var(--text); text-decoration: none;
+}
+.mobile-drawer .i-chevron {
+  width: 18px; height: 18px; margin-left: auto; color: var(--text-faint);
+}
+.mobile-drawer .drawer-sep hr {
+  border: 0; border-top: 1px solid var(--border); margin: .4rem .25rem;
+}
 
 @media (max-width: 720px) {
   .site-header .nav { display: none; }
   .menu-toggle { display: inline-grid; }
+  /* .nav carries the margin-left:auto spacer; once it's hidden the brand must
+     take its place, or the toggles collapse against the name. */
+  .site-header .brand { margin-right: auto; }
 }
 
 /* ============================================================================
@@ -602,7 +618,36 @@ body.drawer-open .mobile-drawer { transform: translateY(0); }
 @media (max-width: 720px) {
   .blog-layout { grid-template-columns: minmax(0, 1fr); gap: 1.5rem; }
   .sidebar { position: static; }
-  .sidebar ul { flex-flow: row wrap; gap: .5rem .9rem; }
+
+  /* zed.dev structured category nav: one horizontal scroll row of equal cells
+     with bottom borders + a right-edge fade hinting more scroll into view. */
+  .sidebar h3 {
+    text-align: center; padding: 0 0 .6rem; margin: 0;
+    border-bottom: 1px solid var(--border);
+  }
+  .sidebar ul {
+    flex-direction: row; flex-wrap: nowrap; overflow-x: auto;
+    scrollbar-width: none;
+    -webkit-mask-image: linear-gradient(to right, #000 80%, transparent);
+            mask-image: linear-gradient(to right, #000 80%, transparent);
+  }
+  .sidebar ul::-webkit-scrollbar { display: none; }
+  .sidebar li { flex: 1 0 auto; }
+  .sidebar a {
+    text-align: center; white-space: nowrap;
+    border-left: 0; border-bottom: 1px solid var(--border);
+  }
+  .sidebar a.active {
+    border-left-color: transparent;
+    border-bottom-color: color-mix(in srgb, var(--accent) 50%, transparent);
+  }
+
+  /* article rows: stack title over meta on phones; drop the dotted leader. */
+  .post-row { flex-direction: column; align-items: flex-start; gap: .3rem; }
+  .row-head { flex: 0 0 auto; max-width: 100%; }
+  .row-title { white-space: normal; overflow: visible; text-overflow: clip; }
+  .row-leader { display: none; }
+  .row-meta { flex: none; }
 }
 
 /* ============================================================================
@@ -669,3 +714,32 @@ body.drawer-open .mobile-drawer { transform: translateY(0); }
 }
 
 @media (max-width: 860px) { .feature-grid { grid-template-columns: 1fr; } }
+
+/* ---- landing "latest from the blog" teaser band -------------------------- */
+.blog-teaser {
+  display: flex; flex-direction: column; gap: 1rem; align-items: flex-start;
+  padding: 1.6rem 0 .4rem;
+}
+.blog-teaser hgroup { max-width: 34rem; }
+.blog-teaser h2 {
+  font-family: var(--font-serif); font-weight: 400; font-size: 1.5rem;
+  line-height: 1.2; letter-spacing: -0.01em; color: var(--link); margin: 0 0 .4rem;
+}
+.blog-teaser p { color: var(--text-muted); margin: 0; line-height: 1.5; }
+.btn-ghost {
+  display: inline-flex; align-items: center; gap: .15rem; flex: none;
+  padding: .5rem .65rem .5rem .85rem; border-radius: 8px;
+  border: 1px solid var(--border); background: var(--surface); color: var(--text);
+  font-family: var(--font-sans); font-size: var(--text-sm); white-space: nowrap;
+  transition: color .15s, border-color .15s, background .15s;
+}
+.btn-ghost:hover {
+  border-color: var(--border-strong); background: var(--surface-2);
+  color: var(--text); text-decoration: none;
+}
+.btn-ghost .i-chevron { width: 16px; height: 16px; color: var(--text-faint); }
+@media (min-width: 721px) {
+  .blog-teaser {
+    flex-direction: row; align-items: center; justify-content: space-between;
+  }
+}
