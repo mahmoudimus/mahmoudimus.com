@@ -10,19 +10,21 @@
       <p class="f-line f-brand-line">{{ AUTHOR }} &copy; {{ CURRENT_YEAR }}
         <span class="f-dim">&middot; built with <a href="https://getpelican.com/" target="_blank" rel="noopener">Pelican</a>
         &middot; <a href="https://github.com/mahmoudimus/mahmoudimus.com" target="_blank" rel="noopener">source</a></span></p>
-      <nav class="f-line" aria-label="Site links">
-        <span class="f-label">Site</span>
-        <a href="{{ OVERRIDDEN_SITEURL or SITEURL }}/">Home</a>
-        {% for section in SECTIONS %}<a href="{{ SITEURL }}/{{ section[1] }}">{{ section[0] }}</a>{% endfor %}
-        {% if FEED_RSS %}<a href="{{ OVERRIDDEN_SITEURL or SITEURL }}/{{ FEED_RSS }}">RSS</a>{% endif %}
-      </nav>
-      <nav class="f-line" aria-label="Elsewhere">
-        <span class="f-label">Elsewhere</span>
-        {% if GITHUB_URL %}<a href="{{ GITHUB_URL }}" target="_blank" rel="me noopener">GitHub<span class="ext">&#8599;</span></a>{% endif %}
-        {% if TWITTER_USERNAME %}<a href="https://x.com/{{ TWITTER_USERNAME }}" target="_blank" rel="me noopener">X<span class="ext">&#8599;</span></a>{% endif %}
-        {% if LINKEDIN_URL %}<a href="{{ LINKEDIN_URL }}" target="_blank" rel="me noopener">LinkedIn<span class="ext">&#8599;</span></a>{% endif %}
-        {% if MAIL_USERNAME and MAIL_HOST %}<a href="mailto:{{ MAIL_USERNAME }}@{{ MAIL_HOST }}">Email</a>{% endif %}
-      </nav>
+      <div class="f-cols">
+        <nav class="f-line" aria-label="Site links">
+          <span class="f-label">Site</span>
+          <a href="{{ OVERRIDDEN_SITEURL or SITEURL }}/">Home</a>
+          {% for section in SECTIONS %}<a href="{{ SITEURL }}/{{ section[1] }}">{{ section[0] }}</a>{% endfor %}
+          {% if FEED_RSS %}<a href="{{ OVERRIDDEN_SITEURL or SITEURL }}/{{ FEED_RSS }}">RSS</a>{% endif %}
+        </nav>
+        <nav class="f-line" aria-label="Elsewhere">
+          <span class="f-label">Elsewhere</span>
+          {% if GITHUB_URL %}<a href="{{ GITHUB_URL }}" target="_blank" rel="me noopener">GitHub<span class="ext">&#8599;</span></a>{% endif %}
+          {% if TWITTER_USERNAME %}<a href="https://x.com/{{ TWITTER_USERNAME }}" target="_blank" rel="me noopener">X<span class="ext">&#8599;</span></a>{% endif %}
+          {% if LINKEDIN_URL %}<a href="{{ LINKEDIN_URL }}" target="_blank" rel="me noopener">LinkedIn<span class="ext">&#8599;</span></a>{% endif %}
+          {% if MAIL_USERNAME and MAIL_HOST %}<a href="mailto:{{ MAIL_USERNAME }}@{{ MAIL_HOST }}">Email</a>{% endif %}
+        </nav>
+      </div>
     </div>
 
     <div class="footer-mark" aria-hidden="true"><span>mahmoudimus</span></div>
