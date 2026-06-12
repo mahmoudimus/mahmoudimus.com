@@ -27,24 +27,7 @@
   {% if articles and on_first and not tag and INDEX_CARDS %}
   <div class="z-sec">
     {{ m.znodes() }}
-    <div class="feature-grid">
-      {% for article in articles[:3] %}
-        <a class="feature-card" href="{{ SITEURL }}/{{ article.url }}">
-          <span class="cover-wrap">{{ m.cover(article) }}</span>
-          <span class="card-body">
-            <span class="card-title">{{ article.title }}</span>
-            {% set blurb = article.excerpt or (article.summary | striptags) %}
-            {% if blurb %}<span class="card-excerpt">{{ blurb | truncate(96) }}</span>{% endif %}
-            <span class="card-meta">
-              {{ m.avatar(article, 40) }}
-              <span class="byline">{{ article.link | domain if article.link else article.author }}</span>
-              {% if loop.first %}<span class="row-chip blue">Newest</span>{% endif %}
-              <time class="date">{{ article.date.strftime('%b %d, %Y') }}</time>
-            </span>
-          </span>
-        </a>
-      {% endfor %}
-    </div>
+    {{ m.feature_cards(articles) }}
   </div>
 
   <div class="divider-hatch" aria-hidden="true"></div>

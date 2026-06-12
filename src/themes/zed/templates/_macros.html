@@ -9,6 +9,11 @@
   {%- endfor -%}
 {%- endmacro %}
 
+{# lucide chevron-right — trailing affordance on drawer rows and the View Blog button. #}
+{% macro chevron() -%}
+<svg class="i-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg>
+{%- endmacro %}
+
 {# zed's rotated-square "node" markers for the four corners of a section. #}
 {% macro znodes() -%}
   <i class="znode tl" aria-hidden="true"></i><i class="znode tr" aria-hidden="true"></i><i class="znode bl" aria-hidden="true"></i><i class="znode br" aria-hidden="true"></i>
@@ -61,4 +66,27 @@
             opacity="{{ 0.5 + (i % 4) * 0.12 }}"/>
     {%- endfor -%}
   </svg>
+{% endmacro %}
+
+{# Featured-cards band: the three newest posts as generated-cover cards. Shared
+   by the blog/TIL index and the landing teaser so they stay in sync. #}
+{% macro feature_cards(articles) %}
+  <div class="feature-grid">
+    {% for article in articles[:3] %}
+      <a class="feature-card" href="{{ SITEURL }}/{{ article.url }}">
+        <span class="cover-wrap">{{ cover(article) }}</span>
+        <span class="card-body">
+          <span class="card-title">{{ article.title }}</span>
+          {% set blurb = article.excerpt or (article.summary | striptags) %}
+          {% if blurb %}<span class="card-excerpt">{{ blurb | truncate(96) }}</span>{% endif %}
+          <span class="card-meta">
+            {{ avatar(article, 40) }}
+            <span class="byline">{{ article.link | domain if article.link else article.author }}</span>
+            {% if loop.first %}<span class="row-chip blue">Newest</span>{% endif %}
+            <time class="date">{{ article.date.strftime('%b %d, %Y') }}</time>
+          </span>
+        </span>
+      </a>
+    {% endfor %}
+  </div>
 {% endmacro %}

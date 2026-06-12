@@ -22,5 +22,23 @@
       {{ page.content }}
     </div>
   </div>
+
+  {# ---- latest from the blog: heading + blurb + View Blog, then the three
+         newest posts as cards (sourced from the /blog articles). ---- #}
+  {% if INDEX_BLOG_TEASER and articles %}
+  <div class="divider-hatch" aria-hidden="true"></div>
+
+  <div class="z-sec">
+    {{ m.znodes() }}
+    <div class="blog-teaser">
+      <hgroup>
+        <h2>{{ INDEX_BLOG_TEASER_TITLE or 'The latest from the blog' }}</h2>
+        <p>{{ INDEX_BLOG_TEASER_BODY or 'Notes on reverse engineering, systems, and writing fast code — fresh from the blog.' }}</p>
+      </hgroup>
+      <a class="btn-ghost" href="{{ SITEURL }}/blog">View Blog{{ m.chevron() }}</a>
+    </div>
+    {{ m.feature_cards(articles) }}
+  </div>
+  {% endif %}
 </div>
 {% endblock %}

@@ -70,9 +70,10 @@
     <nav class="mobile-drawer" id="mobile-drawer" aria-label="Mobile navigation">
       <span class="drawer-handle" aria-hidden="true"></span>
       <ul>
-        <li><a href="{{ OVERRIDDEN_SITEURL or SITEURL }}/">Home</a></li>
+        <li><a href="{{ OVERRIDDEN_SITEURL or SITEURL }}/">Home{{ fr.chevron() }}</a></li>
+        <li class="drawer-sep" aria-hidden="true"><hr></li>
         {% for section in SECTIONS %}
-        <li><a href="{{ SITEURL }}/{{ section[1] }}">{{ section[0] }}</a></li>
+        <li><a href="{{ SITEURL }}/{{ section[1] }}">{{ section[0] }}{{ fr.chevron() }}</a></li>
         {% endfor %}
       </ul>
     </nav>
