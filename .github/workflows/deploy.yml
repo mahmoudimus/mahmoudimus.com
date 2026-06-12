@@ -42,9 +42,18 @@ jobs:
 
       - name: Deploy static site to S3 bucket
         run: |
+          # Assets (CSS/JS/fonts/images) are cache-busted via ?v=<commit>, so
+          # they can be cached hard. HTML must revalidate every load, otherwise
+          # browsers serve stale markup (and stale asset URLs) for up to a day.
           aws s3 sync published ${{ vars.S3_BUCKET }}/ \
             --acl public-read \
-            --cache-control "max-age=86400" \
+            --cache-control "max-age=86400, public" \
             --exclude ".git/*" \
             --exclude ".gitignore" \
-            --exclude ".github/*"
+            --exclude ".github/*" \
+            --exclude "*.html"
+          aws s3 sync published ${{ vars.S3_BUCKET }}/ \
+            --acl public-read \
+            --cache-control "no-cache" \
+            --exclude "*" \
+            --include "*.html"
