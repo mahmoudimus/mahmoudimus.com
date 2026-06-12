@@ -2,6 +2,8 @@
 Title: mahmoudimus.com
 Slug: /
 Save_as: index.html
+Template: landing
+Subtitle: Entrepreneur & software engineer — fintech, payments, reverse engineering.
 +++
 
 Hi! I'm Mahmoud Abdelkader ([pronounced](media/misc/mahmoud-pronunciation.mp3) [mæħˈmuːd æbdəlkeɪdər](http://en.wikipedia.org/wiki/Wikipedia:IPA_for_Egyptian_Arabic)), but, online, I usually go by the nickname _mahmoudimus_.
