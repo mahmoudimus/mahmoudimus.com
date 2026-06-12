@@ -13,7 +13,9 @@ authors = [
     {name = "Mahmoud Abdelkader", email = "mabdelkader@gmail.com"}
 ]
 dependencies = [
-    "pelican",
+    # Pinned to match local: newer Pelican crashes building drafts
+    # (generate_drafts -> Article has no attribute 'category'); 4.11.0 is fine.
+    "pelican==4.11.0",
     "invoke",
     "jinja2",
     "pygments",
