@@ -254,9 +254,11 @@ h1:first-child, h2:first-child { margin-top: 0; }
     currentColor 0, currentColor 4px, transparent 4px, transparent 8px);
 }
 
-/* brand at the left end, link rows at the right end — mirrors the header */
+/* brand at the left end, link rows at the right end — mirrors the header.
+   The inline padding insets the text off the footer tick-rails so the "M"
+   and trailing links don't sit flush against the lines. */
 .footer-compact {
-  padding: 2.5rem 0 1.75rem;
+  padding: 2.5rem 1.5rem 1.75rem;
   display: flex; flex-wrap: wrap; justify-content: space-between;
   align-items: flex-start; gap: 1rem 3rem;
 }
