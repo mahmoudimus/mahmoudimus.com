@@ -101,3 +101,26 @@ def untagify(value: "str | HasHTML", preserve_linebreaks: bool = False) -> str:
         # Replace all whitespace (including newlines) with a single space
         trimmed = _ALL_WHITESPACE_RE.sub(" ", trimmed)
     return Markup(value).unescape()
+
+
+def domain(url: str) -> str:
+    """Bare registrable host of a URL: 'https://x.com/foo' -> 'x.com'.
+    Used to build favicon avatars for blogmark/link posts."""
+    from urllib.parse import urlparse
+
+    s = str(url or "").strip()
+    if not s:
+        return ""
+    if "://" not in s:
+        s = "http://" + s
+    host = (urlparse(s).netloc or "").split("@")[-1].split(":")[0].lower()
+    return re.sub(r"^www\.", "", host)
+
+
+def seedint(value: str) -> int:
+    """Stable 32-bit int from a string (deterministic across builds).
+    Used to derive a per-post hue/variant for generated cover art."""
+    h = 2166136261
+    for ch in str(value or ""):
+        h = ((h ^ ord(ch)) * 16777619) & 0xFFFFFFFF
+    return h
