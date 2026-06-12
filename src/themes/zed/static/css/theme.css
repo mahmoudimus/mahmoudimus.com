@@ -45,11 +45,10 @@ h1:first-child, h2:first-child { margin-top: 0; }
 /* Content-height wrapper: the endless footer (a sibling region after .wrapper —
    see footer.html) handles anchoring the footer to the bottom of the viewport,
    so the content area itself just sizes to its content. */
-/* opaque content layer (z-index:1) that covers the fixed footer (z-index:0)
-   until it scrolls up past it — Stripe's "endless footer" reveal. No negative
-   z-index anywhere: Safari/iOS hide position:fixed; z-index:-1 elements behind
-   the page background, which is what broke the reveal there. */
-.wrapper { position: relative; z-index: 1; background: var(--bg);
+/* opaque content layer (z-index:0 stacking context, above the z-index:-1 footer
+   region) that covers the fixed footer until it scrolls up past it. The opaque
+   background is what hides the footer until the reveal. */
+.wrapper { position: relative; z-index: 0; background: var(--bg);
   display: flex; flex-direction: column; }
 .wrapper > section { flex: 0 0 auto; }
 
@@ -243,13 +242,17 @@ h1:first-child, h2:first-child { margin-top: 0; }
 /* endless footer: a tall reveal region; the sticky .ef-inner panel pins to fill the
    viewport as the page content scrolls up past it. No overflow on the region itself
    (overflow:clip/hidden/auto on a sticky ancestor breaks the sticky). */
-.site-footer.endless { position: relative; height: 200vh; color: #e3e4e7; }
+/* Match stripe.dev exactly: the REGION carries z-index:-1 (a stacking context
+   behind the content); the fixed panel inside has NO z-index of its own and
+   inherits it. (z-index:-1 directly on a position:fixed element is what Safari
+   hides behind the page background.) */
+.site-footer.endless { position: relative; z-index: -1; height: 200vh; color: #e3e4e7; }
 @media (max-width: 720px) { .site-footer.endless { height: 130vh; } }
 /* the footer panel itself: fixed to the bottom of the viewport, behind the
    content (z-index:-1). The .endless region above gives ~200vh of scroll room
    so the content lifts off and reveals it (Stripe's mechanism). */
 .ef-inner {
-  position: fixed; left: 0; bottom: 0; width: 100%; z-index: 0;
+  position: fixed; left: 0; bottom: 0; width: 100%;
   height: 100vh; height: 100svh;
   display: flex; flex-direction: column; justify-content: space-between;
   overflow: clip; isolation: isolate;
