@@ -51,8 +51,24 @@
       <div class="post-main">
         <ul class="post-list">
           {% for article in (articles_page.object_list if articles_page else articles) %}
+          {% if article.link %}
+          {# blogmark: a link post — quote + commentary shown inline; title goes to
+             the on-site permalink, a separate Source link opens the external page. #}
+          <li class="blogmark">
+            <a class="bm-head" href="{{ SITEURL }}/{{ article.url }}">
+              {{ m.avatar(article, 36) }}
+              <span class="bm-title">{{ article.title }}</span>
+              <time class="date">{{ article.date.strftime('%b %d, %Y') }}</time>
+            </a>
+            <div class="bm-body">{{ article.content }}</div>
+            <div class="bm-foot">
+              <a class="bm-source" href="{{ article.link }}" rel="noopener" target="_blank">{{ article.link | domain }} &#8599;</a>
+              {% if article.via %}<a class="bm-via" href="{{ article.via }}" rel="noopener" target="_blank">via {{ article.via | domain }}</a>{% endif %}
+            </div>
+          </li>
+          {% else %}
           <li>
-            <a class="post-row{{ ' is-mark' if article.link }}" href="{{ SITEURL }}/{{ article.url }}">
+            <a class="post-row" href="{{ SITEURL }}/{{ article.url }}">
               <span class="row-head">
                 <span class="row-title">{{ article.title }}</span>
                 {{ m.avatar(article, 36) }}
@@ -60,11 +76,11 @@
               <span class="row-leader" aria-hidden="true"></span>
               <span class="row-meta">
                 {% if article.featured %}<span class="row-chip green">Featured</span>{% endif %}
-                {% if article.link %}<span class="row-chip">{{ article.link | domain }}</span>{% endif %}
                 <time class="date">{{ article.date.strftime('%b %d, %Y') }}</time>
               </span>
             </a>
           </li>
+          {% endif %}
           {% endfor %}
         </ul>
 

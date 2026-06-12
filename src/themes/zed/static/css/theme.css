@@ -713,6 +713,47 @@ body.drawer-open .mobile-drawer { transform: translateY(0); }
   background: color-mix(in srgb, var(--accent-2) 12%, transparent);
 }
 
+/* ---- blogmark (link post): quote + commentary inline, set apart from rows --- */
+.blogmark {
+  position: relative; margin: .5rem 0; padding: .8rem 1rem .7rem 1.05rem;
+  border: 1px solid var(--border);
+  border-left: 2px solid color-mix(in srgb, var(--accent) 55%, transparent);
+  border-radius: 8px; background: var(--surface);
+}
+.bm-head { display: flex; align-items: center; gap: .55rem; color: var(--text); }
+.bm-head:hover { text-decoration: none; }
+.bm-title {
+  flex: 1 1 auto; min-width: 0;
+  font-family: var(--font-body); font-weight: 600; font-size: var(--text-sm); color: var(--text);
+  text-decoration: underline; text-decoration-color: var(--tdec);
+  text-underline-offset: 3px; text-decoration-thickness: 1px;
+}
+.bm-head:hover .bm-title { color: var(--link); text-decoration-color: var(--tdec-hover); }
+.bm-head .date { flex: none; }
+.bm-body { margin: .5rem 0 .3rem; font-size: var(--text-sm); color: var(--text-muted); line-height: 1.55; }
+.bm-body > :first-child { margin-top: 0; }
+.bm-body > :last-child { margin-bottom: 0; }
+.bm-body p { margin: .3rem 0; }
+.bm-body blockquote {
+  margin: .2rem 0 .5rem; padding: .15rem 0 .15rem .85rem;
+  border-left: 2px solid var(--border-strong); color: var(--text); font-style: italic;
+}
+.bm-foot { display: flex; flex-wrap: wrap; align-items: center; gap: .25rem .9rem; }
+.bm-source, .bm-via {
+  font-family: var(--font-mono); font-size: .7rem; color: var(--text-faint);
+  letter-spacing: .01em;
+}
+.bm-source:hover, .bm-via:hover { color: var(--link); text-decoration: none; }
+
+/* blogmark permalink header: Source link under the title */
+.article-source { display: flex; flex-wrap: wrap; align-items: center; gap: .35rem 1rem; margin: .6rem 0 0; }
+.article-source .bm-source {
+  display: inline-flex; align-items: center; gap: .45rem;
+  font-family: var(--font-mono); font-size: var(--text-sm); color: var(--text-muted);
+}
+.article-source .bm-source:hover { color: var(--link); }
+.article-source .avatar { width: 18px; height: 18px; }
+
 @media (max-width: 860px) { .feature-grid { grid-template-columns: 1fr; } }
 
 /* ---- landing "latest from the blog" teaser band -------------------------- */
