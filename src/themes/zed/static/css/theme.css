@@ -332,21 +332,17 @@ h1:first-child, h2:first-child { margin-top: 0; }
   opacity: .9; user-select: none; white-space: nowrap;
 }
 
-/* subtle scroll-linked reveal of the wordmark — progressive enhancement only;
-   without scroll-driven timelines the wordmark is simply shown (static reveal). */
-@supports (animation-timeline: view()) {
-  .ef-inner .footer-mark span {
-    animation: ef-rise linear both;
-    animation-timeline: view();
-    animation-range: entry 0% entry 100%;
-  }
-  @keyframes ef-rise {
-    from { opacity: .12; transform: translateY(38px); }
-    to   { opacity: .9;  transform: none; }
-  }
-  @media (prefers-reduced-motion: reduce) {
-    .ef-inner .footer-mark span { animation: none; opacity: .9; transform: none; }
-  }
+/* subtle reveal: the wordmark rises + fades in driven by --ef (0..1), set by
+   endless-footer.js from the footer region's scroll progress. Works in every
+   browser (scroll-driven CSS timelines freeze on a pinned/sticky element); if the
+   script never runs, --ef falls back to 1 so the wordmark is simply shown. */
+.ef-inner .footer-mark span {
+  opacity: calc(.16 + .74 * var(--ef, 1));
+  transform: translateY(calc((1 - var(--ef, 1)) * 34px));
+  will-change: opacity, transform;
+}
+@media (prefers-reduced-motion: reduce) {
+  .ef-inner .footer-mark span { opacity: .9; transform: none; }
 }
 
 /* ---- Responsive -------------------------------------------------------- */
@@ -413,7 +409,9 @@ h1:first-child, h2:first-child { margin-top: 0; }
   }
 }
 
-body { overflow-x: clip; }
+/* No overflow on body/html — a non-visible overflow here makes body the scroll
+   container in Safari/Firefox and breaks the footer's position: sticky reveal.
+   Full-bleed elements clip themselves (.divider-hatch, .ef-inner, .footer-mark). */
 
 /* ---- page frame: edge gutters with the 10px grid texture ---------------- */
 .page-frame { pointer-events: none; }
