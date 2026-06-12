@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% block title %}Tags · {{ SITENAME }}{% endblock %}
+
+{% block content %}
+<div class="container">
+  <div class="page-body">
+    <h1>Tags</h1>
+    <ul class="tagcloud">
+      {% if tag_cloud %}
+        {% for tag, count in tag_cloud %}
+          <li><a class="tag-chip" href="{{ SITEURL }}/tag/{{ tag.slug }}.html">{{ tag }} <span style="opacity:.6">{{ count }}</span></a></li>
+        {% endfor %}
+      {% else %}
+        {% for tag, articles in tags | sort %}
+          <li><a class="tag-chip" href="{{ SITEURL }}/{{ tag.url }}">{{ tag }} <span style="opacity:.6">{{ articles | length }}</span></a></li>
+        {% endfor %}
+      {% endif %}
+    </ul>
+  </div>
+</div>
+{% endblock %}

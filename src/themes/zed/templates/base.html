@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+{% import "_macros.html" as fr %}
+<html lang="{{ DEFAULT_LANG }}">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{% block title %}{{ SITENAME }}{% endblock %}</title>
+
+    {# Apply saved theme before paint to avoid a flash. With no saved choice,
+       the CSS falls back to prefers-color-scheme (defaults dark). #}
+    <script>
+      (function () {
+        try {
+          var t = localStorage.getItem("theme");
+          if (t) document.documentElement.setAttribute("data-theme", t);
+        } catch (e) {}
+      })();
+    </script>
+
+    <link rel="preload" as="font" type="font/woff2" crossorigin
+          href="{{ SITEURL }}/theme/fonts/writer-regular.woff2">
+    <link rel="preload" as="font" type="font/woff2" crossorigin
+          href="{{ SITEURL }}/theme/fonts/agrandir-bold.woff2">
+    <link rel="stylesheet" href="{{ SITEURL }}/theme/css/tokens.css">
+    <link rel="stylesheet" href="{{ SITEURL }}/theme/css/theme.css">
+    <link rel="stylesheet" href="{{ SITEURL }}/theme/css/pygments.css">
+    {# Palette hook: empty in the zed theme; derivative themes (e.g. zeddy)
+       symlink everything else and override only this file. #}
+    <link rel="stylesheet" href="{{ SITEURL }}/theme/css/palette.css">
+    <link rel="icon" href="{{ SITEURL }}/theme/favicon.ico" sizes="any">
+    {% if FEED_RSS %}
+    <link rel="alternate" type="application/rss+xml" title="{{ SITENAME }}"
+          href="{{ OVERRIDDEN_SITEURL or SITEURL }}/{{ FEED_RSS }}">
+    {% endif %}
+
+    {% if (article is defined and article.math) or (page is defined and page.math) %}
+    <script>
+      window.MathJax = { tex: { inlineMath: [['$','$']], displayMath: [['$$','$$']],
+        processEscapes: true } };
+    </script>
+    <script id="MathJax-script" async
+            src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    {% endif %}
+    {% if (article is defined and article.viz) or (page is defined and page.viz) %}
+    <link rel="stylesheet" href="{{ SITEURL }}/theme/css/sig-viz.css">
+    <script defer src="{{ SITEURL }}/theme/js/sig-viz.js"></script>
+    {% endif %}
+  </head>
+
+  <body{% block body_attrs %}{% endblock %}>
+    {# zed-style page frame: edge gutters carrying the 10px grid texture, plus
+       two seeded tick-rails (solid/dashed segments) at the content edges. #}
+    <div class="page-frame" aria-hidden="true">
+      <span class="pf-gutter pf-l"></span>
+      <span class="pf-rail pf-rail-l">{{ fr.ticks('rail-left') }}</span>
+      <span class="pf-rail pf-rail-r">{{ fr.ticks('rail-right') }}</span>
+      <span class="pf-gutter pf-r"></span>
+    </div>
+    <div class="wrapper">
+      {% block header %}{% include "header.html" %}{% endblock %}
+      <section>
+        {% block content %}{% endblock %}
+      </section>
+      {% block footer %}{% include "footer.html" %}{% endblock %}
+    </div>
+
+    {# zed/Vaul-style mobile drawer: bottom sheet; the .wrapper page scales to
+       0.98 and gains rounded top corners behind it while it is open. #}
+    <div class="drawer-scrim" aria-hidden="true"></div>
+    <nav class="mobile-drawer" id="mobile-drawer" aria-label="Mobile navigation">
+      <span class="drawer-handle" aria-hidden="true"></span>
+      <ul>
+        <li><a href="{{ OVERRIDDEN_SITEURL or SITEURL }}/">Home</a></li>
+        {% for section in SECTIONS %}
+        <li><a href="{{ SITEURL }}/{{ section[1] }}">{{ section[0] }}</a></li>
+        {% endfor %}
+      </ul>
+    </nav>
+
+    <script src="{{ SITEURL }}/theme/js/theme-toggle.js"></script>
+    <script src="{{ SITEURL }}/theme/js/drawer.js"></script>
+    {% if GOOGLE_ANALYTICS_ACCOUNT %}
+    <script async src="https://www.googletagmanager.com/gtag/js?id={{ GOOGLE_ANALYTICS_ACCOUNT }}"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', '{{ GOOGLE_ANALYTICS_ACCOUNT }}');
+    </script>
+    {% endif %}
+  </body>
+</html>

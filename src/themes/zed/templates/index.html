@@ -1,0 +1,107 @@
+{% extends "base.html" %}
+{% import "_macros.html" as m with context %}
+{% block title %}{{ SITENAME }}{% endblock %}
+
+{% set on_first = not articles_page or articles_page.number == 1 %}
+
+{% block content %}
+<div class="container">
+
+  {# ---- hero section: serif title + fading corner-hatch + corner nodes ---- #}
+  <div class="z-sec">
+    {{ m.znodes() }}
+    <div class="index-hero">
+      <div class="hero-hatch" aria-hidden="true"></div>
+      {% if tag %}
+        <h1>#{{ tag }}</h1>
+        <p>Posts tagged <strong>{{ tag }}</strong>.</p>
+      {% else %}
+        <h1>{{ SITENAME }}</h1>
+        <p>Notes on reverse engineering, systems, and writing fast code.</p>
+      {% endif %}
+    </div>
+  </div>
+
+  <div class="divider-hatch" aria-hidden="true"></div>
+
+  {% if articles and on_first and not tag %}
+  <div class="z-sec">
+    {{ m.znodes() }}
+    <div class="feature-grid">
+      {% for article in articles[:3] %}
+        <a class="feature-card" href="{{ SITEURL }}/{{ article.url }}">
+          <span class="cover-wrap">{{ m.cover(article) }}</span>
+          <span class="card-body">
+            <span class="card-title">{{ article.title }}</span>
+            {% set blurb = article.excerpt or (article.summary | striptags) %}
+            {% if blurb %}<span class="card-excerpt">{{ blurb | truncate(96) }}</span>{% endif %}
+            <span class="card-meta">
+              {{ m.avatar(article, 40) }}
+              <span class="byline">{{ article.link | domain if article.link else article.author }}</span>
+              {% if loop.first %}<span class="row-chip blue">Newest</span>{% endif %}
+              <time class="date">{{ article.date.strftime('%b %d, %Y') }}</time>
+            </span>
+          </span>
+        </a>
+      {% endfor %}
+    </div>
+  </div>
+
+  <div class="divider-hatch" aria-hidden="true"></div>
+  {% endif %}
+
+  {# ---- listing section: categories sidebar + full-row links ---- #}
+  <div class="z-sec">
+    {{ m.znodes() }}
+    <div class="blog-layout">
+      <aside class="sidebar">
+        <h3>Categories</h3>
+        <ul>
+          <li><a href="{{ SITEURL }}/" class="{{ 'active' if not tag }}">All Posts</a></li>
+          {% for t, t_articles in tags | sort(attribute='0.name') %}
+            <li><a href="{{ SITEURL }}/tag/{{ t.slug }}.html"
+                   class="{{ 'active' if tag and tag.slug == t.slug }}">{{ t }}</a></li>
+          {% endfor %}
+        </ul>
+      </aside>
+
+      <div class="post-main">
+        <ul class="post-list">
+          {% for article in (articles_page.object_list if articles_page else articles) %}
+          <li>
+            <a class="post-row{{ ' is-mark' if article.link }}" href="{{ SITEURL }}/{{ article.url }}">
+              <span class="row-head">
+                <span class="row-title">{{ article.title }}</span>
+                {{ m.avatar(article, 36) }}
+              </span>
+              <span class="row-leader" aria-hidden="true"></span>
+              <span class="row-meta">
+                {% if article.featured %}<span class="row-chip green">Featured</span>{% endif %}
+                {% if article.link %}<span class="row-chip">{{ article.link | domain }}</span>{% endif %}
+                <time class="date">{{ article.date.strftime('%b %d, %Y') }}</time>
+              </span>
+            </a>
+          </li>
+          {% endfor %}
+        </ul>
+
+        {% if articles_page and articles_paginator.num_pages > 1 %}
+        <ul class="pagination">
+          {% if articles_page.has_previous() %}
+            {% set num = articles_page.previous_page_number() %}
+            <li><a href="{{ SITEURL }}/{{ page_name }}{{ num if num > 1 else '' }}.html">&larr; Prev</a></li>
+          {% else %}<li><span class="disabled">&larr; Prev</span></li>{% endif %}
+          {% for num in range(1, 1 + articles_paginator.num_pages) %}
+            <li>{% if num == articles_page.number %}<span class="active">{{ num }}</span>
+                {% else %}<a href="{{ SITEURL }}/{{ page_name }}{{ num if num > 1 else '' }}.html">{{ num }}</a>{% endif %}</li>
+          {% endfor %}
+          {% if articles_page.has_next() %}
+            <li><a href="{{ SITEURL }}/{{ page_name }}{{ articles_page.next_page_number() }}.html">Next &rarr;</a></li>
+          {% else %}<li><span class="disabled">Next &rarr;</span></li>{% endif %}
+        </ul>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

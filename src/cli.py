@@ -79,11 +79,16 @@ class PelicanSettings:
         default_factory=lambda: {
             "striptags_nl": jinja_filters.striptags_nl,
             "untagify": jinja_filters.untagify,
+            "domain": jinja_filters.domain,
+            "seedint": jinja_filters.seedint,
         }
     )
 
-    # Theme and plugins
-    THEME: str = str(cwd / "themes/minimal")
+    # Theme and plugins. Switch with e.g. BLOG_THEME=zeddy (zeddy is a
+    # palette-only overlay of themes/zed — see themes/zeddy/static/css/palette.css).
+    THEME: str = field(
+        default_factory=lambda: str(cwd / "themes" / os.environ.get("BLOG_THEME", "zed"))
+    )
     PLUGIN_PATHS: list = field(default_factory=lambda: [str(cwd / "plugins")])
     PLUGINS: list = field(default_factory=lambda: ["rst_gist", "gfm"])
 
