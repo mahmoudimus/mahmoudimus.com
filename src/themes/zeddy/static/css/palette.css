@@ -1,0 +1,146 @@
+/* ============================================================================
+   ZEDDY — "Ultraviolet" palette
+   Analogous rotation of zed's ultramarine (hue 219° → ~265°): electric violet
+   on violet-tinted neutrals, cyan as the secondary accent (Featured chips,
+   gradient strips). Loaded after tokens/theme/pygments, so these plain
+   redefinitions win on order. Everything else (layout, fonts, grid system)
+   is inherited from themes/zed via symlinks.
+   ========================================================================== */
+
+/* ---- brand accents (mode-independent) ----------------------------------- */
+:root {
+  --accent: #5a23dd;            /* electric violet (was zed accent-blue)   */
+  --accent-2: #06b6d4;          /* cyan counterpoint (was zed green-400)   */
+  --amber: #f99c00;
+}
+
+/* ---- Light: grey paper + light-yellow "highlighter" --------------------- */
+/* Neutral warm-grey ground for low glare; soft yellow (violet's complement)
+   carries the interactive highlights — selection, row hover, inline code. */
+:root, :root[data-theme="light"] {
+  --bg:        #e9e9e6;
+  --bg-2:      #f4f4f1;
+  --surface:   #f4f4f1;
+  --surface-2: #dfdfdb;
+  --text:      #21202a;
+  --text-muted:#5a5764;
+  --text-faint:#8a8791;
+  --border:    rgba(40, 38, 50, .14);
+  --border-strong: rgba(40, 38, 50, .26);
+  --link:      #5a23dd;
+  --link-hover:#43189f;
+  --code-bg:   #f2eed6;                  /* parchment-yellow inline code */
+  --selection: rgba(255, 224, 70, .55);  /* highlighter selection */
+  --shadow:    0 1px 2px rgba(33, 32, 42, .07), 0 8px 24px rgba(33, 32, 42, .08);
+
+  /* frame / decoration tints */
+  --grid:  rgba(90, 35, 221, .12);
+  --rail:  #c6c6c2;
+  --hatch: rgba(140, 138, 132, .7);
+  --hatch-op: .3;
+  --heroline: rgba(122, 72, 255, .5);
+  --hero-op: .2;
+  --rowborder: #e3c84d;                  /* yellow highlight on hover */
+  --rowbg: rgba(255, 238, 140, .38);
+  --tdec: rgba(90, 35, 221, .2);
+  --tdec-hover: rgba(90, 35, 221, .8);
+  --chip-green-b: rgba(14, 126, 149, .4);  --chip-green-bg: rgba(14, 126, 149, .08);  --chip-green-t: #0b5b6b;
+  --chip-blue-b:  #b39bff;                 --chip-blue-bg:  rgba(90, 35, 221, .08);   --chip-blue-t:  #43189f;
+
+  /* syntax */
+  --syn-comment: #8a849c;
+  --syn-keyword: #5a23dd;
+  --syn-string:  #0f766e;
+  --syn-number:  #b3530b;
+  --syn-func:    #8b2fc9;
+  --syn-class:   #b3530b;
+  --syn-op:      #5c566f;
+  --syn-builtin: #0e7e95;
+  --syn-var:     #1d1a2c;
+}
+
+/* ---- Dark: deep aubergine ------------------------------------------------ */
+:root[data-theme="dark"] {
+  --bg:        #0e0a17;
+  --bg-2:      #141021;
+  --surface:   #161227;
+  --surface-2: #1d1830;
+  --text:      #e7e4ef;
+  --text-muted:#a39dba;
+  --text-faint:#766f8d;
+  --border:    rgba(220, 210, 255, .10);
+  --border-strong: rgba(220, 210, 255, .20);
+  --link:      #9b78ff;
+  --link-hover:#bba4ff;
+  --code-bg:   #161227;
+  --selection: rgba(155, 120, 255, .22);
+  --shadow:    0 1px 2px rgba(0, 0, 0, .4), 0 12px 32px rgba(0, 0, 0, .5);
+
+  --grid:  rgba(155, 120, 255, .08);
+  --rail:  #383152;
+  --hatch: rgba(155, 120, 255, .10);
+  --hatch-op: .6;
+  --heroline: rgba(122, 72, 255, .5);
+  --hero-op: .16;
+  --rowborder: rgba(155, 120, 255, .25);
+  --rowbg: rgba(90, 35, 221, .07);
+  --tdec: rgba(155, 120, 255, .2);
+  --tdec-hover: rgba(155, 120, 255, .8);
+  --chip-green-b: rgba(103, 224, 249, .3); --chip-green-bg: rgba(8, 100, 130, .12); --chip-green-t: #9aebfb;
+  --chip-blue-b:  rgba(155, 120, 255, .3); --chip-blue-bg:  rgba(76, 28, 191, .12); --chip-blue-t:  #cdbcff;
+
+  --syn-comment: #766f8d;
+  --syn-keyword: #9b78ff;
+  --syn-string:  #5eead4;
+  --syn-number:  #f9a86a;
+  --syn-func:    #d8b4fe;
+  --syn-class:   #f9a86a;
+  --syn-op:      #a39dba;
+  --syn-builtin: #67e0f9;
+  --syn-var:     #e7e4ef;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg:        #0e0a17;
+    --bg-2:      #141021;
+    --surface:   #161227;
+    --surface-2: #1d1830;
+    --text:      #e7e4ef;
+    --text-muted:#a39dba;
+    --text-faint:#766f8d;
+    --border:    rgba(220, 210, 255, .10);
+    --border-strong: rgba(220, 210, 255, .20);
+    --link:      #9b78ff;
+    --link-hover:#bba4ff;
+    --code-bg:   #161227;
+    --selection: rgba(155, 120, 255, .22);
+    --shadow:    0 1px 2px rgba(0, 0, 0, .4), 0 12px 32px rgba(0, 0, 0, .5);
+
+    --grid:  rgba(155, 120, 255, .08);
+    --rail:  #383152;
+    --hatch: rgba(155, 120, 255, .10);
+    --hatch-op: .6;
+    --heroline: rgba(122, 72, 255, .5);
+    --hero-op: .16;
+    --rowborder: rgba(155, 120, 255, .25);
+    --rowbg: rgba(90, 35, 221, .07);
+    --tdec: rgba(155, 120, 255, .2);
+    --tdec-hover: rgba(155, 120, 255, .8);
+    --chip-green-b: rgba(103, 224, 249, .3); --chip-green-bg: rgba(8, 100, 130, .12); --chip-green-t: #9aebfb;
+    --chip-blue-b:  rgba(155, 120, 255, .3); --chip-blue-bg:  rgba(76, 28, 191, .12); --chip-blue-t:  #cdbcff;
+
+    --syn-comment: #766f8d;
+    --syn-keyword: #9b78ff;
+    --syn-string:  #5eead4;
+    --syn-number:  #f9a86a;
+    --syn-func:    #d8b4fe;
+    --syn-class:   #f9a86a;
+    --syn-op:      #a39dba;
+    --syn-builtin: #67e0f9;
+    --syn-var:     #e7e4ef;
+  }
+}
+
+/* card accent strip: violet → cyan */
+.post-card::before { background: linear-gradient(90deg, var(--accent), var(--accent-2)); }
