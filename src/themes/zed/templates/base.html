@@ -21,12 +21,12 @@
           href="{{ SITEURL }}/theme/fonts/writer-regular.woff2">
     <link rel="preload" as="font" type="font/woff2" crossorigin
           href="{{ SITEURL }}/theme/fonts/agrandir-bold.woff2">
-    <link rel="stylesheet" href="{{ SITEURL }}/theme/css/tokens.css">
-    <link rel="stylesheet" href="{{ SITEURL }}/theme/css/theme.css">
-    <link rel="stylesheet" href="{{ SITEURL }}/theme/css/pygments.css">
+    <link rel="stylesheet" href="{{ SITEURL }}/theme/css/tokens.css?v={{ ASSET_VERSION }}">
+    <link rel="stylesheet" href="{{ SITEURL }}/theme/css/theme.css?v={{ ASSET_VERSION }}">
+    <link rel="stylesheet" href="{{ SITEURL }}/theme/css/pygments.css?v={{ ASSET_VERSION }}">
     {# Palette hook: empty in the zed theme; derivative themes (e.g. zeddy)
        symlink everything else and override only this file. #}
-    <link rel="stylesheet" href="{{ SITEURL }}/theme/css/palette.css">
+    <link rel="stylesheet" href="{{ SITEURL }}/theme/css/palette.css?v={{ ASSET_VERSION }}">
     <link rel="icon" href="{{ SITEURL }}/theme/favicon.ico" sizes="any">
     {% if FEED_RSS %}
     <link rel="alternate" type="application/rss+xml" title="{{ SITENAME }}"
@@ -42,8 +42,8 @@
             src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     {% endif %}
     {% if (article is defined and article.viz) or (page is defined and page.viz) %}
-    <link rel="stylesheet" href="{{ SITEURL }}/theme/css/sig-viz.css">
-    <script defer src="{{ SITEURL }}/theme/js/sig-viz.js"></script>
+    <link rel="stylesheet" href="{{ SITEURL }}/theme/css/sig-viz.css?v={{ ASSET_VERSION }}">
+    <script defer src="{{ SITEURL }}/theme/js/sig-viz.js?v={{ ASSET_VERSION }}"></script>
     {% endif %}
   </head>
 
@@ -78,8 +78,8 @@
       </ul>
     </nav>
 
-    <script src="{{ SITEURL }}/theme/js/theme-toggle.js"></script>
-    <script src="{{ SITEURL }}/theme/js/drawer.js"></script>
+    <script src="{{ SITEURL }}/theme/js/theme-toggle.js?v={{ ASSET_VERSION }}"></script>
+    <script src="{{ SITEURL }}/theme/js/drawer.js?v={{ ASSET_VERSION }}"></script>
     {% if GOOGLE_ANALYTICS_ACCOUNT %}
     <script async src="https://www.googletagmanager.com/gtag/js?id={{ GOOGLE_ANALYTICS_ACCOUNT }}"></script>
     <script>

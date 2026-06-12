@@ -19,6 +19,24 @@ logger = pelican.logger
 cwd = pathlib.Path(__file__).parent
 
 
+def _asset_version() -> str:
+    """Short, per-deploy token appended to CSS/JS URLs (?v=...) so a new build
+    busts Cloudflare's edge cache immediately — it caches static assets for 24h
+    but not HTML, so without this a deploy ships new markup against stale CSS.
+    Uses the git commit (stable per release); falls back to a build timestamp."""
+    import subprocess
+
+    try:
+        return subprocess.check_output(
+            ["git", "rev-parse", "--short", "HEAD"],
+            cwd=str(cwd),
+            text=True,
+            stderr=subprocess.DEVNULL,
+        ).strip()
+    except Exception:
+        return str(int(datetime.datetime.now().timestamp()))
+
+
 @dataclass
 class PelicanSettings:
     # Basic settings
@@ -93,6 +111,8 @@ class PelicanSettings:
     PLUGINS: list = field(default_factory=lambda: ["rst_gist", "gfm"])
 
     # Other settings
+    # Cache-busting token for CSS/JS links (see _asset_version).
+    ASSET_VERSION: str = field(default_factory=_asset_version)
     PDF_GENERATOR: bool = False
     PAGE_PATHS: list[str] = field(default_factory=lambda: ["pages"])
     PAGE_EXCLUDES: list[str] = field(default_factory=lambda: [])
