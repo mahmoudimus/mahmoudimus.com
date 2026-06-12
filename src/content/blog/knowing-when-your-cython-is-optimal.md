@@ -1,6 +1,6 @@
 +++
 Title: How do you know your Cython hot loop is fast enough?
-Date: 2026-05-31
+Date: 2026-05-15
 Author: Mahmoud
 Tags: reverse engineering, cython, ida pro, performance, profiling
 Classification: blog
