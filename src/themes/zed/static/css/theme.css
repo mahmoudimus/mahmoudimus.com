@@ -45,9 +45,11 @@ h1:first-child, h2:first-child { margin-top: 0; }
 /* Content-height wrapper: the endless footer (a sibling region after .wrapper —
    see footer.html) handles anchoring the footer to the bottom of the viewport,
    so the content area itself just sizes to its content. */
-/* opaque, positioned content layer that covers the fixed footer (z-index:-1)
-   until it scrolls up past it — Stripe's "endless footer" reveal. */
-.wrapper { position: relative; z-index: 0; background: var(--bg);
+/* opaque content layer (z-index:1) that covers the fixed footer (z-index:0)
+   until it scrolls up past it — Stripe's "endless footer" reveal. No negative
+   z-index anywhere: Safari/iOS hide position:fixed; z-index:-1 elements behind
+   the page background, which is what broke the reveal there. */
+.wrapper { position: relative; z-index: 1; background: var(--bg);
   display: flex; flex-direction: column; }
 .wrapper > section { flex: 0 0 auto; }
 
@@ -247,7 +249,7 @@ h1:first-child, h2:first-child { margin-top: 0; }
    content (z-index:-1). The .endless region above gives ~200vh of scroll room
    so the content lifts off and reveals it (Stripe's mechanism). */
 .ef-inner {
-  position: fixed; left: 0; bottom: 0; width: 100%; z-index: -1;
+  position: fixed; left: 0; bottom: 0; width: 100%; z-index: 0;
   height: 100vh; height: 100svh;
   display: flex; flex-direction: column; justify-content: space-between;
   overflow: clip; isolation: isolate;
