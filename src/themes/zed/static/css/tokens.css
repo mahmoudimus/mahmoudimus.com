@@ -29,6 +29,12 @@
 @font-face { font-family: writer; font-weight: 700; font-style: italic;
   font-display: swap; src: url("../fonts/writer-bold-italic.woff2") format("woff2"); }
 
+/* Faustina — open-source (SIL OFL) variable serif (weights 400..700) with true
+   italics; the display/accent serif. plex-serif stays as the fallback. */
+@font-face { font-family: faustina; font-weight: 400 700; font-style: normal;
+  font-display: swap; src: url("../fonts/faustina.woff2") format("woff2"); }
+@font-face { font-family: faustina; font-weight: 400 700; font-style: italic;
+  font-display: swap; src: url("../fonts/faustina-italic.woff2") format("woff2"); }
 @font-face { font-family: "plex-serif"; font-weight: 300 700; font-style: normal;
   font-display: swap; src: url("../fonts/plex-serif.woff2") format("woff2"); }
 @font-face { font-family: "plex-sans"; font-weight: 400; font-style: normal;
@@ -40,7 +46,7 @@
 :root {
   --font-display: bricolage, "Helvetica Neue", Arial, sans-serif;
   --font-body: writer, ui-monospace, "SF Mono", Menlo, monospace;
-  --font-serif: "plex-serif", Georgia, serif;
+  --font-serif: faustina, "plex-serif", Georgia, serif;
   --font-sans: "plex-sans", ui-sans-serif, system-ui, sans-serif;
   --font-mono: lilex, ui-monospace, "SF Mono", Menlo, Consolas, monospace;
 
