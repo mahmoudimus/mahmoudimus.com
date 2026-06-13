@@ -149,3 +149,11 @@ name — fine as background, weaker for a personal press page.
 - No Egypt/MENA-outlet coverage of this person found (namesake "Prof. Dr. Mahmoud H. Abdelkader" disambiguated out).
 - No verifiable talk/recording for: a16z, TechCrunch Disrupt, SaaStr, Finovate (the Finovate demo was presented by another VGS person), RSA, BSides, PyCon/DjangoCon, university lectures.
 - American Banker Visa piece does NOT quote him; RetailDive Balanced piece names a different co-founder. Excluded.
+
+---
+
+# Local media (in `_gitless/media`, ~675MB, out of git)
+
+- **Your 'Yellow Brick Road' to Building a Trusted Fintech** (.mp4) — VGS webinar. Public page: https://www.verygoodsecurity.com/learn/your-yellow-brick-road-to-building-a-trusted-fintech-webinar (200) — **on page**. Plan: upload recording to YouTube/Vimeo → embed.
+- **The Future of Web Hosting & Security with the Founders of Netlify & VGS** (.mp4) — VGS × Netlify fireside (MA + Matt Biilmann). No clean public recording URL found (related: netlify.com/integrations/very-good-security). Plan: upload to YouTube/Vimeo → embed. **PENDING upload.**
+- **Inside the Vault – Episode Artwork_Abdelkader** (.svg) — episode art for VGS's "Inside the Vault: The Payments Security Podcast" (now "Descoped"). Show: https://podcasts.apple.com/us/podcast/inside-the-vault/id1534035954 — **on page (show-level)**. His specific (Season 1) episode URL not yet pinned; S2 host is Megan Powers, so his is an early episode — dig the Apple/Podbean S1 list to find it.
