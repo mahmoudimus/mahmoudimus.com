@@ -3,17 +3,52 @@ Title: Press
 Slug: press
 +++
 
-For interviews, quotes, or speaking, the fastest way to reach me is email: [m(AT-NOSPAM)mahmoudimus(DOT)com](mailto:m(AT-NOSPAM)mahmoudimus(DOT)com).
+For interviews, quotes, or speaking, the fastest way to reach me is email: [m(AT-NOSPAM)mahmoudimus(DOT)com](mailto:m(AT-NOSPAM)mahmoudimus(DOT)com). A selection of coverage, interviews, and talks below.
 
-## Selected coverage
+## Recognition
 
-- **eBay acquires Milo for $75M** — TechCrunch, 2010. [Read&nbsp;&#8599;](http://techcrunch.com/2010/12/02/confirmed-ebay-acquires-milo-for-75-million-investors-make-a-killing/)
-- **Balanced Payments joins Stripe** — 2015. Balanced's payments team and technology were acquired by [Stripe](https://stripe.com).
+- [Forbes 2021 Next Billion-Dollar Startups (VGS)](https://www.verygoodsecurity.com/blog/posts/vgs-named-to-forbes-2021-next-billion-dollar-startup-list) — Forbes / VGS (2021)
+
+## VGS — funding & milestones
+
+- [Very Good Security makes data "unhackable" with $8.5M from Andreessen Horowitz](https://techcrunch.com/2018/08/28/very-good-security/) — TechCrunch (Aug 2018) — *Series A*
+- [Visa makes a strategic investment in Very Good Security](https://www.helpnetsecurity.com/2020/01/17/very-good-security-visa/) — Help Net Security (Jan 2020)
+- [Very Good Security raises $35M in Series B in a "zero data" push](https://techcrunch.com/2019/10/24/very-good-security-series-b/) — TechCrunch (Oct 2019) — *Series B, led by Goldman Sachs*
+- [Some very good news: VGS raises $60M Series C](https://www.verygoodsecurity.com/blog/posts/vgs-raises-60m-series-c-funding) — VGS (Dec 2020) — *led by Vertex Ventures US*
+- [Passing the CEO baton at VGS](https://www.globenewswire.com/news-release/2023/04/11/2644484/0/en/Very-Good-Security-Appoints-Chuck-Yu-as-CEO.html) — GlobeNewswire (Apr 2023)
+
+## VGS — product & partnerships
+
+- [VGS teams up with Plaid to improve data security for the digital finance sector](https://www.crowdfundinsider.com/2022/05/191188-very-good-security-teams-up-with-plaid-to-improve-data-security-for-the-digital-finance-sector/) — Crowdfund Insider (May 2022)
+- [VGS extends Payment Optimization with Network Tokens](https://www.helpnetsecurity.com/2022/03/30/verygood-security-network-tokens/) — Help Net Security (Mar 2022)
+
+## Interviews & profiles
+
+- [Safeguarding the World's Data](https://medium.com/wharton-fintech/mahmoud-abdelkader-ceo-co-founder-of-very-good-security-safeguarding-the-worlds-data-19ad35c205fc) — Wharton FinTech (Jul 2021)
+- [Faces of Entrepreneurship: Mahmoud Abdelkader, CEO of VGS](https://nasdaqcenter.org/2019/02/25/faces-of-entrepreneurship-mahmoud-abdelkader-vsg/) — Nasdaq Entrepreneurial Center (Feb 2019)
+- [On raising over $100M to make your data unhackable](https://alejandrocremades.com/mahmoud-abdelkader/) — DealMakers / Alejandro Cremades (Mar 2021)
+- [Data security's secret sauce? "Zero Data"](https://www.pymnts.com/news/security-and-risk/2021/data-securitys-secret-sauce-zero-data/) — PYMNTS (May 2021)
+- [Passing the baton of leadership at VGS](https://mahmoudimus.com/blog/2022/11/passing-the-baton-of-leadership-at-vgs-fka-very-good-security/) — essay (Nov 2022)
+
+## Podcasts & talks
+
+- [Safeguarding the World's Data](https://podcasts.apple.com/us/podcast/mahmoud-abdelkader-ceo-co-founder-very-good-security/id1042827113?i=1000528495084) — Wharton FinTech Podcast (Jul 2021)
+- [Exploring the cutting edge of privacy and encryption](https://stackoverflow.blog/2021/07/30/podcast-632-exploring-the-cutting-edge-of-privacy-and-encryption-with-very-good-security/) — The Stack Overflow Podcast (Jul 2021)
+- [The VGS origin story](https://codestory.co/podcast/bonus-mahmoud-abdelkader-very-good-security-vgs/) — Code Story (Oct 2021)
+- [CEO & co-founder of Very Good Security](https://podcasts.apple.com/gb/podcast/mahmoud-abdelkader-ceo-and-co-founder-of-very-good-security/id1354145110?i=1000524733807) — Secure Talk (Jun 2021)
+- [Mahmoud Abdelkader of Very Good Security](https://medium.com/bank-on-it/episode-317-remote-mahmoud-abdelkader-from-very-good-security-17a2efca064c) — Bank On It (May 2020)
+- [Nail your product-market fit and build an impactful company](https://www.youtube.com/watch?v=QUXJqBcGVPg) — talk (Mar 2020)
+
+## Earlier career
+
+- [Y Combinator-backed Balanced raises $1.4M for marketplace payments](https://techcrunch.com/2012/11/16/balanced-marketplace-payments/) — TechCrunch (Nov 2012)
+- [Balanced strikes a transition deal with Stripe](https://techcrunch.com/2015/03/13/balanced-is-closing-its-marketplace-payment-platform-in-90-days-strikes-transition-deal-with-rival-stripe/) — TechCrunch (Mar 2015)
+- [eBay acquires Milo.com for $75M](https://techcrunch.com/2010/12/02/ebay-reportedly-goes-shopping-acquires-milo-com-for-75-million/) — TechCrunch (Dec 2010)
 
 ## Press kit
 
 - **Name:** Mahmoud Abdelkader (online: _mahmoudimus_)
-- **Title:** Entrepreneur & software engineer. Co-founder of [VGS](https://vgs.io); previously co-founder/CTO of Balanced Payments (→ Stripe, 2015).
+- **Title:** Entrepreneur & software engineer. Co-founder of [VGS](https://vgs.io) (CEO 2016–2023); previously co-founder/CTO of Balanced Payments (→ Stripe, 2015).
 - **Short bio:** Mahmoud Abdelkader is an entrepreneur and software engineer focused on fintech, payments, reverse engineering, and data security. He co-founded VGS and Balanced Payments, and is an active angel investor.
 - **Headshot & logos:** available on request.
 
