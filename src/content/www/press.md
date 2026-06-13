@@ -46,6 +46,8 @@ For interviews, quotes, or speaking, the fastest way to reach me is email: [m(AT
 - [Mahmoud Abdelkader of Very Good Security](https://medium.com/bank-on-it/episode-317-remote-mahmoud-abdelkader-from-very-good-security-17a2efca064c) — Bank On It (May 2020)
 - [THINK Business LIVE — Take 10](https://jondwoskin.com/2022/03/think-business-live-take-10-jon-dwoskin-talks-with-mahmoud-abdelkader/) — Jon Dwoskin (Mar 2022)
 - [Nail your product-market fit and build an impactful company](https://www.youtube.com/watch?v=QUXJqBcGVPg) — talk, IT Arena, Lviv (2019)
+- [Your "Yellow Brick Road" to building a trusted fintech](https://www.verygoodsecurity.com/learn/your-yellow-brick-road-to-building-a-trusted-fintech-webinar) — VGS webinar
+- [Inside the Vault: The Payments Security Podcast](https://podcasts.apple.com/us/podcast/inside-the-vault/id1534035954) — VGS
 
 ## Earlier career
 
