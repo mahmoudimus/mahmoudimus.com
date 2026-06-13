@@ -1,14 +1,12 @@
 {% import "_macros.html" as fr %}
-{# Endless footer: `.site-footer.endless` is a tall reveal region; `.ef-inner` is the
-   sticky, full-screen panel that pins as the page content scrolls up past it. The
-   enlarged "mahmoudimus" wordmark is the centerpiece at the bottom of the panel. #}
+{# Endless footer: `.site-footer.endless` is a tall z-index:-1 region the page content
+   scrolls up and off to reveal. The <canvas> (fixed, full-viewport) is drawn by
+   endless-footer.js — the "mahmoudimus" wordmark streaming upward, looping endlessly.
+   The links sit in a fixed bar revealed alongside it. #}
 <footer class="site-footer endless">
-  <div class="ef-inner">
-    <i class="znode tl" aria-hidden="true"></i><i class="znode tr" aria-hidden="true"></i>
-    <span class="f-rail f-rail-l" aria-hidden="true">{{ fr.ticks('footer-left') }}</span>
-    <span class="f-rail f-rail-r" aria-hidden="true">{{ fr.ticks('footer-right') }}</span>
-    <div class="noise" aria-hidden="true"></div>
+  <canvas class="ef-canvas" aria-hidden="true"></canvas>
 
+  <div class="ef-links">
     <div class="container">
       <div class="footer-compact">
         <p class="f-line f-brand-line">{{ AUTHOR }} &copy; {{ CURRENT_YEAR }}
@@ -31,7 +29,5 @@
         </div>
       </div>
     </div>
-
-    <div class="footer-mark" aria-hidden="true"><span>mahmoudimus</span></div>
   </div>
 </footer>
