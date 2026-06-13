@@ -240,32 +240,30 @@ h1:first-child, h2:first-child { margin-top: 0; }
    columns + a giant outlined wordmark on a downward-fading scanline pattern,
    cropped by the bottom edge — all lifted from zed's footer markup. */
 /* endless footer (canvas) — see footer.html + endless-footer.js. The region is a
-   tall z-index:-1 area the page content (opaque .wrapper, z-index:0) scrolls up and
-   off to reveal. The <canvas> is fixed full-viewport and repainted every frame; its
-   resolved background-color / color / font-family feed the canvas drawing. */
-.site-footer.endless { position: relative; z-index: -1; height: 200vh; color: #e3e4e7; }
+   tall reveal area the page content (opaque .wrapper, z-index:0) scrolls up and off.
+   The backdrop + <canvas> are fixed full-viewport at z-index:-1 (revealed behind the
+   content); the links bar is sticky and rides up to become the nav header. */
+.site-footer.endless { position: relative; height: 200vh; color: #e3e4e7; }
 /* accent field behind the canvas: the wordmark's knocked-out interiors reveal this,
    so the letters read as white outlines on the accent. */
-.ef-backdrop { position: fixed; inset: 0; background: var(--accent); pointer-events: none; }
+.ef-backdrop { position: fixed; inset: 0; z-index: -1; background: var(--accent); pointer-events: none; }
 .ef-canvas {
-  position: fixed; top: .2vw; left: 50%; transform: translateX(-50%);
+  position: fixed; top: .2vw; left: 50%; transform: translateX(-50%); z-index: -1;
   width: 100%; max-width: 1728px; height: 100vh; display: block; pointer-events: none;
   color: #ffffff; /* the wordmark stroke colour */
   font-family: "Agrandir", Georgia, "Times New Roman", serif;
 }
-/* footer links revealed in a fixed bar at the top, over the canvas. A fade of the
-   panel color sits behind them so they stay readable over the wordmark stream. */
+/* The links bar sits at the top of the footer region (on the revealed blue) and
+   `position: sticky` pins it to the top as you scroll — so it travels up and becomes
+   the nav header over the endless wordmark. z-index 60 keeps it above the page's own
+   sticky header (50) during the handoff; below the mobile drawer/scrim (150+). The
+   solid-accent top of the gradient keeps it readable over the wordmark behind it. */
 .ef-links {
-  /* above the sticky header (z-index 50) so it is never covered at the footer's
-     top edge; below the mobile drawer/scrim (z-index 150+). */
-  position: fixed; top: 0; left: 0; right: 0; z-index: 60;
+  position: sticky; top: 0; z-index: 60;
   padding: clamp(1.4rem, 5vh, 3.2rem) 0 clamp(2rem, 7vh, 4.5rem);
   font-size: var(--text-sm); color: #e3e4e7;
-  background: linear-gradient(to bottom, var(--accent) 0%, var(--accent) 55%,
+  background: linear-gradient(to bottom, var(--accent) 0%, var(--accent) 70%,
               color-mix(in srgb, var(--accent) 0%, transparent) 100%);
-  /* initial state before JS runs; endless-footer.js then drives opacity + pointer-events
-     every frame, fading the bar in as the footer rises into view. */
-  opacity: 0; pointer-events: none;
 }
 .site-footer .noise {
   position: absolute; inset: 0; pointer-events: none;
