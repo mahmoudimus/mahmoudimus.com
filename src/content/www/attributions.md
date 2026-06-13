@@ -7,7 +7,7 @@ This site stands on a lot of other people's work. Here's what it's built with, a
 
 ## Fonts
 
-- **PP Agrandir** — display and headings. By [Pangram Pangram Foundry](https://pangrampangram.com/products/agrandir).
+- **Bricolage Grotesque** — display and headings. By [Mathieu Triay](https://github.com/ateliertriay/bricolage), under the SIL Open Font License 1.1.
 - **iA Writer Quattro** — body text. By [iA Inc.](https://github.com/iaolo/iA-Fonts), under the SIL Open Font License 1.1.
 - **IBM Plex** — UI and labels. By [IBM](https://www.ibm.com/plex/), under the SIL Open Font License 1.1.
 - **Lilex** — code and monospace. By [Misha Schwartz](https://github.com/mishamosher/Lilex), under the SIL Open Font License 1.1.
