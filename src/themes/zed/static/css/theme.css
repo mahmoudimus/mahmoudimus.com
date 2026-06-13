@@ -27,7 +27,7 @@ a { color: var(--link); text-decoration: none; text-underline-offset: 3px;
     text-decoration-thickness: 1px; transition: color .15s ease; }
 a:hover { color: var(--link-hover); text-decoration: underline; }
 
-/* ---- Headings (agrandir display) --------------------------------------- */
+/* ---- Headings (Bricolage Grotesque display) ---------------------------- */
 h1, h2, h3, h4 {
   font-family: var(--font-display);
   font-weight: 700;
@@ -251,7 +251,7 @@ h1:first-child, h2:first-child { margin-top: 0; }
   position: fixed; top: .2vw; left: 50%; transform: translateX(-50%); z-index: -1;
   width: 100%; max-width: 1728px; height: 100vh; display: block; pointer-events: none;
   color: #ffffff; /* the wordmark stroke colour */
-  font-family: "Agrandir", Georgia, "Times New Roman", serif;
+  font-family: bricolage, "Helvetica Neue", Arial, sans-serif;
 }
 /* The links bar sits at the top of the footer region (on the revealed blue) and
    `position: sticky` pins it to the top as you scroll — so it travels up and becomes
