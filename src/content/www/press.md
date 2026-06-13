@@ -17,7 +17,6 @@ For interviews, quotes, or speaking, the fastest way to reach me is email: [m(AT
 - [Visa makes a strategic investment in Very Good Security](https://www.helpnetsecurity.com/2020/01/17/very-good-security-visa/) — Help Net Security (Jan 2020)
 - [Very Good Security raises $35M in Series B in a "zero data" push](https://techcrunch.com/2019/10/24/very-good-security-series-b/) — TechCrunch (Oct 2019) — *led by Goldman Sachs*
 - [Some very good news: VGS raises $60M Series C](https://www.verygoodsecurity.com/blog/posts/vgs-raises-60m-series-c-funding) — VGS (Dec 2020) — *led by Vertex Ventures US*
-- [Passing the CEO baton at VGS](https://www.globenewswire.com/news-release/2023/04/11/2644484/0/en/Very-Good-Security-Appoints-Chuck-Yu-as-CEO.html) — GlobeNewswire (Apr 2023)
 
 ## VGS — product & partnerships
 
