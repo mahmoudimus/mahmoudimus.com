@@ -256,7 +256,9 @@ h1:first-child, h2:first-child { margin-top: 0; }
 /* footer links revealed in a fixed bar at the top, over the canvas. A fade of the
    panel color sits behind them so they stay readable over the wordmark stream. */
 .ef-links {
-  position: fixed; top: 0; left: 0; right: 0; z-index: 2;
+  /* above the sticky header (z-index 50) so it is never covered at the footer's
+     top edge; below the mobile drawer/scrim (z-index 150+). */
+  position: fixed; top: 0; left: 0; right: 0; z-index: 60;
   padding: clamp(1.4rem, 5vh, 3.2rem) 0 clamp(2rem, 7vh, 4.5rem);
   font-size: var(--text-sm); color: #e3e4e7;
   background: linear-gradient(to bottom, var(--accent) 0%, var(--accent) 55%,

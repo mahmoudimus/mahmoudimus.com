@@ -167,9 +167,17 @@
       var tg0 = computeTargets({ footerTop: rect.top, vh: vh, dpr: dpr, maxW: maxW, m: m, sizeScale: curScale });
       jY = tg0.yTarget; kB = tg0.fontSize; clearH = tg0.clearHeight; rOff = tg0.r;
     }
-    // reveal the (interactive) links bar only once the content has fully scrolled
-    // off and the footer fills the viewport — otherwise it would overlay the page.
-    if (links) links.classList.toggle("is-revealed", rect.top <= 0);
+    // Reveal the (interactive) links bar once the footer fills the viewport. Use a
+    // small tolerance + hysteresis: the endless loop lands rect.top at ~0 (subpixel
+    // rounding can make it a hair positive), and without this the bar would flicker
+    // its pointer-events off right where you settle to click. Reveal near the top,
+    // and only hide again once well out of the footer.
+    if (links) {
+      var shown = links.classList.contains("is-revealed");
+      if (!shown && rect.top <= vh * 0.06) shown = true;
+      else if (shown && rect.top > vh * 0.5) shown = false;
+      links.classList.toggle("is-revealed", shown);
+    }
   }
 
   function loop() {
