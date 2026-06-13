@@ -9,7 +9,8 @@ This site stands on a lot of other people's work. Here's what it's built with, a
 
 - **Bricolage Grotesque** — display and headings. By [Mathieu Triay](https://github.com/ateliertriay/bricolage), under the SIL Open Font License 1.1.
 - **iA Writer Quattro** — body text. By [iA Inc.](https://github.com/iaolo/iA-Fonts), under the SIL Open Font License 1.1.
-- **IBM Plex Serif** — the serif used for the hero, the brand line, and italic accents; **IBM Plex Sans** — UI and labels. By [IBM](https://www.ibm.com/plex/), under the SIL Open Font License 1.1.
+- **Faustina** — the serif for the hero, the brand line, and italic accents. By [Omnibus-Type](https://github.com/Omnibus-Type/Faustina), under the SIL Open Font License 1.1.
+- **IBM Plex Sans** — UI and labels; **IBM Plex Serif** — serif fallback. By [IBM](https://www.ibm.com/plex/), under the SIL Open Font License 1.1.
 - **Lilex** — code and monospace. By [Misha Schwartz](https://github.com/mishamosher/Lilex), under the SIL Open Font License 1.1.
 
 ## Built with
