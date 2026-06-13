@@ -248,7 +248,7 @@ h1:first-child, h2:first-child { margin-top: 0; }
 .ef-canvas {
   position: fixed; inset: 0; width: 100%; height: 100%; display: block;
   background-color: var(--accent);
-  color: rgba(255, 255, 255, .62);
+  color: #ffffff; /* the wordmark stroke — opacity is faded per-depth in JS */
   font-family: Georgia, "Times New Roman", serif;
 }
 /* footer links revealed in a fixed bar at the top, over the canvas. A fade of the

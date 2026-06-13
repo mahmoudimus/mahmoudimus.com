@@ -60,32 +60,37 @@
 
     ctx.fillStyle = bg;
     ctx.fillRect(0, 0, w, h);
+    ctx.strokeStyle = stroke; // white — without this the canvas defaults to black
     ctx.textAlign = "center"; ctx.textBaseline = "middle"; ctx.lineJoin = "round";
 
     // base font fitted so the nearest wordmark spans ~94% of the width
     ctx.font = "700 100px " + fam;
     var fitFont = 100 * (w * 0.94 / (ctx.measureText(TEXT).width || 1));
 
-    var phase = reduce ? 0.4 : computeFrame({ into: into, vh: vh }).phase;
+    var phase = reduce ? 0 : computeFrame({ into: into, vh: vh }).phase;
 
-    // perspective tunnel: the big near wordmark sits up top (frontY) and the copies
-    // recede DOWN to a vanishing point near the bottom (vanishY), densely stacked.
-    // Fine depth STEP -> overlapping outlines, like Stripe's extruded look.
-    var frontY = h * 0.20, vanishY = h * 0.94;
-    var STEP = 0.42, N = 52;
+    // The bright white "hero" wordmark sits at heroY; a faint perspective tunnel of
+    // ghost copies recedes DOWN from just behind it to a vanishing point at the
+    // bottom. As you scroll, ghosts rise toward the hero and merge (reversible).
+    var heroY = h * 0.34, vanishY = h * 1.02;
+    var STEP = 0.5, N = 40;
     var startI = Math.ceil(phase / STEP);
-    for (var k = N; k >= 0; k--) { // back (far/small) to front (near/big)
-      var z = (startI + k) * STEP - phase; // (0 .. ~N*STEP]
-      if (z <= 0.02) continue;
+    for (var k = N; k >= 1; k--) { // ghosts only; the very front is the hero
+      var z = (startI + k) * STEP - phase;
+      if (z <= 0.28) continue; // keep ghosts clear of the hero (no overlap)
       var s = project(z, FOCAL);
       var fs = fitFont * s;
       if (fs < 2) continue;
-      var y = vanishY + (frontY - vanishY) * s;
-      ctx.globalAlpha = Math.min(1, s * 2.2);
-      ctx.lineWidth = Math.max(0.4, 1.6 * dpr * s);
+      ctx.globalAlpha = Math.pow(s, 1.8) * 0.6; // faint, fading with depth
+      ctx.lineWidth = Math.max(0.4, 1.5 * dpr * s);
       ctx.font = "700 " + fs + "px " + fam;
-      ctx.strokeText(TEXT, w / 2, y);
+      ctx.strokeText(TEXT, w / 2, vanishY + (heroY - vanishY) * s);
     }
+    // the hero: the readable name, crisp bright white, stable
+    ctx.globalAlpha = 0.96;
+    ctx.lineWidth = Math.max(1.5, 2.4 * dpr);
+    ctx.font = "700 " + fitFont + "px " + fam;
+    ctx.strokeText(TEXT, w / 2, heroY);
     ctx.globalAlpha = 1;
     canvas.dataset.ef = JSON.stringify({ into: Math.round(into), phase: +phase.toFixed(2) });
   }
