@@ -245,7 +245,7 @@ h1:first-child, h2:first-child { margin-top: 0; }
    resolved background-color / color / font-family feed the canvas drawing. */
 .site-footer.endless { position: relative; z-index: -1; height: 200vh; color: #e3e4e7; }
 /* accent field behind the canvas: the wordmark's knocked-out interiors reveal this,
-   so the letters read as white outlines on the accent (stripe.dev's technique). */
+   so the letters read as white outlines on the accent. */
 .ef-backdrop { position: fixed; inset: 0; background: var(--accent); pointer-events: none; }
 .ef-canvas {
   position: fixed; top: .2vw; left: 50%; transform: translateX(-50%);
@@ -256,12 +256,16 @@ h1:first-child, h2:first-child { margin-top: 0; }
 /* footer links revealed in a fixed bar at the top, over the canvas. A fade of the
    panel color sits behind them so they stay readable over the wordmark stream. */
 .ef-links {
-  position: fixed; top: 0; left: 0; right: 0;
+  position: fixed; top: 0; left: 0; right: 0; z-index: 2;
   padding: clamp(1.4rem, 5vh, 3.2rem) 0 clamp(2rem, 7vh, 4.5rem);
   font-size: var(--text-sm); color: #e3e4e7;
   background: linear-gradient(to bottom, var(--accent) 0%, var(--accent) 55%,
               color-mix(in srgb, var(--accent) 0%, transparent) 100%);
+  /* hidden + non-interactive until the footer fills the viewport (toggled in JS),
+     so the links never overlay — or steal clicks from — the page content above. */
+  opacity: 0; pointer-events: none; transition: opacity .25s ease;
 }
+.ef-links.is-revealed { opacity: 1; pointer-events: auto; }
 .site-footer .noise {
   position: absolute; inset: 0; pointer-events: none;
   background: url("../noise.webp") repeat; background-size: 180px;

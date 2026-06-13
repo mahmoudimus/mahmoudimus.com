@@ -2,12 +2,14 @@
 {# Endless footer: `.site-footer.endless` is a tall z-index:-1 region the page content
    scrolls up and off to reveal. The <canvas> (fixed, full-viewport) is drawn by
    endless-footer.js — the "mahmoudimus" wordmark streaming upward, looping endlessly.
-   The links sit in a fixed bar revealed alongside it. #}
+   The links live OUTSIDE that z-index:-1 region (so they stay clickable) and are
+   revealed by endless-footer.js once the footer fills the viewport. #}
 <footer class="site-footer endless">
   <span class="ef-backdrop" aria-hidden="true"></span>
   <canvas class="ef-canvas" aria-hidden="true"></canvas>
+</footer>
 
-  <div class="ef-links">
+<div class="ef-links">
     <div class="container">
       <div class="footer-compact">
         <p class="f-line f-brand-line">{{ AUTHOR }} &copy; {{ CURRENT_YEAR }}
@@ -30,5 +32,4 @@
         </div>
       </div>
     </div>
-  </div>
-</footer>
+</div>
