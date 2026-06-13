@@ -36,7 +36,6 @@ For interviews, quotes, or speaking, the fastest way to reach me is email: [m(AT
 ## Essays & bylines
 
 - [The new standard for IoT security](https://internetofthingsagenda.techtarget.com/blog/IoT-Agenda/The-new-standard-for-IoT-security) — IoT Agenda / TechTarget (Mar 2019) — *byline*
-- [Passing the baton of leadership at VGS](https://mahmoudimus.com/blog/2022/11/passing-the-baton-of-leadership-at-vgs-fka-very-good-security/) — essay (Nov 2022)
 
 ## Podcasts & talks
 
