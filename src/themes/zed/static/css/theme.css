@@ -239,26 +239,26 @@ h1:first-child, h2:first-child { margin-top: 0; }
 /* noise texture + white/14 tick rails + serif column heads + divided link
    columns + a giant outlined wordmark on a downward-fading scanline pattern,
    cropped by the bottom edge — all lifted from zed's footer markup. */
-/* endless footer: a tall reveal region; the sticky .ef-inner panel pins to fill the
-   viewport as the page content scrolls up past it. No overflow on the region itself
-   (overflow:clip/hidden/auto on a sticky ancestor breaks the sticky). */
-/* Match stripe.dev exactly: the REGION carries z-index:-1 (a stacking context
-   behind the content); the fixed panel inside has NO z-index of its own and
-   inherits it. (z-index:-1 directly on a position:fixed element is what Safari
-   hides behind the page background.) */
-.site-footer.endless { position: relative; z-index: -1; height: 200vh; color: #e3e4e7; }
-@media (max-width: 720px) { .site-footer.endless { height: 130vh; } }
-/* the footer panel itself: fixed to the bottom of the viewport, behind the
-   content (z-index:-1). The .endless region above gives ~200vh of scroll room
-   so the content lifts off and reveals it (Stripe's mechanism). */
-.ef-inner {
-  position: fixed; left: 0; bottom: 0; width: 100%;
-  height: 100vh; height: 100svh;
-  display: flex; flex-direction: column; justify-content: space-between;
-  overflow: clip; isolation: isolate;
-  padding-top: clamp(2rem, 7vh, 5rem);
-  border-top: 1px solid var(--rail);
-  background: var(--accent); color: #e3e4e7; font-size: var(--text-sm);
+/* endless footer (canvas) — see footer.html + endless-footer.js. The region is a
+   tall z-index:-1 area the page content (opaque .wrapper, z-index:0) scrolls up and
+   off to reveal. The <canvas> is fixed full-viewport and repainted every frame; its
+   resolved background-color / color / font-family feed the canvas drawing. */
+.site-footer.endless { position: relative; z-index: -1; height: 300vh; color: #e3e4e7; }
+@media (max-width: 720px) { .site-footer.endless { height: 220vh; } }
+.ef-canvas {
+  position: fixed; inset: 0; width: 100%; height: 100%; display: block;
+  background-color: var(--accent);
+  color: rgba(255, 255, 255, .62);
+  font-family: Georgia, "Times New Roman", serif;
+}
+/* footer links revealed in a fixed bar at the top, over the canvas. A fade of the
+   panel color sits behind them so they stay readable over the wordmark stream. */
+.ef-links {
+  position: fixed; top: 0; left: 0; right: 0;
+  padding: clamp(1.4rem, 5vh, 3.2rem) 0 clamp(2rem, 7vh, 4.5rem);
+  font-size: var(--text-sm); color: #e3e4e7;
+  background: linear-gradient(to bottom, var(--accent) 0%, var(--accent) 55%,
+              color-mix(in srgb, var(--accent) 0%, transparent) 100%);
 }
 .site-footer .noise {
   position: absolute; inset: 0; pointer-events: none;
@@ -313,49 +313,6 @@ h1:first-child, h2:first-child { margin-top: 0; }
 }
 .site-footer a:hover { color: #fff; text-decoration-color: #fff; }
 .site-footer .ext { color: rgba(255, 255, 255, .5); margin-left: .45rem; }
-
-/* outlined wordmark over fading scanlines + hatch, bleeding off the bottom */
-.footer-mark {
-  position: relative; display: flex; justify-content: center; align-items: flex-end;
-  margin: 0; padding: 0; overflow: clip;
-}
-.footer-mark::before {
-  content: ""; position: absolute; inset: 0;
-  background-image: repeating-linear-gradient(to bottom,
-    rgba(255, 255, 255, .18) 0, rgba(255, 255, 255, .18) 1px,
-    transparent 1px, transparent 10px);
-  -webkit-mask-image: linear-gradient(to bottom, #000, transparent);
-          mask-image: linear-gradient(to bottom, #000, transparent);
-  opacity: .5;
-}
-.footer-mark::after {
-  content: ""; position: absolute; inset: 0; opacity: .18;
-  background-image: repeating-linear-gradient(45deg,
-    rgba(255, 255, 255, .2) 0, rgba(255, 255, 255, .2) 1.5px,
-    transparent 1.5px, transparent 4px);
-}
-.footer-mark span {
-  position: relative; font-family: var(--font-serif);
-  font-size: clamp(3rem, 17vw, 14rem); line-height: .92; letter-spacing: -.03em;
-  color: rgba(255, 255, 255, .06);
-  -webkit-text-stroke: 1.5px rgba(255, 255, 255, .5);
-  margin-bottom: -.06em; /* slight crop off the bottom edge */
-  opacity: 1; user-select: none; white-space: nowrap;
-}
-
-/* subtle reveal: the wordmark rises + fades in driven by --ef (0..1), set by
-   endless-footer.js from the footer region's scroll progress. Works in every
-   browser (scroll-driven CSS timelines freeze on a pinned/sticky element); if the
-   script never runs, --ef falls back to 1 so the wordmark is simply shown. */
-.ef-inner .footer-mark span {
-  /* opacity stays at the base .9 (always visible — never depends on JS); the
-     scroll handler only nudges a subtle rise via --ef, with an in-place fallback. */
-  transform: translateY(calc((1 - var(--ef, 1)) * 28px));
-  will-change: transform;
-}
-@media (prefers-reduced-motion: reduce) {
-  .ef-inner .footer-mark span { opacity: .9; transform: none; }
-}
 
 /* ---- Responsive -------------------------------------------------------- */
 @media (max-width: 640px) {
@@ -421,9 +378,10 @@ h1:first-child, h2:first-child { margin-top: 0; }
   }
 }
 
-/* No overflow on body/html — a non-visible overflow here makes body the scroll
-   container in Safari/Firefox and breaks the footer's position: sticky reveal.
-   Full-bleed elements clip themselves (.divider-hatch, .ef-inner, .footer-mark). */
+/* Clip horizontal overflow from full-bleed elements (e.g. .divider-hatch's 100vw).
+   Safe now that the footer is a fixed canvas, not position:sticky — overflow:clip
+   only breaks sticky, not fixed positioning. */
+body { overflow-x: clip; }
 
 /* ---- page frame: edge gutters with the 10px grid texture ---------------- */
 .page-frame { pointer-events: none; }
