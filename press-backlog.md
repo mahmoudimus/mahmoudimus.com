@@ -97,3 +97,55 @@ name — fine as background, weaker for a personal press page.
 - "eBay Reportedly Goes Shopping, Acquires Milo.com For $75 Million" — TechCrunch — 2010-12-02 — https://techcrunch.com/2010/12/02/ebay-reportedly-goes-shopping-acquires-milo-com-for-75-million/ — high — (not named; MA was early engineer)
 - "eBay Acquires Milo…" — eBay Inc. press release — 2010-12-02 — https://investors.ebayinc.com/investor-news/press-release-details/2010/EBay-Acquires-Milo-a-Leading-Local-Shopping-Engine/default.aspx — med — **VERIFY** — (not named)
 - "EBay Confirms Milo.com Acquisition" — MediaPost — 2010-12-02 — https://www.mediapost.com/publications/article/140509/ebay-confirms-milocom-acquisition.html — high — (not named)
+
+---
+
+# Round 2 (deeper sweep + verifications)
+
+## Canonical sources found (now on the public page)
+
+- **Forbes 2021 Next Billion-Dollar Startups** (canonical) — Forbes, Amy Feldman — 2021-10-12 — https://www.forbes.com/sites/amyfeldman/2021/10/12/next-billion-dollar-startups-2021/ — high (200) — replaced the VGS-blog link
+- **Goldman Sachs 100 Most Intriguing Entrepreneurs 2021** (non-Business-Wire) — StockTitan — 2021-10-14 — https://www.stocktitan.net/news/GS/very-good-security-vgs-honored-by-goldman-sachs-for-kr5ydag57lob.html — high (agent-fetched; 403 to curl) — Goldman has no per-honoree page
+
+## Verifications (previously flagged **VERIFY** → now CONFIRMED)
+
+- FinSMEs Series A / Visa / Series B / Series C — all CONFIRMED real (403 to bots, corroborated via search snippets)
+- Finextra "Plaid taps VGS for tokenization" — CONFIRMED — https://www.finextra.com/pressarticle/92653/plaid-taps-vgs-for-tokenization
+- LIFT99 fireside chat — CONFIRMED title "Why Ukraine is a place to be: exclusive fireside chat…" — https://www.facebook.com/LIFT99co/videos/910187646086041/ — date still unknown
+
+## New — coverage & profiles
+
+- "VGS: security and branding" — Finding Signals (Substack) — 2023-05-01 — https://findingsignals.substack.com/p/vgs-security-and-branding — high (200) — **on page**
+- "Cybersecurity Leadership: '2020 Has Been the Perfect Storm'" — BankInfoSecurity — 2020-11-18 — https://www.bankinfosecurity.com/cybersecurity-leadership-2020-has-been-perfect-storm-a-15388 — high (200) — **on page**
+
+## New — bylines (authored by him)
+
+- "The new standard for IoT security" — IoT Agenda / TechTarget — 2019-03-28 — https://internetofthingsagenda.techtarget.com/blog/IoT-Agenda/The-new-standard-for-IoT-security — high (200) — **on page**
+- TechTarget + SC Media contributor hubs exist but article lists are JS/Cloudflare-gated; only the IoT Agenda byline was recoverable — worth a manual browser dig: https://www.techtarget.com/contributor/Mahmoud-Abdelkader , https://www.scworld.com/contributor/mahmoud-abdelkader
+
+## New — podcasts & talks
+
+- "822: How Very Good Security Makes Data Unhackable" — Tech Talks Daily / Neil C. Hughes — 2019-04-09 — https://techblogwriter.libsyn.com/822-vgs (video https://www.youtube.com/watch?v=c_R7Qcqw4Og) — high (200) — **on page**
+- "THINK Business LIVE — Take 10: Jon Dwoskin Talks with Mahmoud Abdelkader" — Jon Dwoskin — 2022-03 — https://jondwoskin.com/2022/03/think-business-live-take-10-jon-dwoskin-talks-with-mahmoud-abdelkader/ — high (200) — **on page**
+- "Protecting sensitive information…" — Infosec "Cyber Work" Podcast — date: unknown — https://www.infosecinstitute.com/podcast/protecting-sensitive-information/ — med (403; agent-confirmed guest)
+- "How Very Good Security made PLG its competitive edge" — The Product-Led Sales Podcast — https://www.plgpodcast.com/1816140/10468330 — **DEAD (404)** — find the live episode URL before using
+- IT Arena talk (the YouTube one) confirmed as IT Arena Lviv 2019, Product Track — speaker page https://itarena.ua/speaker/mahmoud-abdelkader/ now 404s; YouTube recording is durable
+
+## New — awards / company press (med; mostly VGS-hosted)
+
+- "VGS Wins SINET 16 Innovator Award" — VGS blog — 2018-11-08 — https://www.verygoodsecurity.com/blog/posts/vgs-wins-sinet-16-innovator-award — high — **on page**
+- "Very Good Security Honored as an Inc. 5000 Fastest Growing Company" — VGS press — date: unknown — https://www.verygoodsecurity.com/press-releases/very-good-security-honored-as-an-inc-5000-fastest-growing-company — med — **VERIFY**
+- "VGS Listed as Finovate Awards Finalist for Best Enterprise Payments Solution" — VGS press — date: unknown — https://www.verygoodsecurity.com/press/vgs-listed-as-finovate-awards-finalist-for-best-enterprise-payments-solution — med — **VERIFY**
+
+## New — his own presence / profiles
+
+- GitHub — https://github.com/mahmoudimus — high — handle "mahmoudimus", bio "Cryptography, Reverse Engineering, Fintech and Privacy"
+- CB Insights investor profile — https://www.cbinsights.com/investor/mahmoud-abdelkader — med
+- Clarity.fm advisor profile — https://clarity.fm/mahmoudimus — med
+
+## Threads that came up empty (so they're not re-chased)
+
+- **Money20/20** keynote: NOT confirmed. He is NOT on the Money20/20 USA past-speakers/Hall-of-Fame page. Treat "he keynoted Money20/20" as unverified.
+- No Egypt/MENA-outlet coverage of this person found (namesake "Prof. Dr. Mahmoud H. Abdelkader" disambiguated out).
+- No verifiable talk/recording for: a16z, TechCrunch Disrupt, SaaStr, Finovate (the Finovate demo was presented by another VGS person), RSA, BSides, PyCon/DjangoCon, university lectures.
+- American Banker Visa piece does NOT quote him; RetailDive Balanced piece names a different co-founder. Excluded.
