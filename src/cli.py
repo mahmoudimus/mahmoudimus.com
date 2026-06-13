@@ -122,6 +122,10 @@ class PelicanSettings:
         default_factory=lambda: ["index", "tags", "categories", "authors", "archives"]
     )
     SECTIONS: list[tuple[str, str]] = field(default_factory=lambda: [("blog", "blog")])
+    # Sibling sites to cross-link in the footer/nav, as (label, root-relative path).
+    # Rendered against the root domain (OVERRIDDEN_SITEURL), so a sub-site (e.g. /til)
+    # can link to another (e.g. /blog). The landing already lists these via SECTIONS.
+    OTHER_SITES: list[tuple[str, str]] = field(default_factory=list)
     # Per-site index hero (zed theme); falls back to SITENAME / no tagline.
     INDEX_TITLE: str = ""
     INDEX_TAGLINE: str = ""
@@ -216,6 +220,7 @@ WeblogSettings = PelicanSettings(
         ("Archives", "archives"),
         ("Tags", "tags"),
     ],
+    OTHER_SITES=[("TIL", "til")],
     DIRECT_TEMPLATES=["index", "tags", "archives"],
     INDEX_TITLE="Hacker Moleskine",
     INDEX_TAGLINE="Notes on reverse engineering, systems, and writing fast code.",
@@ -233,6 +238,7 @@ TILSettings = PelicanSettings(
         ("Archives", "archives"),
         ("Tags", "tags"),
     ],
+    OTHER_SITES=[("Blog", "blog")],
     DIRECT_TEMPLATES=["index", "tags", "archives"],
     INDEX_TITLE="Today I Learned",
     INDEX_TAGLINE="Small discoveries, written down before I forget them.",

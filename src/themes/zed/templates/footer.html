@@ -18,6 +18,7 @@
           <nav class="f-line" aria-label="Site links">
             <span class="f-label">Site</span>
             <a href="{{ OVERRIDDEN_SITEURL or SITEURL }}/">Home</a>
+            {% for s in OTHER_SITES %}<a href="{{ OVERRIDDEN_SITEURL or SITEURL }}/{{ s[1] }}">{{ s[0] }}</a>{% endfor %}
             {% for section in SECTIONS %}<a href="{{ SITEURL }}/{{ section[1] }}">{{ section[0] }}</a>{% endfor %}
             {% if FEED_RSS %}<a href="{{ OVERRIDDEN_SITEURL or SITEURL }}/{{ FEED_RSS }}">RSS</a>{% endif %}
           </nav>
