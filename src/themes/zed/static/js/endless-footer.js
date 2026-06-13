@@ -167,23 +167,30 @@
       var tg0 = computeTargets({ footerTop: rect.top, vh: vh, dpr: dpr, maxW: maxW, m: m, sizeScale: curScale });
       jY = tg0.yTarget; kB = tg0.fontSize; clearH = tg0.clearHeight; rOff = tg0.r;
     }
-    // Reveal the (interactive) links bar once the footer fills the viewport. Use a
-    // small tolerance + hysteresis: the endless loop lands rect.top at ~0 (subpixel
-    // rounding can make it a hair positive), and without this the bar would flicker
-    // its pointer-events off right where you settle to click. Reveal near the top,
-    // and only hide again once well out of the footer.
-    if (links) {
-      var shown = links.classList.contains("is-revealed");
-      if (!shown && rect.top <= vh * 0.06) shown = true;
-      else if (shown && rect.top > vh * 0.5) shown = false;
-      links.classList.toggle("is-revealed", shown);
-    }
+    updateLinks(rect.top);
+  }
+
+  // Fade the menu in as the footer rises into view (top: vh -> vh*0.25) and make it
+  // interactive once the footer is the dominant thing on screen — so it shows as you
+  // reach the footer, not only deep in the endless scroll. Driven every frame from the
+  // rAF loop (not just scroll events), which stays smooth on iOS where scroll events
+  // are sparse during momentum.
+  var lastOpacity = -1, lastPE = "";
+  function updateLinks(top) {
+    if (!links) return;
+    var prog = (vh - top) / (vh * 0.75);
+    prog = prog < 0 ? 0 : prog > 1 ? 1 : prog;
+    var op = Math.round(prog * 100) / 100;
+    if (op !== lastOpacity) { links.style.opacity = op; lastOpacity = op; }
+    var pe = prog > 0.7 ? "auto" : "none";
+    if (pe !== lastPE) { links.style.pointerEvents = pe; lastPE = pe; }
   }
 
   function loop() {
     v += (jY - v) * 0.1;
     b += (kB - b) * 0.1;
     render();
+    updateLinks(footer.getBoundingClientRect().top); // per-frame so it's smooth on iOS
     raf = window.requestAnimationFrame(loop);
   }
 
@@ -192,6 +199,6 @@
   v = jY; b = kB; // start snapped to target (no ease-in from zero)
   window.addEventListener("scroll", onScroll, { passive: true });
   window.addEventListener("resize", function () { resize(); onScroll(); }, { passive: true });
-  if (reduce) { render(); }
+  if (reduce) { render(); updateLinks(footer.getBoundingClientRect().top); }
   else { raf = window.requestAnimationFrame(loop); }
 })();
