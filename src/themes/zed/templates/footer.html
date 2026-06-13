@@ -21,6 +21,12 @@
             {% for section in SECTIONS %}<a href="{{ SITEURL }}/{{ section[1] }}">{{ section[0] }}</a>{% endfor %}
             {% if FEED_RSS %}<a href="{{ OVERRIDDEN_SITEURL or SITEURL }}/{{ FEED_RSS }}">RSS</a>{% endif %}
           </nav>
+          <nav class="f-line" aria-label="More">
+            <span class="f-label">More</span>
+            <a href="{{ OVERRIDDEN_SITEURL or SITEURL }}/about/">About</a>
+            <a href="{{ OVERRIDDEN_SITEURL or SITEURL }}/attributions/">Attributions</a>
+            <a href="{{ OVERRIDDEN_SITEURL or SITEURL }}/press/">Press</a>
+          </nav>
           <nav class="f-line" aria-label="Elsewhere">
             <span class="f-label">Elsewhere</span>
             {% if GITHUB_URL %}<a href="{{ GITHUB_URL }}" target="_blank" rel="me noopener">GitHub<span class="ext">&#8599;</span></a>{% endif %}
