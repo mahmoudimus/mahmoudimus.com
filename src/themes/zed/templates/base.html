@@ -77,6 +77,10 @@
         {% for section in SECTIONS %}
         <li><a href="{{ SITEURL }}/{{ section[1] }}">{{ section[0] }}{{ fr.chevron() }}</a></li>
         {% endfor %}
+        <li class="drawer-sep" aria-hidden="true"><hr></li>
+        <li><a href="{{ OVERRIDDEN_SITEURL or SITEURL }}/about/">About{{ fr.chevron() }}</a></li>
+        <li><a href="{{ OVERRIDDEN_SITEURL or SITEURL }}/attributions/">Attributions{{ fr.chevron() }}</a></li>
+        <li><a href="{{ OVERRIDDEN_SITEURL or SITEURL }}/press/">Press{{ fr.chevron() }}</a></li>
       </ul>
     </nav>
 
