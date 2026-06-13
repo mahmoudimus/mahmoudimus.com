@@ -243,13 +243,15 @@ h1:first-child, h2:first-child { margin-top: 0; }
    tall z-index:-1 area the page content (opaque .wrapper, z-index:0) scrolls up and
    off to reveal. The <canvas> is fixed full-viewport and repainted every frame; its
    resolved background-color / color / font-family feed the canvas drawing. */
-.site-footer.endless { position: relative; z-index: -1; height: 300vh; color: #e3e4e7; }
-@media (max-width: 720px) { .site-footer.endless { height: 220vh; } }
+.site-footer.endless { position: relative; z-index: -1; height: 200vh; color: #e3e4e7; }
+/* accent field behind the canvas: the wordmark's knocked-out interiors reveal this,
+   so the letters read as white outlines on the accent (stripe.dev's technique). */
+.ef-backdrop { position: fixed; inset: 0; background: var(--accent); pointer-events: none; }
 .ef-canvas {
-  position: fixed; inset: 0; width: 100%; height: 100%; display: block;
-  background-color: var(--accent);
-  color: #ffffff; /* the wordmark stroke — opacity is faded per-depth in JS */
-  font-family: Georgia, "Times New Roman", serif;
+  position: fixed; top: .2vw; left: 50%; transform: translateX(-50%);
+  width: 100%; max-width: 1728px; height: 100vh; display: block; pointer-events: none;
+  color: #ffffff; /* the wordmark stroke colour */
+  font-family: "Agrandir", Georgia, "Times New Roman", serif;
 }
 /* footer links revealed in a fixed bar at the top, over the canvas. A fade of the
    panel color sits behind them so they stay readable over the wordmark stream. */

@@ -1,102 +1,139 @@
-/* Endless footer — a <canvas> wordmark drawn every animation frame from the scroll
-   position (stripe.dev's technique). The page content scrolls up and off the
-   z-index:-1 region to reveal it; the "mahmoudimus" wordmark recedes into a
-   perspective tunnel that advances as you scroll. It is driven purely by absolute
-   scroll position, so scrolling back up retraces it exactly (reversible) — no
-   scroll-jacking. The links bar stays pinned on top. No audio.
+/* Endless footer — a faithful port of stripe.dev's <EndlessFooter> to vanilla JS.
 
-   The scroll/perspective math is pure (computeFrame, project) and exported for tests. */
+   It is ONE wordmark, not a stack of copies. As you scroll into the tall z-index:-1
+   region, the wordmark scales and slides (its size/position are eased toward targets
+   derived purely from the scroll geometry, so scrolling up retraces it). Each frame
+   clears only the TOP slice of the canvas, so previous frames linger below — that
+   leftover trail is the receding "3D tunnel". Each glyph is stroked, then punched out
+   with destination-out, so the interiors are transparent and the accent backdrop shows
+   through: white outlines on accent. When the region bottoms out it loops by jumping
+   scroll back to the top (endless), with the font size modulated by sin() across loops
+   so the zoom feels continuous. No audio.
+
+   The scroll→target math is pure (computeTargets) and exported for tests. */
 (function () {
   "use strict";
 
   var TEXT = "mahmoudimus";
-  var FOCAL = 0.9; // perspective focal length (smaller = stronger perspective)
-  var DEPTH = 16; // how many wordmark copies deep the tunnel goes
-  var SPEED = 1.0; // tunnel periods advanced per half-viewport of scroll
 
-  // PURE: perspective scale for a copy at depth z (z >= 0). 1 at the camera, → 0 far away.
-  function project(z, focal) { return focal / (focal + z); }
-
-  // PURE: reversible tunnel phase from scroll geometry. Monotonic with scroll, so
-  // scrolling up decreases it and the render retraces exactly.
-  //   g = { into, vh }   into = px the region has scrolled into the viewport
-  function computeFrame(g) {
-    var into = g.into > 0 ? g.into : 0;
-    var phase = (into / (g.vh * 0.5)) * SPEED;
-    return { phase: phase };
+  // PURE: scroll geometry -> animation targets, mirroring stripe.dev's scroll handler.
+  //   s = { footerTop, vh, dpr, maxW, m }
+  //     footerTop = footer.getBoundingClientRect().top   (CSS px)
+  //     vh = innerHeight, dpr = devicePixelRatio, maxW = min(1728, innerWidth)
+  //     m  = how many times the region has looped (0 on the first pass)
+  // Returns device-pixel targets: fontSize (px), yTarget (baseline), clearHeight, r, p.
+  function computeTargets(s) {
+    var vh = s.vh, dpr = s.dpr, maxW = s.maxW, m = s.m;
+    var f = s.footerTop - vh;
+    var p = -((f - m * vh) / vh);
+    var t = (maxW / 6.35) * dpr;
+    if (m > 0) t -= t * Math.sin(p - 2.2) - 0.1 * t; // pulse the zoom across loops
+    var r = t - t / 3.6;
+    var o = vh * dpr + r - p * vh * dpr + m * vh * dpr;
+    var yTarget = m > 0 ? o + vh * dpr : o;
+    return { fontSize: t, yTarget: yTarget, clearHeight: o, r: r, p: p };
   }
 
   if (typeof module !== "undefined" && module.exports) {
-    module.exports = { computeFrame: computeFrame, project: project, FOCAL: FOCAL, DEPTH: DEPTH, SPEED: SPEED };
+    module.exports = { computeTargets: computeTargets, TEXT: TEXT };
     return; // running under Node for tests — no DOM below
   }
 
-  var region = document.querySelector(".site-footer.endless");
-  var canvas = region && region.querySelector(".ef-canvas");
-  if (!region || !canvas || !canvas.getContext) return;
+  var footer = document.querySelector(".site-footer.endless");
+  var canvas = footer && footer.querySelector(".ef-canvas");
+  if (!footer || !canvas || !canvas.getContext) return;
   var ctx = canvas.getContext("2d");
   var reduce = !!(window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches);
 
-  var dpr = 1, raf = 0;
-  var bg = "#3358f4", stroke = "rgba(255,255,255,0.62)", fam = 'Georgia, "Times New Roman", serif';
+  // live geometry
+  var dpr = 1, maxW = 1728, vh = window.innerHeight;
+  // looping + easing state (stripe.dev's refs: m, prevF, h, v, b, jY, kB, clearH, rOff)
+  var m = 0, prevF = 0, h = 0;
+  var v = 0, b = 0;            // eased baseline-y and font-size (device px)
+  var jY = 0, kB = 0;          // their targets
+  var clearH = 0, rOff = 0;    // the partial-clear height pieces (w, C)
+  var stroke = "#ffffff", fam = 'Georgia, "Times New Roman", serif';
+  var raf = 0;
 
   function readStyle() {
     var cs = getComputedStyle(canvas);
-    if (cs.backgroundColor && cs.backgroundColor !== "rgba(0, 0, 0, 0)") bg = cs.backgroundColor;
     if (cs.color) stroke = cs.color;
     if (cs.fontFamily) fam = cs.fontFamily;
   }
+
   function resize() {
-    dpr = Math.min(window.devicePixelRatio || 1, 2);
-    var w = Math.round(canvas.clientWidth * dpr), h = Math.round(canvas.clientHeight * dpr);
-    if (canvas.width !== w || canvas.height !== h) { canvas.width = w; canvas.height = h; }
+    maxW = Math.min(1728, window.innerWidth);
+    vh = window.innerHeight;
+    dpr = window.devicePixelRatio || 1;
+    var rect = canvas.getBoundingClientRect();
+    var w = Math.round(rect.width * dpr);
+    var hgt = Math.round(rect.height * dpr);
+    // only resize on a real change (>120px tolerance avoids mobile URL-bar thrash)
+    if (canvas.width !== w || Math.abs(canvas.height - hgt) > 120) {
+      canvas.width = w; canvas.height = hgt;
+    }
     readStyle();
   }
 
-  function draw() {
-    resize();
-    var w = canvas.width, h = canvas.height, vh = window.innerHeight;
-    var into = vh - region.getBoundingClientRect().top;
-
-    ctx.fillStyle = bg;
-    ctx.fillRect(0, 0, w, h);
-    ctx.strokeStyle = stroke; // white — without this the canvas defaults to black
-    ctx.textAlign = "center"; ctx.textBaseline = "middle"; ctx.lineJoin = "round";
-
-    // base font fitted so the nearest wordmark spans ~94% of the width
-    ctx.font = "700 100px " + fam;
-    var fitFont = 100 * (w * 0.94 / (ctx.measureText(TEXT).width || 1));
-
-    var phase = reduce ? 0 : computeFrame({ into: into, vh: vh }).phase;
-
-    // The bright white "hero" wordmark sits at heroY; a faint perspective tunnel of
-    // ghost copies recedes DOWN from just behind it to a vanishing point at the
-    // bottom. As you scroll, ghosts rise toward the hero and merge (reversible).
-    var heroY = h * 0.34, vanishY = h * 1.02;
-    var STEP = 0.5, N = 40;
-    var startI = Math.ceil(phase / STEP);
-    for (var k = N; k >= 1; k--) { // ghosts only; the very front is the hero
-      var z = (startI + k) * STEP - phase;
-      if (z <= 0.28) continue; // keep ghosts clear of the hero (no overlap)
-      var s = project(z, FOCAL);
-      var fs = fitFont * s;
-      if (fs < 2) continue;
-      ctx.globalAlpha = Math.pow(s, 1.8) * 0.6; // faint, fading with depth
-      ctx.lineWidth = Math.max(0.4, 1.5 * dpr * s);
-      ctx.font = "700 " + fs + "px " + fam;
-      ctx.strokeText(TEXT, w / 2, vanishY + (heroY - vanishY) * s);
+  // draw one line glyph-by-glyph: stroke, then knock the interior out (transparent).
+  function drawLine(text, x, y, ls) {
+    ctx.clearRect(0, 0, canvas.width, clearH - rOff); // partial clear -> trailing tunnel
+    var cx = x;
+    for (var i = 0; i < text.length; i++) {
+      var ch = text.charAt(i);
+      ctx.globalCompositeOperation = "source-over";
+      ctx.strokeText(ch, cx, y);
+      ctx.globalCompositeOperation = "destination-out";
+      ctx.fillText(ch, cx, y);
+      cx += ctx.measureText(ch).width + ls;
     }
-    // the hero: the readable name, crisp bright white, stable
-    ctx.globalAlpha = 0.96;
-    ctx.lineWidth = Math.max(1.5, 2.4 * dpr);
-    ctx.font = "700 " + fitFont + "px " + fam;
-    ctx.strokeText(TEXT, w / 2, heroY);
-    ctx.globalAlpha = 1;
-    canvas.dataset.ef = JSON.stringify({ into: Math.round(into), phase: +phase.toFixed(2) });
+    ctx.globalCompositeOperation = "source-over";
   }
 
-  function frame() { draw(); raf = window.requestAnimationFrame(frame); }
-  window.addEventListener("resize", resize, { passive: true });
+  function render() {
+    ctx.font = "700 " + b + "px " + fam;
+    var ls = -b / 20; // tight letter-spacing, proportional to size
+    var width = ctx.measureText(TEXT).width;
+    var total = width + ls * (TEXT.length - 1);
+    ctx.strokeStyle = stroke;
+    ctx.fillStyle = "#000"; // colour irrelevant under destination-out
+    ctx.lineWidth = Math.max(1, 2.5 * dpr);
+    drawLine(TEXT, canvas.width / 2 - total / 2 + ls / 2, v, ls);
+    canvas.dataset.ef = JSON.stringify({ m: m, b: Math.round(b), v: Math.round(v) });
+  }
+
+  function onScroll() {
+    var rect = footer.getBoundingClientRect();
+    var prev = prevF;
+    var f = rect.top - vh;
+    prevF = f;
+    var tg = computeTargets({ footerTop: rect.top, vh: vh, dpr: dpr, maxW: maxW, m: m });
+    jY = tg.yTarget; kB = tg.fontSize; clearH = tg.clearHeight; rOff = tg.r;
+    h = f - prev;
+    if (rect.bottom < vh + 1) {
+      // bottomed out — loop endlessly: jump scroll back to the region top and snap.
+      m += 1;
+      window.scrollTo(0, footer.offsetTop);
+      var tg2 = computeTargets({ footerTop: footer.getBoundingClientRect().top, vh: vh, dpr: dpr, maxW: maxW, m: m });
+      v = tg2.yTarget; b = tg2.fontSize; jY = tg2.yTarget; kB = tg2.fontSize;
+      clearH = tg2.clearHeight; rOff = tg2.r;
+    } else if (h > 0 && h < 0.5 * vh) {
+      m = 0; // scrolled back up near the top — reset the loop counter
+    }
+  }
+
+  function loop() {
+    v += (jY - v) * 0.1;
+    b += (kB - b) * 0.1;
+    render();
+    raf = window.requestAnimationFrame(loop);
+  }
+
   resize();
-  raf = window.requestAnimationFrame(frame);
+  onScroll();
+  v = jY; b = kB; // start snapped to target (no ease-in from zero)
+  window.addEventListener("scroll", onScroll, { passive: true });
+  window.addEventListener("resize", function () { resize(); onScroll(); }, { passive: true });
+  if (reduce) { render(); }
+  else { raf = window.requestAnimationFrame(loop); }
 })();
