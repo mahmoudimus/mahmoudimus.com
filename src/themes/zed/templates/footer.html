@@ -1,15 +1,14 @@
 {% import "_macros.html" as fr %}
-{# Endless footer: `.site-footer.endless` is a tall z-index:-1 region the page content
-   scrolls up and off to reveal. The <canvas> (fixed, full-viewport) is drawn by
-   endless-footer.js — the "mahmoudimus" wordmark streaming upward, looping endlessly.
-   The links live OUTSIDE that z-index:-1 region (so they stay clickable) and are
-   revealed by endless-footer.js once the footer fills the viewport. #}
+{# Endless footer: `.site-footer.endless` is a tall reveal region the page content
+   scrolls up and off. The fixed, full-viewport <canvas> + backdrop (z-index:-1) carry
+   the "mahmoudimus" wordmark looping endlessly. The links bar starts at the top of the
+   region (on the revealed blue) and `position: sticky` pins it to the top — so it
+   travels up and becomes the nav header as you scroll into the endless region. #}
 <footer class="site-footer endless">
   <span class="ef-backdrop" aria-hidden="true"></span>
   <canvas class="ef-canvas" aria-hidden="true"></canvas>
-</footer>
 
-<div class="ef-links">
+  <div class="ef-links">
     <div class="container">
       <div class="footer-compact">
         <p class="f-line f-brand-line">{{ AUTHOR }} &copy; {{ CURRENT_YEAR }}
@@ -32,4 +31,5 @@
         </div>
       </div>
     </div>
-</div>
+  </div>
+</footer>

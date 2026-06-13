@@ -65,7 +65,6 @@
 
   var footer = document.querySelector(".site-footer.endless");
   var canvas = footer && footer.querySelector(".ef-canvas");
-  var links = document.querySelector(".ef-links");
   if (!footer || !canvas || !canvas.getContext) return;
   var ctx = canvas.getContext("2d");
   var reduce = !!(window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches);
@@ -167,30 +166,12 @@
       var tg0 = computeTargets({ footerTop: rect.top, vh: vh, dpr: dpr, maxW: maxW, m: m, sizeScale: curScale });
       jY = tg0.yTarget; kB = tg0.fontSize; clearH = tg0.clearHeight; rOff = tg0.r;
     }
-    updateLinks(rect.top);
-  }
-
-  // Fade the menu in as the footer rises into view (top: vh -> vh*0.25) and make it
-  // interactive once the footer is the dominant thing on screen — so it shows as you
-  // reach the footer, not only deep in the endless scroll. Driven every frame from the
-  // rAF loop (not just scroll events), which stays smooth on iOS where scroll events
-  // are sparse during momentum.
-  var lastOpacity = -1, lastPE = "";
-  function updateLinks(top) {
-    if (!links) return;
-    var prog = (vh - top) / (vh * 0.75);
-    prog = prog < 0 ? 0 : prog > 1 ? 1 : prog;
-    var op = Math.round(prog * 100) / 100;
-    if (op !== lastOpacity) { links.style.opacity = op; lastOpacity = op; }
-    var pe = prog > 0.7 ? "auto" : "none";
-    if (pe !== lastPE) { links.style.pointerEvents = pe; lastPE = pe; }
   }
 
   function loop() {
     v += (jY - v) * 0.1;
     b += (kB - b) * 0.1;
     render();
-    updateLinks(footer.getBoundingClientRect().top); // per-frame so it's smooth on iOS
     raf = window.requestAnimationFrame(loop);
   }
 
@@ -199,6 +180,6 @@
   v = jY; b = kB; // start snapped to target (no ease-in from zero)
   window.addEventListener("scroll", onScroll, { passive: true });
   window.addEventListener("resize", function () { resize(); onScroll(); }, { passive: true });
-  if (reduce) { render(); updateLinks(footer.getBoundingClientRect().top); }
+  if (reduce) { render(); }
   else { raf = window.requestAnimationFrame(loop); }
 })();
