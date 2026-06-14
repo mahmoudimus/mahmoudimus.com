@@ -77,13 +77,16 @@
   var jY = 0, kB = 0;          // their easing targets
   var clearH = 0, rOff = 0;    // the partial-clear height pieces
   var curText = TEXT, curScale = 1; // current wordmark + its width-fit factor
-  var stroke = "#ffffff", fam = 'Georgia, "Times New Roman", serif';
+  var stroke = "#ffffff", field = "#3358f4", fam = 'Georgia, "Times New Roman", serif';
   var raf = 0;
 
   function readStyle() {
     var cs = getComputedStyle(canvas);
     if (cs.color) stroke = cs.color;
     if (cs.fontFamily) fam = cs.fontFamily;
+    // the accent field colour (canvas background) — painted INTO the bitmap so the
+    // field is never transparent (no page-bg flash through it on iOS during scroll).
+    if (cs.backgroundColor && cs.backgroundColor !== "rgba(0, 0, 0, 0)") field = cs.backgroundColor;
   }
 
   function resize() {
@@ -118,7 +121,12 @@
 
   // draw one line glyph-by-glyph: stroke, then knock the interior out (transparent).
   function drawLine(text, x, y, ls) {
-    ctx.clearRect(0, 0, canvas.width, clearH - rOff); // partial clear -> trailing tunnel
+    // repaint the top slice with the OPAQUE accent (was clearRect → transparent). Keeps
+    // the receding-trail effect (only the top slice is repainted) while ensuring the
+    // field is never transparent, so nothing flashes through it during scroll.
+    ctx.globalCompositeOperation = "source-over";
+    ctx.fillStyle = field;
+    ctx.fillRect(0, 0, canvas.width, clearH - rOff);
     var cx = x;
     for (var i = 0; i < text.length; i++) {
       var ch = text.charAt(i);
