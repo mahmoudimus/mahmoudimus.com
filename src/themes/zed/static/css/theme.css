@@ -245,11 +245,19 @@ h1:first-child, h2:first-child { margin-top: 0; }
    content); the links bar is sticky and rides up to become the nav header. */
 .site-footer.endless { position: relative; height: 200vh; color: #e3e4e7; }
 /* accent field behind the canvas: the wordmark's knocked-out interiors reveal this,
-   so the letters read as white outlines on the accent. */
-.ef-backdrop { position: fixed; inset: 0; z-index: -1; background: var(--accent); pointer-events: none; }
+   so the letters read as white outlines on the accent. will-change pins it to its own
+   GPU layer so it doesn't flash the page bg through during scroll. */
+.ef-backdrop {
+  position: fixed; inset: 0; z-index: -1; background: var(--accent); pointer-events: none;
+  will-change: transform;
+}
 .ef-canvas {
   position: fixed; top: .2vw; left: 50%; transform: translateX(-50%); z-index: -1;
   width: 100%; max-width: 1728px; height: 100vh; display: block; pointer-events: none;
+  /* the canvas clears its top slice to transparent every frame; give it an accent
+     background of its own so that transparency shows accent (not the page bg flashing
+     white during scroll compositing) without depending on the backdrop layer. */
+  background: var(--accent);
   color: #ffffff; /* the wordmark stroke colour */
   font-family: bricolage, "Helvetica Neue", Arial, sans-serif;
 }
