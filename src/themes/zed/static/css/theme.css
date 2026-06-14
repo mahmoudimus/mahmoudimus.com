@@ -90,6 +90,8 @@ h1:first-child, h2:first-child { margin-top: 0; }
   padding: .4rem .7rem; border-radius: 8px; transition: color .15s, background .15s;
 }
 .nav a:hover { color: var(--text); background: var(--surface-2); text-decoration: none; }
+/* cross-site nav link arrow (e.g. TIL ↗ from the blog) */
+.nav .ext { font-size: .82em; opacity: .55; margin-left: .18rem; vertical-align: text-top; }
 
 .theme-toggle {
   display: inline-grid; place-items: center;
