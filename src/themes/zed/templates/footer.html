@@ -1,11 +1,11 @@
 {% import "_macros.html" as fr %}
 {# Endless footer: `.site-footer.endless` is a tall reveal region the page content
-   scrolls up and off. A single fixed, full-viewport, *transparent* <canvas> (z-index:-1)
-   carries the "mahmoudimus" wordmark looping endlessly; the accent behind it is the
-   body's base background (see theme.css), so there's no second fixed layer to flicker.
-   The links bar starts at the top of the region (on the revealed blue) and
-   `position: sticky` pins it to the top — so it travels up and becomes the nav header. #}
+   scrolls up and off. The fixed, full-viewport <canvas> + backdrop (z-index:-1) carry
+   the "mahmoudimus" wordmark looping endlessly. The links bar starts at the top of the
+   region (on the revealed blue) and `position: sticky` pins it to the top — so it
+   travels up and becomes the nav header as you scroll into the endless region. #}
 <footer class="site-footer endless">
+  <span class="ef-backdrop" aria-hidden="true"></span>
   <canvas class="ef-canvas" aria-hidden="true"></canvas>
 
   <div class="ef-links">
