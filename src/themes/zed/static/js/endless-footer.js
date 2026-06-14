@@ -78,6 +78,7 @@
   var clearH = 0, rOff = 0;    // the partial-clear height pieces
   var curText = TEXT, curScale = 1; // current wordmark + its width-fit factor
   var stroke = "#ffffff", field = "#3358f4", fam = 'Georgia, "Times New Roman", serif';
+  var lastDrawY = null;             // last drawn baseline, to detect scroll jumps
   var raf = 0;
 
   function readStyle() {
@@ -121,12 +122,16 @@
 
   // draw one line glyph-by-glyph: stroke, then knock the interior out (transparent).
   function drawLine(text, x, y, ls) {
-    // repaint the top slice with the OPAQUE accent (was clearRect → transparent). Keeps
-    // the receding-trail effect (only the top slice is repainted) while ensuring the
-    // field is never transparent, so nothing flashes through it during scroll.
+    // Repaint with the OPAQUE accent (was clearRect → transparent, which flashed white).
+    // Normally only the top slice is repainted, leaving the receding trail. But if the
+    // baseline JUMPED since the last frame — the endless-loop snap, or iOS momentum
+    // catch-up frames — repaint the WHOLE canvas instead, so the trail can't pile up
+    // into an overlapping mess (the iOS flicker). Smooth scroll keeps the tunnel.
     ctx.globalCompositeOperation = "source-over";
     ctx.fillStyle = field;
-    ctx.fillRect(0, 0, canvas.width, clearH - rOff);
+    var jumped = lastDrawY === null || Math.abs(y - lastDrawY) > canvas.height * 0.35;
+    ctx.fillRect(0, 0, canvas.width, jumped ? canvas.height : clearH - rOff);
+    lastDrawY = y;
     var cx = x;
     for (var i = 0; i < text.length; i++) {
       var ch = text.charAt(i);
