@@ -39,15 +39,19 @@ For interviews, quotes, or speaking, the fastest way to reach me is email: [m(AT
 ## Podcasts & talks
 
 - [Safeguarding the World's Data](https://podcasts.apple.com/us/podcast/mahmoud-abdelkader-ceo-co-founder-very-good-security/id1042827113?i=1000528495084) — Wharton FinTech Podcast (Jul 2021)
-- [Exploring the cutting edge of privacy and encryption](https://stackoverflow.blog/2021/07/30/podcast-632-exploring-the-cutting-edge-of-privacy-and-encryption-with-very-good-security/) — The Stack Overflow Podcast (Jul 2021) · [archived](https://web.archive.org/web/https://stackoverflow.blog/2021/07/30/podcast-632-exploring-the-cutting-edge-of-privacy-and-encryption-with-very-good-security/)
-- [The VGS origin story](https://codestory.co/podcast/bonus-mahmoud-abdelkader-very-good-security-vgs/) — Code Story (Oct 2021) · [archived](https://web.archive.org/web/https://codestory.co/podcast/bonus-mahmoud-abdelkader-very-good-security-vgs/)
+- [Exploring the cutting edge of privacy and encryption](https://podcasts.apple.com/us/podcast/exploring-the-cutting-edge-of-privacy-and/id1483510527?i=1000530475563) — The Stack Overflow Podcast (Jul 2021)
+- [The VGS origin story](https://podcasts.apple.com/us/podcast/s5-bonus-mahmoud-abdelkader-very-good-security-vgs/id1466861744?i=1000538562008) — Code Story (Oct 2021)
 - [CEO & co-founder of Very Good Security](https://podcasts.apple.com/gb/podcast/mahmoud-abdelkader-ceo-and-co-founder-of-very-good-security/id1354145110?i=1000524733807) — Secure Talk (Jun 2021)
+- [Mahmoud Abdelkader of Very Good Security](https://podcasts.apple.com/us/podcast/episode-317-mahmoud-abdelkader-from-very-good-security/id970720499?i=1000476061576) — Bank On It (May 2020)
+- [Take 10: Jon Dwoskin talks with Mahmoud Abdelkader](https://podcasts.apple.com/us/podcast/security-first/id1332492562?i=1000580555234) — The Jon Dwoskin Experience (2022)
+- [Fintech Fridays: transforming web security](https://podcasts.apple.com/us/podcast/fintech-fridays-transforming-web-security-with-mahmoud/id1316769266?i=1000499162356) — Village Global (Sep 2018)
+- [Data security in payments](https://podcasts.apple.com/us/podcast/data-security-in-payments-with-mahmoud-abdelkader-of/id1393798769?i=1000489456583) — PayPod / Payments Industry Podcast (Aug 2020)
+- [Protecting sensitive information](https://podcasts.apple.com/us/podcast/protecting-sensitive-information-growing-data-regulations/id1419689068?i=1000495343202) — Infosec Cyber Work
 - [How Very Good Security makes data unhackable](https://techblogwriter.libsyn.com/822-vgs) — Tech Talks Daily (Apr 2019) · [archived](https://web.archive.org/web/https://techblogwriter.libsyn.com/822-vgs)
-- [Mahmoud Abdelkader of Very Good Security](https://medium.com/bank-on-it/episode-317-remote-mahmoud-abdelkader-from-very-good-security-17a2efca064c) — Bank On It (May 2020)
-- [THINK Business LIVE — Take 10](https://jondwoskin.com/2022/03/think-business-live-take-10-jon-dwoskin-talks-with-mahmoud-abdelkader/) — Jon Dwoskin (Mar 2022) · [archived](https://web.archive.org/web/https://jondwoskin.com/2022/03/think-business-live-take-10-jon-dwoskin-talks-with-mahmoud-abdelkader/)
+- [A new paradigm for data security](https://em360tech.com/podcast/very-good-security-new-paradigm-data-security) — EM360 (Aug 2020) · [archived](https://web.archive.org/web/https://em360tech.com/podcast/very-good-security-new-paradigm-data-security)
+- [Inside the Vault: The Payments Security Podcast](https://podcasts.apple.com/us/podcast/inside-the-vault/id1534035954) — VGS
 - [Nail your product-market fit and build an impactful company](https://www.youtube.com/watch?v=QUXJqBcGVPg) — talk, IT Arena, Lviv (2019) · [archived](https://web.archive.org/web/https://www.youtube.com/watch?v=QUXJqBcGVPg)
 - [Your "Yellow Brick Road" to building a trusted fintech](https://www.verygoodsecurity.com/learn/your-yellow-brick-road-to-building-a-trusted-fintech-webinar) — VGS webinar · [archived](https://web.archive.org/web/https://www.verygoodsecurity.com/learn/your-yellow-brick-road-to-building-a-trusted-fintech-webinar)
-- [Inside the Vault: The Payments Security Podcast](https://podcasts.apple.com/us/podcast/inside-the-vault/id1534035954) — VGS
 
 ## Earlier career
 
