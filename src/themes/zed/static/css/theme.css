@@ -8,7 +8,12 @@ html { -webkit-text-size-adjust: 100%; scrollbar-gutter: stable;
 
 body {
   margin: 0;
-  background: transparent;
+  /* The accent is the page's base background (constant across themes). The opaque
+     .wrapper (z-index:0, var(--bg)) covers it for all real content; it only shows in
+     the endless-footer reveal region, behind the transparent fixed canvas. This is a
+     base paint layer, not a composited fixed element, so iOS never desyncs it during
+     momentum scroll — the trick stripe.dev uses instead of a separate backdrop. */
+  background: var(--accent);
   color: var(--text);
   font-family: var(--font-body);
   font-size: var(--text-base);
@@ -243,23 +248,19 @@ h1:first-child, h2:first-child { margin-top: 0; }
    cropped by the bottom edge — all lifted from zed's footer markup. */
 /* endless footer (canvas) — see footer.html + endless-footer.js. The region is a
    tall reveal area the page content (opaque .wrapper, z-index:0) scrolls up and off.
-   The backdrop + <canvas> are fixed full-viewport at z-index:-1 (revealed behind the
-   content); the links bar is sticky and rides up to become the nav header. */
+   A SINGLE transparent <canvas> is fixed full-viewport at z-index:-1 (revealed behind
+   the content); the accent behind it is the body's base background, not a second fixed
+   layer. The links bar is sticky and rides up to become the nav header. This mirrors
+   stripe.dev: one transparent fixed canvas over a stable base colour — no separate
+   backdrop and no opaque-fixed canvas, the two layers iOS used to flicker out of sync. */
 .site-footer.endless { position: relative; height: 200vh; color: #e3e4e7; }
-/* accent field behind the canvas: the wordmark's knocked-out interiors reveal this,
-   so the letters read as white outlines on the accent. will-change pins it to its own
-   GPU layer so it doesn't flash the page bg through during scroll. */
-.ef-backdrop {
-  position: fixed; inset: 0; z-index: -1; background: var(--accent); pointer-events: none;
-  will-change: transform;
-}
 .ef-canvas {
   position: fixed; top: .2vw; left: 50%; transform: translateX(-50%); z-index: -1;
   width: 100%; max-width: 1728px; height: 100vh; display: block; pointer-events: none;
-  /* the canvas clears its top slice to transparent every frame; give it an accent
-     background of its own so that transparency shows accent (not the page bg flashing
-     white during scroll compositing) without depending on the backdrop layer. */
-  background: var(--accent);
+  /* Transparent: the wordmark's knocked-out interiors (and the canvas's cleared top
+     slice) reveal the body's accent base background — white outlines on accent. No
+     background of its own, so the canvas isn't an opaque composited layer that lags. */
+  background: transparent;
   color: #ffffff; /* the wordmark stroke colour */
   font-family: bricolage, "Helvetica Neue", Arial, sans-serif;
 }
@@ -274,12 +275,6 @@ h1:first-child, h2:first-child { margin-top: 0; }
   font-size: var(--text-sm); color: #e3e4e7;
   background: linear-gradient(to bottom, var(--accent) 0%, var(--accent) 70%,
               color-mix(in srgb, var(--accent) 0%, transparent) 100%);
-  /* Pin the bar to its own GPU layer so iOS doesn't repaint it against the
-     every-frame canvas during scroll — that recompositing flickered the sticky
-     header in and out. (translateZ doesn't disturb sticky: its reference is the
-     scroll container, not the element's own transform.) */
-  transform: translateZ(0);
-  -webkit-transform: translateZ(0);
 }
 .site-footer .noise {
   position: absolute; inset: 0; pointer-events: none;
