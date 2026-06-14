@@ -10,6 +10,9 @@
       {% for section in SECTIONS %}
         <a href="{{ SITEURL }}/{{ section[1] }}">{{ section[0] }}</a>
       {% endfor %}
+      {% for s in OTHER_SITES %}
+        <a href="{{ OVERRIDDEN_SITEURL or SITEURL }}/{{ s[1] }}">{{ s[0] }}<span class="ext" aria-hidden="true">&#8599;</span></a>
+      {% endfor %}
     </nav>
 
     <button class="theme-toggle" type="button" aria-label="Toggle color theme" title="Toggle theme">
