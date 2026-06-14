@@ -274,6 +274,12 @@ h1:first-child, h2:first-child { margin-top: 0; }
   font-size: var(--text-sm); color: #e3e4e7;
   background: linear-gradient(to bottom, var(--accent) 0%, var(--accent) 70%,
               color-mix(in srgb, var(--accent) 0%, transparent) 100%);
+  /* Pin the bar to its own GPU layer so iOS doesn't repaint it against the
+     every-frame canvas during scroll — that recompositing flickered the sticky
+     header in and out. (translateZ doesn't disturb sticky: its reference is the
+     scroll container, not the element's own transform.) */
+  transform: translateZ(0);
+  -webkit-transform: translateZ(0);
 }
 .site-footer .noise {
   position: absolute; inset: 0; pointer-events: none;
