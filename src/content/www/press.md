@@ -11,6 +11,10 @@ For interviews, quotes, or speaking, the fastest way to reach me is email: [m(AT
 - [Goldman Sachs 100 Most Intriguing Entrepreneurs of 2021](https://www.stocktitan.net/news/GS/very-good-security-vgs-honored-by-goldman-sachs-for-kr5ydag57lob.html) — 2021 Builders + Innovators Summit (Oct 2021) · [archived](https://web.archive.org/web/https://www.stocktitan.net/news/GS/very-good-security-vgs-honored-by-goldman-sachs-for-kr5ydag57lob.html)
 - [VGS wins the SINET 16 Innovator Award](https://www.verygoodsecurity.com/blog/posts/vgs-wins-sinet-16-innovator-award) — SINET (2018) · [archived](https://web.archive.org/web/https://www.verygoodsecurity.com/blog/posts/vgs-wins-sinet-16-innovator-award)
 
+## Patents
+
+- [US&nbsp;11,689,508 — System and method for identifying, storing, transmitting, and operating on data securely](https://patentimages.storage.googleapis.com/13/da/8c/56fc6522a11653/US11689508.pdf)
+
 ## VGS — funding & milestones
 
 - [Very Good Security makes data "unhackable" with $8.5M from Andreessen Horowitz](https://techcrunch.com/2018/08/28/very-good-security/) — TechCrunch (Aug 2018) — *Series A* · [archived](https://web.archive.org/web/https://techcrunch.com/2018/08/28/very-good-security/)

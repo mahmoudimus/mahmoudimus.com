@@ -7,7 +7,7 @@ Hi! I'm Mahmoud Abdelkader ([pronounced](media/misc/mahmoud-pronunciation.mp3) [
 
 ## Background
 
-I am an entrepreneur and a software engineer. I am the co-founder of [VGS](https://vgs.io) (formerly known as [Very Good Security](https://verygoodsecurity.com)), where I served as CEO from 2016 until 2023 before stepping back into an advisory role. Some of the data-security work there is patented — I'm a named inventor on [US&nbsp;11,689,508](https://patentimages.storage.googleapis.com/13/da/8c/56fc6522a11653/US11689508.pdf). Before that, I was the CTO and co-founder of Balanced Payments, a graduate of [Y&nbsp;Combinator](http://ycombinator.com)'s Winter 2011 class, which exited to [Stripe](https://stripe.com) in 2015.
+I am an entrepreneur and a software engineer. I am the co-founder of [VGS](https://vgs.io) (formerly known as [Very Good Security](https://verygoodsecurity.com)), where I served as CEO from 2016 until 2023 before stepping back into an advisory role. Before that, I was the CTO and co-founder of Balanced Payments, a graduate of [Y&nbsp;Combinator](http://ycombinator.com)'s Winter 2011 class, which exited to [Stripe](https://stripe.com) in 2015.
 
 I dabbled in e-commerce as an early employee at [Milo.com](https://web.archive.org/web/20110228063546/http://milo.com/), which was [acquired](http://techcrunch.com/2010/12/02/confirmed-ebay-acquires-milo-for-75-million-investors-make-a-killing/) by [eBay](https://ebay.com) in 2010 to power their eBay Local initiative.
 
