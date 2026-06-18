@@ -60,7 +60,6 @@ For interviews, quotes, or speaking, the fastest way to reach me is email: [m(AT
 ## Earlier career
 
 - [Y Combinator-backed Balanced raises $1.4M for marketplace payments](https://techcrunch.com/2012/11/16/balanced-marketplace-payments/) — TechCrunch (Nov 2012) · [archived](https://web.archive.org/web/https://techcrunch.com/2012/11/16/balanced-marketplace-payments/)
-- [Balanced strikes a transition deal with Stripe](https://techcrunch.com/2015/03/13/balanced-is-closing-its-marketplace-payment-platform-in-90-days-strikes-transition-deal-with-rival-stripe/) — TechCrunch (Mar 2015) · [archived](https://web.archive.org/web/https://techcrunch.com/2015/03/13/balanced-is-closing-its-marketplace-payment-platform-in-90-days-strikes-transition-deal-with-rival-stripe/)
 - [eBay acquires Milo.com for $75M](https://techcrunch.com/2010/12/02/ebay-reportedly-goes-shopping-acquires-milo-com-for-75-million/) — TechCrunch (Dec 2010) · [archived](https://web.archive.org/web/https://techcrunch.com/2010/12/02/ebay-reportedly-goes-shopping-acquires-milo-com-for-75-million/)
 
 ## Press kit
