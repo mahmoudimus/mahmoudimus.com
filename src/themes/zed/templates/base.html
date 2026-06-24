@@ -45,6 +45,11 @@
     <link rel="stylesheet" href="{{ SITEURL }}/theme/css/sig-viz.css?v={{ ASSET_VERSION }}">
     <script defer src="{{ SITEURL }}/theme/js/sig-viz.js?v={{ ASSET_VERSION }}"></script>
     {% endif %}
+    {% if article is defined or page is defined %}
+    {# Footnote popovers: cmark-gfm renders the footnote list; footnotes.js turns
+       the refs into popovers and hides the list (progressive enhancement). #}
+    <link rel="stylesheet" href="{{ SITEURL }}/theme/css/footnotes.css?v={{ ASSET_VERSION }}">
+    {% endif %}
   </head>
 
   <body{% block body_attrs %}{% endblock %}>
@@ -84,6 +89,9 @@
       </ul>
     </nav>
 
+    {% if article is defined or page is defined %}
+    <script type="module" src="{{ SITEURL }}/theme/js/footnotes.js?v={{ ASSET_VERSION }}"></script>
+    {% endif %}
     <script src="{{ SITEURL }}/theme/js/theme-toggle.js?v={{ ASSET_VERSION }}"></script>
     <script src="{{ SITEURL }}/theme/js/drawer.js?v={{ ASSET_VERSION }}"></script>
     <script defer src="{{ SITEURL }}/theme/js/endless-footer.js?v={{ ASSET_VERSION }}"></script>

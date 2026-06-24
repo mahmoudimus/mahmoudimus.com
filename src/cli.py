@@ -108,7 +108,7 @@ class PelicanSettings:
         default_factory=lambda: str(cwd / "themes" / os.environ.get("BLOG_THEME", "zed"))
     )
     PLUGIN_PATHS: list = field(default_factory=lambda: [str(cwd / "plugins")])
-    PLUGINS: list = field(default_factory=lambda: ["rst_gist", "gfm"])
+    PLUGINS: list = field(default_factory=lambda: ["rst_gist", "gfm", "footnotes"])
 
     # Other settings
     # Cache-busting token for CSS/JS links (see _asset_version).

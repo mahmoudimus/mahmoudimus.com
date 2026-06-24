@@ -1,0 +1,75 @@
+/* Footnote popovers (progressive enhancement).
+
+   cmark-gfm renders `[^1]` as <sup class="footnote-ref"><a data-footnote-ref>..</a></sup>
+   plus a <section class="footnotes"> list. footnotes.js turns each ref into a
+   popover trigger and adds `fn-js` to <html>; the list is then hidden, and shown
+   again for print / no-JS. Colors come from the theme tokens so the popover
+   tracks light/dark via palette.css. */
+
+/* Hide the bottom footnotes list once the popovers are live. */
+.fn-js .footnotes {
+  display: none;
+}
+
+/* The interactive reference: replace the number with a small ••• marker. */
+.footnote-ref--interactive {
+  cursor: pointer;
+  text-decoration: none;
+}
+/* cmark wraps the ref in <sup>; once it carries the interactive ••• marker we
+   want it inline on the baseline, next to the text, not raised and shrunk. */
+.footnote-ref--inline {
+  vertical-align: baseline;
+  font-size: inherit;
+}
+.footnote-ref--interactive::after {
+  content: "[\2022\2022\2022]"; /* [•••] */
+  display: inline;
+  font-size: 0.9em;
+  font-weight: 400;
+  letter-spacing: 0.04em;
+  vertical-align: baseline;
+  color: var(--link);
+  transition: color 0.15s ease;
+}
+.footnote-ref--interactive:hover::after,
+.footnote-ref--active::after {
+  color: var(--link-hover);
+}
+
+/* The popover itself: appended to <body>, positioned by Floating UI. */
+.footnote-popover {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 50;
+  max-width: min(22rem, calc(100vw - 2rem));
+  margin: 0;
+  padding: 0.6rem 0.85rem;
+  background: var(--surface);
+  color: var(--text);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  font-family: var(--font-body);
+  font-size: var(--text-sm);
+  line-height: var(--leading-body);
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: opacity 0.15s ease, visibility 0.15s ease;
+}
+.footnote-popover--active {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+}
+.footnote-popover > :first-child { margin-top: 0; }
+.footnote-popover > :last-child { margin-bottom: 0; }
+.footnote-popover a { color: var(--link); }
+
+/* Print / no-JS: never show popovers; always show the real list. */
+@media print {
+  .footnote-popover { display: none !important; }
+  .fn-js .footnotes { display: block; }
+}
