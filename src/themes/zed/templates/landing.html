@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 {% import "_macros.html" as m with context %}
-{% block title %}{{ page.title }}{% endblock %}
+{% block title %}{{ page.title|striptags }}{% endblock %}
 {% block body_attrs %} class="page-landing"{% endblock %}
 
 {% block content %}

@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% block title %}{{ page.title }} · {{ SITENAME }}{% endblock %}
+{% block title %}{{ page.title|striptags }} · {{ SITENAME }}{% endblock %}
 {% block body_attrs %} class="page-{{ page.slug }}"{% endblock %}
 
 {% block content %}

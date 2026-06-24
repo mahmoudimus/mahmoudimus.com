@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 {% import "_macros.html" as m with context %}
-{% block title %}{{ article.title }} · {{ SITENAME }}{% endblock %}
+{% block title %}{{ article.title|striptags }} · {{ SITENAME }}{% endblock %}
 
 {% block content %}
 <article class="article">
