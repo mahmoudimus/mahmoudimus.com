@@ -24,7 +24,7 @@ not unintelligent. It is *amnesiac*. And amnesia is not a reasoning failure you 
 with a smarter model. It's a plumbing failure: the right information from the past simply
 isn't in front of the model when it thinks.
 
-So the question simba started from wasn't "how do we build a better model" or even "how do
+So the question [simba](https://github.com/mahmoudimus/simba) started from wasn't "how do we build a better model" or even "how do
 we build a database of memories." It was narrower and more mechanical: **at the moment the
 agent is about to reason, how do we get the relevant piece of the past back into its
 context, without the human having to paste it in, and without the agent having to know to
