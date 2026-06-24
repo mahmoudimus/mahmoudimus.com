@@ -24,16 +24,16 @@ not unintelligent. It is *amnesiac*. And amnesia is not a reasoning failure you 
 with a smarter model. It's a plumbing failure: the right information from the past simply
 isn't in front of the model when it thinks.
 
-So the question [simba](https://github.com/mahmoudimus/simba) started from wasn't "how do we build a better model" or even "how do
-we build a database of memories." It was narrower and more mechanical: **at the moment the
-agent is about to reason, how do we get the relevant piece of the past back into its
+So the question [simba](https://github.com/mahmoudimus/simba) started from wasn't "how do I build a better model" or even "how do
+I build a database of memories." It was narrower and more mechanical: **at the moment the
+agent is about to reason, how do I get the relevant piece of the past back into its
 context, without the human having to paste it in, and without the agent having to know to
 ask?**
 
 ## The seed idea: don't make the agent query memory, inject it
 
 The conventional answer is a tool. Give the agent a `search_memory()` function and hope it
-remembers to call it. We rejected that on day one, for a simple reason: an amnesiac doesn't
+remembers to call it. I rejected that on day one, for a simple reason: an amnesiac doesn't
 know what it has forgotten. An agent that has lost the context of last week's decision also
 has no idea that there *is* a memory worth fetching, so it never makes the call. Memory you
 have to remember to use is memory you won't use.
@@ -47,7 +47,7 @@ becomes part of what the model reads. A `SessionStart` hook fires as the window 
 
 That changes the shape of the whole problem. Memory doesn't have to be a drawer the agent
 opens. It can be **ambient**: something that *appears* in the agent's context at exactly
-the right lifecycle moment, unbidden, because a hook put it there. You ask "where do we
+the right lifecycle moment, unbidden, because a hook put it there. You ask "where do I
 deploy?" and before the model answers, the `UserPromptSubmit` hook has already quietly
 injected the three relevant memories about your deploy setup. The agent doesn't search. It
 just… already knows, the way a colleague who read the room already knows.
@@ -56,8 +56,8 @@ So simba began not as a vector database but as **a hook that injects**. Fire und
 agent's lifecycle; pull the relevant slice of the past; write it into the context window at
 the moment of reasoning. Everything else simba is (the vector store, the keyword mirror,
 the recall pipeline, the whole rest of this series) grew up *underneath* that one move, to
-answer the question it immediately raised: *given that we get exactly one shot to inject the
-right context at the right instant, what do we inject, and how do we find it?*
+answer the question it immediately raised: *given that I get exactly one shot to inject the
+right context at the right instant, what do I inject, and how do I find it?*
 
 That reframes the engineering problem precisely. The memory layer is the constraint, not
 the LLM. If the right evidence isn't in the window when the agent reasons, no amount of
@@ -66,7 +66,7 @@ model quality recovers it; and the hook only fires once, so what it injects has 
 *complete relevant evidence* in front of the agent at the moment of reasoning, and nothing
 more.
 
-A few constraints we set for ourselves up front, and held:
+A few constraints I set for myself up front, and held:
 
 - **Local-first.** No external services, no API key to embed text, no data leaving the
   machine. A developer's session history is sensitive, and a memory layer that phones
@@ -78,7 +78,7 @@ A few constraints we set for ourselves up front, and held:
   decision, not a destructive write.
 - **Everything is config.** Every tunable is a field on a `@configurable` dataclass,
   gettable and settable via `simba config get/set <section>.<key>`. No hidden constants,
-  no env-var-only knobs. If we can't A/B it from the CLI, it doesn't ship.
+  no env-var-only knobs. If I can't A/B it from the CLI, it doesn't ship.
 
 ## The architecture, concretely
 
@@ -105,21 +105,21 @@ Underneath the hooks, storage and retrieval are two cooperating stores:
 - A **derived SQLite FTS5** keyword mirror at `.simba/memory/memory_fts.db`: bm25 and
   trigram over the same content, rebuilt from the vector store, never authoritative.
 
-Recall is **hybrid**: we run a vector query and a BM25 query in parallel and fuse the two
+Recall is **hybrid**: I run a vector query and a BM25 query in parallel and fuse the two
 ranked lists with Reciprocal Rank Fusion (`memory.hybrid_enabled`, on by default). Vector
 search catches paraphrase and semantic match; BM25 catches the exact identifier, the
 error string, the file path that an embedding smears into its neighborhood. Fusing them
 is strictly better than either alone, and it's cheap.
 
-Embeddings are **GGUF models loaded in-process** via llama-cpp-python, with no embedding
-service. The default is nomic-embed-text-v1.5 (Q4_K_M, ~81MB, auto-downloaded on first
+Embeddings are **[GGUF](https://huggingface.co/docs/hub/gguf) models loaded in-process** via [llama-cpp-python](https://github.com/abetlen/llama-cpp-python), with no embedding
+service. The default is [nomic-embed-text-v1.5](https://huggingface.co/nomic-ai/nomic-embed-text-v1.5) (Q4_K_M, ~81MB, auto-downloaded on first
 run), with task prefixes that matter more than they look: `search_document` when storing,
 `search_query` when recalling. Two similarity thresholds gate behavior: `0.35` minimum to
 surface a memory on recall, `0.92` to call two memories duplicates.
 
 That's the whole shape: hooks in, hybrid recall over a local vector store plus a keyword
 mirror, in-process embeddings, append-only, every knob exposed. Nothing exotic. The
-interesting decision is what we *don't* do.
+interesting decision is what I *don't* do.
 
 ## The founding bet: store raw
 
@@ -163,7 +163,7 @@ So simba's product boundary is a single line:
 > **simba is the evidence layer. The host agent is the reasoning layer.** Hooks retrieve
 > the most complete relevant evidence; they do not compute answers.
 
-This is foreshadowing. We later built the structured/extracted layers anyway (typed
+This is foreshadowing. I later built the structured/extracted layers anyway (typed
 slots, focused extraction, the whole arc) to put the bet to the test rather than assume it.
 **On gold-evidence oracle conditions, that arc was a measured negative against plain
 store-raw.** Part 2 walks through those experiments. Part 3 measures the failure mode in
@@ -173,9 +173,9 @@ the write-time model getting the extraction right.
 
 ## The first external numbers
 
-Internal evals lie to you. Ours saturated: recall@1 of 1.0 on authored test data can't
+Internal evals lie to you. Mine saturated: recall@1 of 1.0 on authored test data can't
 discriminate between a good retriever and a great one. So the first real signal came from
-external benchmarks: **LoCoMo** and **LongMemEval**, scored as deterministic recall@k of
+external benchmarks: **[LoCoMo](https://github.com/snap-research/locomo)** and **[LongMemEval](https://github.com/xiaowu0162/LongMemEval)**, scored as deterministic recall@k of
 the gold evidence turns (no LLM judge yet, that's later posts).
 
 The first LoCoMo numbers, hybrid recall only, reranker and expansion off:
@@ -192,16 +192,16 @@ The first LoCoMo numbers, hybrid recall only, reranker and expansion off:
 Single-hop retrieval was solid out of the gate. Multi-hop was the floor, and it stayed the
 floor. That 0.31 was the headline gap, mirrored on LongMemEval's weakest slice
 (multi-session r@5 ≈ 0.62 against an overall 0.78). One grounding gotcha worth flagging
-because it nearly fooled us: LoCoMo turns use *relative* time ("yesterday"), gold answers
+because it nearly fooled me: LoCoMo turns use *relative* time ("yesterday"), gold answers
 are *absolute* ("7 May 2023"). Prefix each turn with its session date or QA collapses
 (a 50-question sample scored 0.082 without dates vs 0.280 with). Recall barely moves; the
-answer does. We'll return to that asymmetry.
+answer does. I'll return to that asymmetry.
 
 The instinct, faced with a multi-hop gap, is to build retrieval cleverness: a knowledge
-graph to bridge entities, query decomposition to chase sub-questions. We built both, and
+graph to bridge entities, query decomposition to chase sub-questions. I built both, and
 measured both at scale. Both failed:
 
-- **KG-into-recall** (co-occurrence *and* sparse typed-LLM graphs): negative. We borrowed a
+- **KG-into-recall** (co-occurrence *and* sparse typed-LLM graphs): negative. I borrowed a
   GraphRAG-style pipeline (vector seed, graph traversal, fold bridged memories into the
   fusion) and it *hurt*. The conversational graph is near-complete (everything bridges to
   everything), so the fold adds no discriminative signal and displaces genuine vector hits.
@@ -223,7 +223,7 @@ So the first measured lesson, the one that named the thesis:
 > difficulty lives at reasoning time, not in cleverer recall. Levers that try to *add*
 > evidence fail; levers that *re-order* and *reason over* the complete set win.
 
-(A coda that reinforced the same point from the opposite direction: when we later put a
+(A coda that reinforced the same point from the opposite direction: when I later put a
 *stronger embedder* through the same bake-off (bge-large-en-v1.5 over the nomic default),
 it won decisively and lifted *every* axis, including the weak ones. The lesson isn't "don't
 improve retrieval." It's that the lever is **completeness of the evidence set**, not
@@ -236,14 +236,14 @@ complete relevant evidence a full-context analyst would want, and to stop there.
 (counting, comparing, resolving which dated value is current) belongs to the agent that
 has the question in hand.
 
-Stated as the acceptance metric we now hold every change to: not top-k relevance, but
+Stated as the acceptance metric I now hold every change to: not top-k relevance, but
 **evidence-set recovery**: did the retrieved set *contain* everything the answer needs,
 before anyone reasoned over it? A reranker (or any lever) earns its place only if it
 recovers the complete evidence, not if it merely nudges recall@k.
 
-That's the bet, made on day one and stated as a boundary. The rest of this series is us
+That's the bet, made on day one and stated as a boundary. The rest of this series is me
 trying to break it. Part 2 takes the hardest swing: a neuro-symbolic write-time layer that
-tries to do at storage what we argued storage can't do, and reports whether it
+tries to do at storage what I argued storage can't do, and reports whether it
 worked.
 
 ---
