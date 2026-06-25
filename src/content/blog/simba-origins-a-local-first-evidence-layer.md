@@ -79,7 +79,7 @@ A few constraints I set for myself up front, and held:
   supersede, but the original turn stays on disk. Forgetting should be a retrieval
   decision, not a destructive write.
 - **Everything is config.** Every tunable is a field on a `@configurable` dataclass,
-  gettable and settable via `simba config get/set <section>.<key>`. No hidden constants,
+  gettable and settable via `simba config get/set <section>.<key>`[^config]. No hidden constants,
   no env-var-only knobs. If I can't A/B it from the CLI, it doesn't ship.
 
 ## The architecture, concretely
@@ -107,13 +107,13 @@ Underneath the hooks, storage and retrieval are two cooperating stores:
 - A **derived SQLite FTS5** keyword mirror at `.simba/memory/memory_fts.db`: bm25 and
   trigram over the same content, rebuilt from the vector store, never authoritative.
 
-Recall is **hybrid**: I run a vector query and a BM25 query in parallel and fuse the two
-ranked lists with Reciprocal Rank Fusion (`memory.hybrid_enabled`, on by default). Vector
+Recall is **hybrid**: I run a vector query and a BM25[^bm25] query in parallel and fuse the two
+ranked lists with Reciprocal Rank Fusion[^rrf] (`memory.hybrid_enabled`, on by default). Vector
 search catches paraphrase and semantic match; BM25 catches the exact identifier, the
 error string, the file path that an embedding smears into its neighborhood. Fusing them
 is strictly better than either alone, and it's cheap.
 
-Embeddings are **[GGUF](https://huggingface.co/docs/hub/gguf) models loaded in-process** via [llama-cpp-python](https://github.com/abetlen/llama-cpp-python), with no embedding
+Embeddings[^embedding] are **[GGUF](https://huggingface.co/docs/hub/gguf) models loaded in-process** via [llama-cpp-python](https://github.com/abetlen/llama-cpp-python), with no embedding
 service. The default is [nomic-embed-text-v1.5](https://huggingface.co/nomic-ai/nomic-embed-text-v1.5) (Q4_K_M, ~81MB, auto-downloaded on first
 run), with task prefixes that matter more than they look: `search_document` when storing,
 `search_query` when recalling. Two similarity thresholds gate behavior: `0.35` minimum to
@@ -175,12 +175,12 @@ the write-time model getting the extraction right.
 
 ## The first external numbers
 
-Internal evals lie to you. Mine saturated: recall@1 of 1.0 on authored test data can't
+Internal evals[^eval] lie to you. Mine saturated: recall@1[^recall] of 1.0 on authored test data can't
 discriminate between a good retriever and a great one. So the first real signal came from
 external benchmarks: **[LoCoMo](https://github.com/snap-research/locomo)** and **[LongMemEval](https://github.com/xiaowu0162/LongMemEval)**, scored as deterministic recall@k of
 the gold evidence turns (no LLM judge yet, that's later posts).
 
-The first LoCoMo numbers, hybrid recall only, reranker and expansion off:
+The first LoCoMo numbers, hybrid recall only, reranker[^reranker] and expansion off:
 
 | Slice | recall@5 |
 |---|---|
@@ -191,7 +191,7 @@ The first LoCoMo numbers, hybrid recall only, reranker and expansion off:
 | **multi-hop** | **0.305** |
 | **open-domain** | **0.270** |
 
-Single-hop retrieval was solid out of the gate. Multi-hop was the floor, and it stayed the
+Single-hop retrieval was solid out of the gate. Multi-hop[^multihop] was the floor, and it stayed the
 floor. That 0.31 was the headline gap, mirrored on LongMemEval's weakest slice
 (multi-session r@5 ≈ 0.62 against an overall 0.78). One grounding gotcha worth flagging
 because it nearly fooled me: LoCoMo turns use *relative* time ("yesterday"), gold answers
@@ -254,3 +254,12 @@ worked.
 evidence on LoCoMo and LongMemEval (no LLM judge); hybrid recall with reranker/expansion
 off unless a comparison says otherwise; ±run-to-run variance applies. The QA-accuracy
 story, and the judge that grades it, come in Parts 2 and 3.*
+
+[^eval]: An eval (evaluation) is a fixed test set plus an automatic scoring procedure used to measure how well the system performs, so two versions can be compared on the same yardstick.
+[^recall]: recall@k measures retrieval. Of the pieces of evidence the correct answer actually needs, it is the fraction that land in the top k results the system returns. recall@1 looks only at the single top result; recall@5 at the top five. It says nothing about whether the final answer was right, only whether the needed evidence was retrieved.
+[^config]: simba exposes every tunable as a named setting (like `memory.hybrid_enabled`) that you read or change from the command line with `simba config get` and `simba config set`. "On by default" means the setting ships active out of the box; you would run `simba config set <key> false` to turn it off.
+[^embedding]: An embedding is a list of numbers (a vector) that represents a piece of text, arranged so that texts with similar meaning sit close together. It lets a search match by meaning, so "where do I deploy" can find a note about deployment even with no words in common.
+[^bm25]: BM25 is a classic keyword-ranking formula, the kind a traditional search engine uses. It scores a document by how often the query's exact words appear in it, which complements embedding search on identifiers, error strings, and file paths.
+[^rrf]: Reciprocal Rank Fusion merges two ranked lists into one by combining each item's rank position across the lists, so items both methods rank highly rise to the top. It needs no tuning and no shared score scale.
+[^reranker]: A reranker is a second pass that takes the candidates already retrieved and reorders them by relevance, usually with a stronger and slower model than the first-stage search. It can only reshuffle what retrieval already found; it cannot add missing evidence.
+[^multihop]: A single-hop question can be answered from one place in the history. A multi-hop question can only be answered by combining evidence spread across two or more separate turns or sessions.
