@@ -207,32 +207,40 @@ h1:first-child, h2:first-child { margin-top: 0; }
 .highlight { margin: 0 0 1.6rem; }
 .highlight pre { margin: 0; }
 
-/* tables (GFM): ruled/editorial — header underline + row dividers */
+/* tables (GFM): zed graph-paper grid + blue header/hover highlights.
+   Reuses the site's gridline vocabulary so tables sit on the same graph paper:
+   --tdec (accent-blue/20 cell lines, visible in light + dark), --rowbg (blue
+   wash for header + row hover), --accent (crisp header rule). */
 .article-body table {
   width: 100%;
   border-collapse: collapse;
   margin: 0 0 1.6rem;
   font-size: var(--text-sm);
   line-height: 1.5;
+  border: 1px solid var(--tdec);
+}
+.article-body th,
+.article-body td {
+  padding: .5rem .8rem;
+  text-align: left;
+  vertical-align: top;
+  border: 1px solid var(--tdec);
 }
 .article-body thead th {
   font-weight: 700;
   color: var(--text);
-  border-bottom: 2px solid var(--border-strong);
+  background: var(--rowbg);
+  border-bottom: 2px solid var(--accent);
 }
-.article-body th,
-.article-body td {
-  padding: .55rem .9rem;
-  text-align: left;
-  vertical-align: top;
-  border-bottom: 1px solid var(--border);
-}
-.article-body th:first-child,
-.article-body td:first-child { padding-left: 0; }
-.article-body th:last-child,
-.article-body td:last-child { padding-right: 0; }
-.article-body tbody tr:last-child td { border-bottom: none; }
+.article-body tbody tr:nth-child(even) { background: var(--bg-2); }
+.article-body tbody tr { transition: background .12s ease; }
+.article-body tbody tr:hover { background: var(--rowbg); }
 .article-body td code { white-space: nowrap; }
+
+/* very wide tables scroll horizontally on small screens */
+@media (max-width: 640px) {
+  .article-body table { display: block; overflow-x: auto; }
+}
 
 .article-tags { max-width: var(--content-width); margin: 3rem auto 0;
   padding-top: 1.6rem; border-top: 1px solid var(--border);
