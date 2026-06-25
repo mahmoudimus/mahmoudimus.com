@@ -9,7 +9,7 @@ Classification: blog
 Excerpt: I bet that fact schemas, first-order logic, Datalog and solvers would beat plain store-and-retrieve on the hard questions. Mostly they didn't, and the failures were consistent enough to explain why. Part 2 of 3, a record of measured negatives and the one place symbolic methods earned their keep.
 +++
 
-> **The one-line version:** I expected a structured, symbolic memory to beat store-raw on
+> **The one-line version:** I expected a structured, symbolic memory to beat store-raw[^storeraw] on
 > counting, temporal, and conflict questions. It mostly didn't, and the failures were
 > consistent enough to explain. The equivalence relation a counting question needs (*what
 > counts as one of the thing being counted*) is created by the question, so it can't be
@@ -26,13 +26,13 @@ A conversational memory accumulates facts over months. The hard
 [LongMemEval](https://github.com/xiaowu0162/LongMemEval) questions are exactly the ones a
 relational engine is built for: *how many Korean restaurants have I mentioned?* (a
 `COUNT`), *what is my current address?* (a `latest` over a dated series), *do these two
-statements conflict?* (a satisfiability check). A pile of raw turns answers none of these
+statements conflict?* (a satisfiability[^sat] check). A pile of raw turns answers none of these
 natively. A pile of structured facts, `(actor, relation, object, value, date)` rows,
 answers all of them with a query.
 
 So the plan wrote itself. Extract atomic facts at write time. Key them by entity. Layer
-deterministic aggregators on top: counting via Datalog/[Souffle](https://github.com/souffle-lang/souffle),
-conflict via [Z3](https://github.com/Z3Prover/z3), temporal via a date evaluator. The LLM
+deterministic aggregators on top: counting via Datalog/[Souffle](https://github.com/souffle-lang/souffle)[^datalog],
+conflict via [Z3](https://github.com/Z3Prover/z3)[^z3], temporal via a date evaluator. The LLM
 does the messy natural-language part once, at ingestion; from then on you query a clean
 schema. This is the neuro-symbolic dream, and it is not a naive one: it's the architecture
 half the 2026 memory literature converged on.
@@ -47,7 +47,7 @@ failure. The LLM wrote Python to solve the query directly: too brittle, code cat
 the eval. So I backed off codegen and tried **typed extraction**: pull `(entity,
 attribute, value)` triples with a parts-of-speech-aware prompt. The values were fine; the
 *types* drifted, the same fact landing under three different predicates across turns. So I
-added **slot canonicalization**: normalize each fact into a fixed real-world slot,
+added **slot canonicalization**[^canon]: normalize each fact into a fixed real-world slot,
 `(canonical_entity, canonical_predicate, frozen_qualifiers)`, so the surface grammar
 couldn't pick the ontology. That fixed drift and broke counting, because canonicalizing to
 *one* identity is exactly wrong for enumeration. So I tried **dual identity** (emit two
@@ -64,7 +64,7 @@ calibrating the instrument before trusting the delta: I learned that one the har
 myself.)
 
 When the dust settled, the six-probe arc was a **measured negative against plain
-store-raw** on gold-evidence oracle conditions. But the *shape* of how each fix failed was
+store-raw** on gold-evidence oracle conditions[^oracle]. But the *shape* of how each fix failed was
 identical, and that shape is the real finding. The fact-index experiment below is the
 cleanest single instance of it, so I'll tell that one in full.
 
@@ -121,7 +121,7 @@ independent measurements pointing the same way, and it forced the question under
 Here is the thing I missed in the bet, and the thing that re-derives store-raw from first
 principles rather than from a benchmark.
 
-A counting query is a `GROUP BY` over an equivalence relation. *How many Korean
+A counting query is a `GROUP BY`[^groupby] over an equivalence relation[^equiv]. *How many Korean
 restaurants?* requires deciding what counts as **one** Korean restaurant: distinct named
 places? distinct visits? distinct cuisines that happen to be Korean? That equivalence
 relation is the join key, and **it is supplied by the question.** It is frequently not
@@ -209,7 +209,7 @@ input. They all rearrange the same impoverished rows. The evaluator was *never* 
 bottleneck.
 
 The self-verify pass deserves its own line, because "have the model check its work" sounds
-like free accuracy and isn't. Audited over 21 cases: precision 0.50, recall 0.27, **zero
+like free accuracy and isn't. Audited over 21 cases: precision 0.50, recall 0.27[^precrec], **zero
 auto-corrections applied.** The model rubber-stamped wrong answers (11) more often than it
 caught them (4), even anchored to a deterministic proof. The mechanism is sound the rare
 time it engages (one clean catch cited the certain/possible gap correctly) but the LLM
@@ -238,7 +238,7 @@ months**", and the insensitivity is itself the answer.
 
 The formal scaffolding for this already exists and is decades old: Imieliński-Lipski
 c-tables give **certain** answers (true in all worlds) and **possible** answers (true in
-some), which is exactly ASP brave/cautious entailment, which I prototyped on clingo.
+some), which is exactly ASP brave/cautious entailment[^asp], which I prototyped on clingo.
 Provenance semirings (Green-Karvounarakis-Tannen) and their implementation in
 [Scallop](https://github.com/scallop-lang/scallop) (Datalog parameterized over semirings)
 are the compilation target if the intents outgrow an 80-line hand-written evaluator.
@@ -278,3 +278,14 @@ judge unless noted; n is small on the isolating probes (15/bucket on the ceiling
 on the answer-time subset) and stated where it matters. Every lever discussed shipped
 default-off behind a `simba config` flag; the harnesses and per-question verdicts are in
 the repo.*
+
+[^storeraw]: store-raw is simba's core choice: keep each conversation turn verbatim and defer all interpretation to query time, instead of extracting and summarizing facts when the turn is first written. The bet is that summarizing early throws away detail you can't get back.
+[^sat]: A satisfiability check asks whether a set of logical statements can all be true at the same time. If two statements contradict, no assignment of values satisfies both and the checker reports "unsatisfiable" (the conflict). The general problem is called SAT.
+[^datalog]: Datalog is a small declarative query language: you write facts and rules, and an engine derives everything that follows (counts, joins, reachability) without you writing the loops. Soufflé is a fast Datalog engine. The appeal here is doing aggregation with rules instead of ad-hoc code.
+[^z3]: Z3 is a solver (an "SMT" solver) that takes logical constraints and decides whether they can all hold at once, returning a satisfying example or proving none exists. Here it checks whether two remembered facts actually contradict.
+[^canon]: To canonicalize is to collapse the many surface forms of the same thing into one standard form (a "canonical" key), so "NYC" and "New York City" resolve to a single entity. Useful for stable state, wrong for counting, where the distinctions are exactly what you need.
+[^oracle]: Gold-evidence oracle conditions are a deliberately generous test: the system is handed the exact evidence a question needs (an "oracle" stands in for perfect retrieval), so the score measures reasoning over that evidence in isolation, not whether retrieval found it. A negative result under conditions this easy is a strong result.
+[^groupby]: GROUP BY is the database operation that buckets rows by a chosen key and aggregates each bucket (count, sum, latest). "How many Korean restaurants" is a GROUP BY whose key decides what counts as one restaurant.
+[^equiv]: An equivalence relation is the rule that decides when two things count as "the same" for grouping or counting (same named place? same visit? same cuisine?). It is the key a GROUP BY groups on, and the post's point is that the question, not the stored data, supplies it.
+[^precrec]: For a detector, precision is how often its "found one" calls are actually correct, and recall is what fraction of the real cases it catches. Here the self-checker had precision 0.50 (half its flags were wrong) and recall 0.27 (it caught about a quarter of the errors). This is the detector sense of recall, not recall@k.
+[^asp]: Answer Set Programming (ASP) is a logic-programming style where you state constraints and a solver enumerates the consistent "possible worlds." An answer is cautious (certain) if it holds in every world and brave (possible) if it holds in at least one. clingo is a popular ASP solver.

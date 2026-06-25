@@ -14,17 +14,17 @@ Excerpt: How a measurement discipline, not a new architecture, took simba from 0
 > per-type judge (deepseek-v4-pro), [simba](https://github.com/mahmoudimus/simba) answers
 > **0.823** with a deepseek-v4-flash answerer. The strongest comparable system I could
 > re-run on the identical judge, hebb-mind, scores **0.7927** (its own raw outputs,
-> re-graded on my infrastructure, with a stronger v4-pro answerer). A paired McNemar test
+> re-graded on my infrastructure, with a stronger v4-pro answerer). A paired McNemar test[^mcnemar]
 > on the 468 questions both systems answered puts the +3pp gap at **p = 0.18, not
-> statistically significant.** So: at least at parity, point-estimate ahead, not a proven
+> statistically significant[^pvalue].** So: at least at parity, point-estimate ahead, not a proven
 > beat. The whole post is about why I am allowed to say even that much.
 
 ## 1. Why most memory-benchmark numbers are mirages
 
 Before I trusted any number of my own, I went looking for the bar. I surveyed every
 LongMemEval-referencing repository I could find, 44 of them, and read each one for the two
-things that turn a percentage into a measurement: which **variant** of the dataset it ran,
-and which **judge** graded the answers.
+things that turn a percentage into a measurement: which **variant**[^variant] of the dataset it ran,
+and which **judge**[^judge] graded the answers.
 
 Every headline above ~90% fell apart under that scrutiny:
 
@@ -39,7 +39,7 @@ Every headline above ~90% fell apart under that scrutiny:
 What survived was a much lower, much more grounded band. On the full LongMemEval-S, scored
 in-repo by a real judge: hebb-mind **0.79** (DeepSeek-V4-Pro, simba's exact axis), CortexDB
 **0.766** (official GPT-4o judge, keyword-only retrieval, a floor), mempalace **0.74**. The
-headline 90s were cloud, marketing, oracle-variant, hardcoded, or self-disclaimed. **A
+headline 90s were cloud, marketing, oracle-variant[^oracle], hardcoded, or self-disclaimed. **A
 benchmark number means nothing without its (variant + judge).** That sentence is the entire
 motivation for everything that follows. The one directly comparable external point,
 hebb-mind, on the same DeepSeek-V4 judge family, sat at 0.79. That became my bar, and my
@@ -68,7 +68,7 @@ by hand.
 
 The pieces, all living under `src/simba/eval/`:
 
-- **A deterministic dev/test split.** `splits.py` buckets each case by a stable SHA-1 hash
+- **A deterministic dev/test split.**[^devtest] `splits.py` buckets each case by a stable SHA-1 hash
   of its id: no RNG, no state, reproducible across runs and machines. Levers get chosen on
   dev; the number I report comes from test. The discipline is one sentence: **tune on dev,
   report on test, never tune to the number.** (I was upfront with myself that LongMemEval-S
@@ -76,7 +76,7 @@ The pieces, all living under `src/simba/eval/`:
   small subsets, not per-question fits, and I said so in the writeup.)
 - **Persistent caches for the expensive parts.** Embeddings and judge verdicts are cached
   on disk and keyed by content. This is not a nicety; it is what made iteration affordable.
-  My cloud LLM path runs ~17s per call: a single full recall ablation once ran 2h20m on 494
+  My cloud LLM path runs ~17s per call: a single full recall ablation[^ablation] once ran 2h20m on 494
   queries without finishing before I killed it. Caching the embeddings and re-grading only
   changed answers is the difference between a lever taking minutes and taking a workday.
 - **An append-only `results.jsonl` and a generated leaderboard.** Every run appends a row
@@ -97,7 +97,7 @@ happened. So I split the retrieval signal into two metrics, scored on evidence-s
 rather than QA:
 
 - **`pool_complete@N`**: is the *full* gold evidence set even in the top-N candidates? This
-  is the first-stage candidate-generation ceiling. A reranker can never exceed it.
+  is the first-stage candidate-generation ceiling. A reranker[^reranker] can never exceed it.
 - **`complete@k`**: did reranking land that evidence in the usable top-k? This isolates
   rerank lift.
 
@@ -124,7 +124,7 @@ A judge is a measuring instrument. I refused to report deltas through an instrum
 calibrated.
 
 **The judge.** I re-judged 122 LoCoMo triples with both deepseek-v4-pro and GPT-4o using
-simba's exact judge prompt. Agreement was **98.4%**, Cohen's **κ = 0.90** ("almost
+simba's exact judge prompt. Agreement was **98.4%**, Cohen's **κ = 0.90**[^kappa] ("almost
 perfect"), and the disagreements were symmetric, *zero* net bias. A test system's aggregate
 accuracy came out **0.0902 under both judges, identical**. That validated the deepseek-v4
 axis as a GPT-4o-equivalent grader, which let me retire GPT-4o (deprecated anyway) without
@@ -218,7 +218,7 @@ live number:
 | Killed lever | Why |
 |---|---|
 | Cross-encoder rerank in eval (blanket) | hurts multi-endpoint temporal 0.65 → 0.20; intent-gate instead |
-| NLI conflict detection (×3 model families) | NLI "contradiction" is same-scene; memory conflict is cross-time |
+| NLI[^nli] conflict detection (×3 model families) | NLI "contradiction" is same-scene; memory conflict is cross-time |
 | ARM3 date-disjoint conflict carve-out | failed its SubtleMemory gate (0.722 < 0.944): date-disjointness can't tell an update from a genuine conflict |
 | GPT-4o answerer | non-penalizing but not better (McNemar p≈0.15); deepseek suffices |
 | Entity-bridge / PPR / IRCoT multi-hop retrieval | all measured negative; multi-hop is reasoning, not recall |
@@ -265,3 +265,14 @@ that too.
 deepseek-v4-flash unless noted; ±1pp run-to-run variance; the abstention slice is excluded
 on both sides. Calibration figures are LoCoMo (n=122). Methodology, the full kill list, and
 per-question verdicts are in the repo.*
+
+[^judge]: An LLM-as-judge is a language model used to grade answers: it reads the system's answer and the gold answer and decides whether they match. It replaces slow human grading, but it is itself an instrument that has to be calibrated, which is much of what this post is about.
+[^mcnemar]: McNemar's test is a statistical test for paired yes/no results, where the same questions are answered by two systems. It looks only at the questions the two disagree on and asks whether one system winning more of those is more than chance would produce.
+[^pvalue]: A p-value is the probability of seeing a gap at least this large by chance if the two systems were actually equal. Small p (conventionally below 0.05) means the gap is unlikely to be noise; p = 0.18 means it could easily be noise, so the lead is not "statistically significant."
+[^variant]: A benchmark usually ships in several variants (subsets or configurations) that differ wildly in difficulty, such as an "oracle" variant that hands over the right evidence versus the full long-context one. A score is meaningless unless you say which variant produced it.
+[^oracle]: An oracle variant feeds the system the exact gold evidence a question needs, standing in for perfect retrieval. It isolates reasoning from retrieval and inflates scores, which is why an oracle-only number is not comparable to a full end-to-end one.
+[^kappa]: Cohen's kappa measures how much two graders agree, corrected for the agreement you would get by chance alone. It runs from 0 (chance) to 1 (perfect); around 0.9 is conventionally called "almost perfect."
+[^ablation]: An ablation removes or disables one part of the system (or varies one setting) and re-measures, so a change in the score can be attributed to that one part rather than guessed at.
+[^devtest]: Splitting the data into a dev set and a test set lets you choose settings on dev and report the final number on a held-out test set you never tuned against. It is the standard guard against "tuning to the number" and fooling yourself.
+[^reranker]: A reranker is a second pass that reorders the candidates first-stage retrieval already found, usually with a stronger and slower model. It can promote the right evidence within what was retrieved, but it can never add evidence that retrieval missed.
+[^nli]: Natural Language Inference (NLI) is a model that, given two sentences, labels whether the first entails, contradicts, or is neutral toward the second. The point here is that NLI "contradiction" means same-scene incompatibility, which is not the same as two memories conflicting across time.
