@@ -2,6 +2,7 @@
 Title: Simba, Part 2: The Neuro-Symbolic Bet, and What the Data Did to It
 Slug: simba-part-2-neuro-symbolic-bet
 Date: 2026-06-13
+Status: draft
 Author: Mahmoud
 Tags: memory, neuro-symbolic, datalog, souffle, z3, clingo, agents, evaluation
 Classification: blog
