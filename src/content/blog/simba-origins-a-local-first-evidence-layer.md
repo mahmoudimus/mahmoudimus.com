@@ -1,5 +1,6 @@
 +++
-Title: Origins: a local-first evidence layer, and why store-raw
+Title: Simba, Part 1: A Local-First Memory Layer for Coding Agents
+Slug: simba-part-1-local-first-memory-layer
 Date: 2026-06-13
 Author: Mahmoud
 Tags: memory, agents, claude code, hooks, retrieval, rag, local-first
