@@ -92,6 +92,9 @@
     {% if article is defined or page is defined %}
     <script type="module" src="{{ SITEURL }}/theme/js/footnotes.js?v={{ ASSET_VERSION }}"></script>
     {% endif %}
+    {% if article is defined and article.toc_html %}
+    <script defer src="{{ SITEURL }}/theme/js/toc.js?v={{ ASSET_VERSION }}"></script>
+    {% endif %}
     <script src="{{ SITEURL }}/theme/js/theme-toggle.js?v={{ ASSET_VERSION }}"></script>
     <script src="{{ SITEURL }}/theme/js/drawer.js?v={{ ASSET_VERSION }}"></script>
     <script defer src="{{ SITEURL }}/theme/js/endless-footer.js?v={{ ASSET_VERSION }}"></script>

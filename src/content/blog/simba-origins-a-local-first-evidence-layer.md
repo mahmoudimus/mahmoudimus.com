@@ -5,6 +5,7 @@ Date: 2026-06-13
 Author: Mahmoud
 Tags: memory, agents, claude code, hooks, retrieval, rag, local-first
 Classification: blog
+Toc: true
 Excerpt: How simba started: coding agents open every session blank, and the founding idea was to fire under Claude Code's hooks to inject memory into the agent's context rather than make it query a database. Part 1 of 3 on building and measuring a local-first agent memory layer.
 +++
 

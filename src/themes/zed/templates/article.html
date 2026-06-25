@@ -3,35 +3,38 @@
 {% block title %}{{ article.title|striptags }} · {{ SITENAME }}{% endblock %}
 
 {% block content %}
-<article class="article">
+<article class="article{% if article.toc_html %} has-toc{% endif %}">
   <div class="container">
-    <header class="article-header">
-      {% if article.date %}
-      <div class="post-date">{{ article.date.strftime('%B %d, %Y') }}</div>
-      {% endif %}
-      <h1>{{ article.title }}</h1>
-      {% if article.link %}
-      <p class="article-source">
-        <a class="bm-source" href="{{ article.link }}" rel="noopener" target="_blank">
-          {{ m.avatar(article, 32) }} <span>Source: {{ article.link | domain }} &#8599;</span>
-        </a>
-        {% if article.via %}<a class="bm-via" href="{{ article.via }}" rel="noopener" target="_blank">via {{ article.via | domain }}</a>{% endif %}
-      </p>
-      {% endif %}
-    </header>
+    {% if article.toc_html %}{{ article.toc_html }}{% endif %}
+    <div class="article-main">
+      <header class="article-header">
+        {% if article.date %}
+        <div class="post-date">{{ article.date.strftime('%B %d, %Y') }}</div>
+        {% endif %}
+        <h1>{{ article.title }}</h1>
+        {% if article.link %}
+        <p class="article-source">
+          <a class="bm-source" href="{{ article.link }}" rel="noopener" target="_blank">
+            {{ m.avatar(article, 32) }} <span>Source: {{ article.link | domain }} &#8599;</span>
+          </a>
+          {% if article.via %}<a class="bm-via" href="{{ article.via }}" rel="noopener" target="_blank">via {{ article.via | domain }}</a>{% endif %}
+        </p>
+        {% endif %}
+      </header>
 
-    <div class="article-body">
-      {{ article.content }}
+      <div class="article-body">
+        {{ article.content }}
+      </div>
+
+      {% if article.tags %}
+      <footer class="article-tags">
+        <span class="label">Tagged</span>
+        {% for tag in article.tags %}
+          <a class="tag-chip" href="{{ SITEURL }}/tag/{{ tag.slug }}.html">{{ tag }}</a>
+        {% endfor %}
+      </footer>
+      {% endif %}
     </div>
-
-    {% if article.tags %}
-    <footer class="article-tags">
-      <span class="label">Tagged</span>
-      {% for tag in article.tags %}
-        <a class="tag-chip" href="{{ SITEURL }}/tag/{{ tag.slug }}.html">{{ tag }}</a>
-      {% endfor %}
-    </footer>
-    {% endif %}
   </div>
 </article>
 {% endblock %}

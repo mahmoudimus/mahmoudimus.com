@@ -190,7 +190,7 @@ h1:first-child, h2:first-child { margin-top: 0; }
   font-size: var(--text-lg);
 }
 .article-body img { border-radius: var(--radius); margin: 2rem auto; border: 1px solid var(--border); }
-.article-body h2 { padding-top: .4rem; }
+.article-body h2 { padding-top: .4rem; scroll-margin-top: 5.5rem; position: relative; }
 
 /* inline code + blocks (Lilex) */
 .article-body code, .post-card code, code {
@@ -240,6 +240,77 @@ h1:first-child, h2:first-child { margin-top: 0; }
 /* very wide tables scroll horizontally on small screens */
 @media (max-width: 640px) {
   .article-body table { display: block; overflow-x: auto; }
+}
+
+/* per-article table of contents (right rail; opt in with `Toc: true`) */
+.article-toc { display: none; }
+
+/* hover hash-anchor to the left of each section heading */
+.heading-anchor {
+  position: absolute;
+  left: -1.55em;
+  top: .55em;
+  display: inline-flex;
+  color: var(--link);
+  opacity: 0;
+  text-decoration: none;
+  transition: opacity .12s ease;
+}
+.article-body h2:hover .heading-anchor,
+.heading-anchor:focus-visible { opacity: 1; }
+.heading-anchor svg { display: block; }
+
+@media (min-width: 1080px) {
+  .article.has-toc .container {
+    display: flex;
+    flex-direction: row-reverse;
+    align-items: flex-start;
+    justify-content: center;
+    gap: 2.75rem;
+  }
+  .article.has-toc .article-main {
+    flex: 0 1 var(--content-width);
+    min-width: 0;
+    max-width: var(--content-width);
+  }
+  .article.has-toc .article-main > * { margin-inline: 0; max-width: none; }
+  .article-toc {
+    display: block;
+    flex: 0 0 13rem;
+    position: sticky;
+    top: 5.5rem;
+    align-self: flex-start;
+    max-height: calc(100vh - 7rem);
+    overflow-y: auto;
+    padding-bottom: 1rem;
+  }
+  .article-toc-title {
+    margin: 0 0 .7rem;
+    font-size: var(--text-xs);
+    text-transform: uppercase;
+    letter-spacing: .09em;
+    color: var(--text-muted);
+  }
+  .article-toc ul {
+    list-style: none;
+    margin: 0;
+    padding: 0 0 0 1rem;
+    border-left: 1px solid var(--grid);
+    display: flex;
+    flex-direction: column;
+    gap: .5rem;
+  }
+  .article-toc a {
+    display: block;
+    color: var(--text-muted);
+    font-size: var(--text-sm);
+    font-weight: 400;
+    line-height: 1.4;
+    text-decoration: none;
+    transition: color .12s ease;
+  }
+  .article-toc a:hover { color: var(--link); }
+  .article-toc a.active { color: var(--link); font-weight: 600; }
 }
 
 .article-tags { max-width: var(--content-width); margin: 3rem auto 0;
