@@ -207,6 +207,33 @@ h1:first-child, h2:first-child { margin-top: 0; }
 .highlight { margin: 0 0 1.6rem; }
 .highlight pre { margin: 0; }
 
+/* tables (GFM): ruled/editorial — header underline + row dividers */
+.article-body table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 0 0 1.6rem;
+  font-size: var(--text-sm);
+  line-height: 1.5;
+}
+.article-body thead th {
+  font-weight: 700;
+  color: var(--text);
+  border-bottom: 2px solid var(--border-strong);
+}
+.article-body th,
+.article-body td {
+  padding: .55rem .9rem;
+  text-align: left;
+  vertical-align: top;
+  border-bottom: 1px solid var(--border);
+}
+.article-body th:first-child,
+.article-body td:first-child { padding-left: 0; }
+.article-body th:last-child,
+.article-body td:last-child { padding-right: 0; }
+.article-body tbody tr:last-child td { border-bottom: none; }
+.article-body td code { white-space: nowrap; }
+
 .article-tags { max-width: var(--content-width); margin: 3rem auto 0;
   padding-top: 1.6rem; border-top: 1px solid var(--border);
   display: flex; flex-wrap: wrap; align-items: center; gap: .5rem; }
