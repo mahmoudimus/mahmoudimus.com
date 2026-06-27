@@ -1,12 +1,8 @@
-PY?=python3
-PELICAN?=pelican
+PY?=pyenv exec python
 PELICANOPTS=
 
-BASEDIR=$(CURDIR)/src
-INPUTDIR=$(BASEDIR)/site
 OUTPUTDIR=$(CURDIR)/output
-CONFFILE=$(BASEDIR)/pelicanconf-site.py
-PUBLISHCONF=$(BASEDIR)/publishconf.py
+BUILD=$(PY) -m src.cli
 
 
 DEBUG ?= 0
@@ -38,38 +34,38 @@ help:
 	@echo '                                                                          '
 
 html:
-	$(PELICAN) $(INPUTDIR) -o $(OUTPUTDIR) -s $(CONFFILE) $(PELICANOPTS)
+	$(BUILD) -o $(OUTPUTDIR) $(PELICANOPTS)
 
 clean:
 	[ ! -d $(OUTPUTDIR) ] || rm -rf $(OUTPUTDIR)
 
 regenerate:
-	$(PELICAN) -r $(INPUTDIR) -o $(OUTPUTDIR) -s $(CONFFILE) $(PELICANOPTS)
+	$(BUILD) -r -o $(OUTPUTDIR) $(PELICANOPTS)
 
 serve:
 ifdef PORT
-	$(PELICAN) -l $(INPUTDIR) -o $(OUTPUTDIR) -s $(CONFFILE) $(PELICANOPTS) -p $(PORT)
+	$(BUILD) -l -o $(OUTPUTDIR) $(PELICANOPTS) -p $(PORT)
 else
-	$(PELICAN) -l $(INPUTDIR) -o $(OUTPUTDIR) -s $(CONFFILE) $(PELICANOPTS)
+	$(BUILD) -l -o $(OUTPUTDIR) $(PELICANOPTS)
 endif
 
 serve-global:
 ifdef SERVER
-	$(PELICAN) -l $(INPUTDIR) -o $(OUTPUTDIR) -s $(CONFFILE) $(PELICANOPTS) -p $(PORT) -b $(SERVER)
+	$(BUILD) -l -o $(OUTPUTDIR) $(PELICANOPTS) -p $(PORT) -b $(SERVER)
 else
-	$(PELICAN) -l $(INPUTDIR) -o $(OUTPUTDIR) -s $(CONFFILE) $(PELICANOPTS) -p $(PORT) -b 0.0.0.0
+	$(BUILD) -l -o $(OUTPUTDIR) $(PELICANOPTS) -p $(PORT) -b 0.0.0.0
 endif
 
 
 devserver:
 ifdef PORT
-	$(PELICAN) -lr $(INPUTDIR) -o $(OUTPUTDIR) -s $(CONFFILE) $(PELICANOPTS) -p $(PORT)
+	$(BUILD) -lr -o $(OUTPUTDIR) $(PELICANOPTS) -p $(PORT)
 else
-	$(PELICAN) -lr $(INPUTDIR) -o $(OUTPUTDIR) -s $(CONFFILE) $(PELICANOPTS)
+	$(BUILD) -lr -o $(OUTPUTDIR) $(PELICANOPTS)
 endif
 
 publish:
-	$(PELICAN) $(INPUTDIR) -o $(OUTPUTDIR) -s $(PUBLISHCONF) $(PELICANOPTS)
+	SITEURL=https://mahmoudimus.com $(BUILD) -o $(OUTPUTDIR) $(PELICANOPTS)
 
 
-.PHONY: html help clean regenerate serve serve-global devserver stopserver publish 
+.PHONY: html help clean regenerate serve serve-global devserver stopserver publish
