@@ -250,7 +250,7 @@ worked.
 
 ---
 
-*Next: **Part 2, the neuro-symbolic bet.** Numbers in this post are recall@k of gold
+*Next: **[Part 2, the neuro-symbolic bet](/blog/2026/06/simba-part-2-neuro-symbolic-bet/).** Numbers in this post are recall@k of gold
 evidence on LoCoMo and LongMemEval (no LLM judge); hybrid recall with reranker/expansion
 off unless a comparison says otherwise; ±run-to-run variance applies. The QA-accuracy
 story, and the judge that grades it, come in Parts 2 and 3.*
