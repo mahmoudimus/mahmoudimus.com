@@ -136,7 +136,7 @@ Most memory systems take road 1. It's seductive: storage is small, records are c
 recall returns neat facts. simba took road 2, and the bet was explicit: **extract-at-store
 is lossy, and the loss is unrecoverable.**
 
-The reasoning is not just "raw is safer." It's structural. A memory layer's real job
+The reasoning runs deeper than "raw is safer." It's structural. A memory layer's real job
 factors into two steps:
 
 ```
