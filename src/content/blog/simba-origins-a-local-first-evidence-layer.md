@@ -52,7 +52,7 @@ opens. It can be **ambient**: something that *appears* in the agent's context at
 the right lifecycle moment, unbidden, because a hook put it there. You ask "where do I
 deploy?" and before the model answers, the `UserPromptSubmit` hook has already quietly
 injected the three relevant memories about your deploy setup. The agent doesn't search. It
-just… already knows, the way a colleague who read the room already knows.
+just... already knows, the way a colleague who read the room already knows.
 
 So simba began not as a vector database but as **a hook that injects**. Fire under the
 agent's lifecycle; pull the relevant slice of the past; write it into the context window at
@@ -89,7 +89,7 @@ hook system. Six lifecycle hooks do the work:
 
 | Hook | When it fires | What it does |
 |---|---|---|
-| `SessionStart` | session opens | auto-starts the daemon (polls 15× at 300ms), injects core rules, shows memory count |
+| `SessionStart` | session opens | auto-starts the daemon (polls 15x at 300ms), injects core rules, shows memory count |
 | `UserPromptSubmit` | you submit a prompt | recalls relevant memories, suggests files |
 | `PreToolUse` | before a tool call | injects context based on what the agent is about to do |
 | `PostToolUse` | after a tool call | observes outcomes |
@@ -140,7 +140,7 @@ The reasoning is not just "raw is safer." It's structural. A memory layer's real
 factors into two steps:
 
 ```
-f(question, history) → answer
+f(question, history) -> answer
    = reason(question, retrieve(history))
 ```
 
@@ -193,7 +193,7 @@ The first LoCoMo numbers, hybrid recall only, reranker[^reranker] and expansion 
 
 Single-hop retrieval was solid out of the gate. Multi-hop[^multihop] was the floor, and it stayed the
 floor. That 0.31 was the headline gap, mirrored on LongMemEval's weakest slice
-(multi-session r@5 ≈ 0.62 against an overall 0.78). One grounding gotcha worth flagging
+(multi-session r@5 ~= 0.62 against an overall 0.78). One grounding gotcha worth flagging
 because it nearly fooled me: LoCoMo turns use *relative* time ("yesterday"), gold answers
 are *absolute* ("7 May 2023"). Prefix each turn with its session date or QA collapses
 (a 50-question sample scored 0.082 without dates vs 0.280 with). Recall barely moves; the
@@ -207,15 +207,15 @@ measured both at scale. Both failed:
   GraphRAG-style pipeline (vector seed, graph traversal, fold bridged memories into the
   fusion) and it *hurt*. The conversational graph is near-complete (everything bridges to
   everything), so the fold adds no discriminative signal and displaces genuine vector hits.
-  Multi-hop r@5 0.271 → 0.243; mrr dropped. The diagnostic that settled it: 100% of
+  Multi-hop r@5 0.271 -> 0.243; mrr dropped. The diagnostic that settled it: 100% of
   multi-hop questions already had their gold turns mutually reachable. Reachability was
   never the problem.
 - **Query decomposition**: neutral. A 42-question sample looked like +2pp; at n=281 it was
-  0.305 → 0.300, noise. The sub-queries retrieve the *same* turns, because they share the
+  0.305 -> 0.300, noise. The sub-queries retrieve the *same* turns, because they share the
   same entities.
 
 The one thing that moved multi-hop was a **reranker**, an LLM relevance pass over the
-candidates already retrieved (multi-hop r@5 0.280 → 0.476, +70% relative). And that is the
+candidates already retrieved (multi-hop r@5 0.280 -> 0.476, +70% relative). And that is the
 tell. The reranker didn't *add* evidence. It *reordered* evidence that recall had already
 surfaced but mis-ranked. The gold turns were in the pool the whole time.
 
@@ -252,7 +252,7 @@ worked.
 
 *Next: **[Part 2, the neuro-symbolic bet](/blog/2026/06/simba-part-2-neuro-symbolic-bet/).** Numbers in this post are recall@k of gold
 evidence on LoCoMo and LongMemEval (no LLM judge); hybrid recall with reranker/expansion
-off unless a comparison says otherwise; ±run-to-run variance applies. The QA-accuracy
+off unless a comparison says otherwise; +/-run-to-run variance applies. The QA-accuracy
 story, and the judge that grades it, come in Parts 2 and 3.*
 
 [^eval]: An eval (evaluation) is a fixed test set plus an automatic scoring procedure used to measure how well the system performs, so two versions can be compared on the same yardstick.

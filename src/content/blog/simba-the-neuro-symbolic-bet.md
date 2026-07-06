@@ -108,8 +108,8 @@ every clothing item at once. The moment I added the entity filter (the thing tha
 fact index an *index*), class-counting broke.
 
 I tried the obvious repair: drop entity-exact clustering, retrieve facts semantically.
-Worse. Overall **0.717 (raw) → 0.633 (semantic-over-facts)**, and multi-session counting
-collapsed **0.533 → 0.267**. Top-N semantic filtering fragments the answer that used to
+Worse. Overall **0.717 (raw) -> 0.633 (semantic-over-facts)**, and multi-session counting
+collapsed **0.533 -> 0.267**. Top-N semantic filtering fragments the answer that used to
 live in one turn across facts it can't reassemble. Filtered facts scored *below* raw turns.
 
 Every filtering lookup I built lost the instances counting needs. That was three
@@ -155,19 +155,19 @@ evidence is in hand. And there, it pays off hard.
 
 Give the answerer the complete fact set and split the task: the LLM **enumerates** the
 distinct instances (semantic membership, easy for it), then Python computes `len()` (exact,
-hard for it). Counting goes from **0.30 (raw) → 0.55 (free-form feed-all) → 0.75
+hard for it). Counting goes from **0.30 (raw) -> 0.55 (free-form feed-all) -> 0.75
 (enumerate-then-`len`)**.
 
 | counting approach | multi-session accuracy |
 |---|---|
 | raw retrieval | 0.30 |
 | feed-all, LLM counts in free-form | 0.55 |
-| LLM enumerates → Python `len()` | **0.75** |
+| LLM enumerates -> Python `len()` | **0.75** |
 
 The LLM miscounts in prose; hand it the easy job and let code do the arithmetic. Temporal
 arithmetic is the same shape: the LLM writes a small `datetime` program, a sandbox executes
 it, and I measured zero execution failures. Freshness is `max(observed_at)` in code, not
-the model's judgment. This *is* the NL→Datalog/Souffle intuition, vindicated: `len` is
+the model's judgment. This *is* the NL->Datalog/Souffle intuition, vindicated: `len` is
 Souffle's `count`. The neuro-symbolic split is real.
 
 The boundary is just sharper than the bet assumed. **Symbolic methods replace computation,
@@ -192,7 +192,7 @@ went hunting for headroom in answer-time computation: surely a smarter engine co
 out the remaining counting misses. I built four, each more principled than the last, and
 ran every one as a paired A/B on the 48-question wrong-in-either subset.
 
-| variant | what it does | net (fixed − broken) |
+| variant | what it does | net (fixed - broken) |
 |---|---|---|
 | rows-v1 | LLM codegen over retrieved rows | negative (12 fixed / 15 broken) |
 | rows-v6 | LLM query-plan + fixed Python three-valued evaluator | +2..+4 |

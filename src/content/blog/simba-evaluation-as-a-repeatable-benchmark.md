@@ -63,7 +63,7 @@ I wanted to move a number and *believe the move*, every one of those shortcuts b
 source of doubt: was the delta real, or did re-embedding shuffle something; was the grade
 fair, or was the model flattering itself? So before chasing a single point of accuracy, I
 rebuilt the eval as a piece of software held to the same standard as the product. The
-reason 0.561 → 0.823 was even possible in a weekend is that rebuild: I stopped re-measuring
+reason 0.561 -> 0.823 was even possible in a weekend is that rebuild: I stopped re-measuring
 by hand.
 
 The pieces, all living under `src/simba/eval/`:
@@ -106,14 +106,14 @@ On top of those, a four-bucket classifier forces every miss into exactly one of
 **don't optimize "memory quality", optimize the failure bucket.**
 
 This immediately killed a class of wasted effort and redirected another. Counting questions
-turned out to be purely *breadth-bound*: `pool_complete@20 = 0.40 → @80 = 1.00`. The
+turned out to be purely *breadth-bound*: `pool_complete@20 = 0.40 -> @80 = 1.00`. The
 evidence was being retrieved; it just sat at ranks 20 to 40, below the context window. No
 reranker change could ever have fixed it, and I'd have spent days on reranking if the split
-hadn't told me so. Widening the candidate pool recovered all of it (answer accuracy 0.40 →
+hadn't told me so. Widening the candidate pool recovered all of it (answer accuracy 0.40 ->
 0.56), and the invariant *strengthened* at scale on the real ~491-turn LongMemEval-S
 haystacks. The split also caught the opposite trap: a pointwise cross-encoder reranker
-*helps* "latest" queries (complete@5 0.7 → 0.8) but *hurts* multi-endpoint temporal ones
-hard (0.65 → 0.20), because it promotes the single most-relevant turn and demotes the
+*helps* "latest" queries (complete@5 0.7 -> 0.8) but *hurts* multi-endpoint temporal ones
+hard (0.65 -> 0.20), because it promotes the single most-relevant turn and demotes the
 co-required one, breaking the evidence *set*. The principled answer was intent-gated
 reranking, not blanket default-on, a verdict I'd never have reached from a single accuracy
 number.
@@ -133,14 +133,14 @@ losing comparability to the published GPT-4o-judged literature.
 **The answerer.** A calibrated judge does not tell you whether your *answerer* is penalizing
 you: verification is not generation, so I had to run it. Holding retrieval and judge fixed,
 I swapped only the answerer across 122 LoCoMo cases: deepseek-v4-flash **0.377** vs gpt-4o
-**0.311**, delta −0.066, McNemar **p ≈ 0.15, not significant**. The accurate claim is "no
+**0.311**, delta -0.066, McNemar **p ~= 0.15, not significant**. The accurate claim is "no
 penalty," not "deepseek is better" (gpt-4o is a 2024 model). But it means my same-axis
 numbers do not *understate* simba by using a cheaper answerer.
 
 | Calibration | Method | Result | Verdict |
 |---|---|---|---|
 | Judge: deepseek-v4-pro vs GPT-4o | re-judge 122 LoCoMo triples, same prompt | 98.4% agree, κ=0.90, zero bias | validated GPT-4o-equivalent grader |
-| Answerer: deepseek-v4-flash vs gpt-4o | swap answerer only, fixed retrieval+judge, n=122 | 0.377 vs 0.311, McNemar p≈0.15 | non-penalizing, deepseek suffices |
+| Answerer: deepseek-v4-flash vs gpt-4o | swap answerer only, fixed retrieval+judge, n=122 | 0.377 vs 0.311, McNemar p~=0.15 | non-penalizing, deepseek suffices |
 
 The calibration paid an unexpected dividend. Reproducing mem0 on this *same* axis (same
 answerer, same judge, same 122 cases) exposed the runnable OSS build at **~0.09**, against
@@ -166,9 +166,9 @@ direction that *understated* me.
   **+3.6pp** (p = 5e-4). My own instrument had been marking me down: the preference slice
   was scoring 0.069 purely because rubric golds auto-fail a "same meaning" check.
 - **The missing Current-Date anchor.** My reader passed no "Current Date," so every "how
-  long ago…" question was structurally unanswerable. The official reader always provides it,
+  long ago..." question was structurally unanswerable. The official reader always provides it,
   and in production the host agent always knows today's date, so adding it is *fidelity*,
-  not benchmark-gaming. It was **+0.111 overall, and temporal reasoning doubled, 0.417 →
+  not benchmark-gaming. It was **+0.111 overall, and temporal reasoning doubled, 0.417 ->
   0.833.**
 - **A regression I shipped, caught because the bench ran the shipping config.** v0.7.0
   enabled answer-time conflict surfacing by default, a real win on contradiction
@@ -176,7 +176,7 @@ direction that *understated* me.
   detector flags them as a conflict, and the directive tells the model not to pick a side,
   exactly wrong when recency resolves it. Knowledge-update cratered to **0.25**. I caught it
   within 24 hours *because the benchmark ran the config that ships*, and the fix
-  (intent-gating the directive: 0.25 → 0.958 on knowledge-update) is live in v0.7.1.
+  (intent-gating the directive: 0.25 -> 0.958 on knowledge-update) is live in v0.7.1.
 
 Stacking the fidelity fixes and the measured levers gives the ladder. Every step is a
 full-470 run, every lever was A/B'd:
@@ -187,7 +187,7 @@ full-470 run, every lever was A/B'd:
 | #1 | official per-type judge + Current-Date + conflict-off + reader rules (P2) | 0.7495 |
 | #2 | + intent-gated context k=80 for multi-session (gate: complete@80 = 0.90) | 0.7702 |
 | #3 | + temporal questions answered via executed Python codegen (A/B +0.141) | 0.7809 |
-| #4 | + intent-gated preference synthesis reader (2x2 0.167 → 0.793) | **0.823** |
+| #4 | + intent-gated preference synthesis reader (2x2 0.167 -> 0.793) | **0.823** |
 
 By type at 0.823: knowledge-update 0.901, multi-session 0.711, single-session-assistant
 0.857, preference 0.900, single-session-user 0.875, temporal 0.827. None of the climb was a
@@ -207,7 +207,7 @@ on the 468 questions both systems answered:
 - exact two-sided **p = 0.18, not statistically significant**
 
 The point-estimate lead (+3.0pp, +14 questions) is real, but it is within noise at
-LongMemEval-S's sample size, and run-to-run variance on the softer slices is itself ≈±1pp.
+LongMemEval-S's sample size, and run-to-run variance on the softer slices is itself ~=+/-1pp.
 So the defensible claim is *parity*: at least as good as the strongest comparable open
 system, from a *weaker* answerer, point-estimate ahead, not a proven beat. I would need a
 wider margin or more questions to say "win," and I will not say it until I can.
@@ -217,12 +217,12 @@ live number:
 
 | Killed lever | Why |
 |---|---|
-| Cross-encoder rerank in eval (blanket) | hurts multi-endpoint temporal 0.65 → 0.20; intent-gate instead |
-| NLI[^nli] conflict detection (×3 model families) | NLI "contradiction" is same-scene; memory conflict is cross-time |
+| Cross-encoder rerank in eval (blanket) | hurts multi-endpoint temporal 0.65 -> 0.20; intent-gate instead |
+| NLI[^nli] conflict detection (x3 model families) | NLI "contradiction" is same-scene; memory conflict is cross-time |
 | ARM3 date-disjoint conflict carve-out | failed its SubtleMemory gate (0.722 < 0.944): date-disjointness can't tell an update from a genuine conflict |
-| GPT-4o answerer | non-penalizing but not better (McNemar p≈0.15); deepseek suffices |
+| GPT-4o answerer | non-penalizing but not better (McNemar p~=0.15); deepseek suffices |
 | Entity-bridge / PPR / IRCoT multi-hop retrieval | all measured negative; multi-hop is reasoning, not recall |
-| V4-Pro reader | +0.028 ≈ 2 cases at n=72, noise-level; flash suffices |
+| V4-Pro reader | +0.028 ~= 2 cases at n=72, noise-level; flash suffices |
 
 I held to one rule the whole time: **never chase 1.0.** A saturated benchmark has stopped
 discriminating between variants; 1.0 is the *failure* condition for an eval, not the target.
@@ -262,7 +262,7 @@ that too.
 ---
 
 *All numbers are LongMemEval-S, official per-type judge (deepseek-v4-pro), answerer
-deepseek-v4-flash unless noted; ±1pp run-to-run variance; the abstention slice is excluded
+deepseek-v4-flash unless noted; +/-1pp run-to-run variance; the abstention slice is excluded
 on both sides. Calibration figures are LoCoMo (n=122). Methodology, the full kill list, and
 per-question verdicts are in the repo.*
 
