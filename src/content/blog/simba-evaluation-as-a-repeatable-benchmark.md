@@ -1,7 +1,7 @@
 +++
 Title: Simba, Part 3: Evaluation as a Repeatable Benchmark
 Slug: simba-part-3-evaluation-benchmark
-Date: 2026-06-13
+Date: 2026-06-15
 Status: draft
 Author: Mahmoud
 Tags: longmemeval, benchmarking, llm-as-judge, evaluation, memory, reproducibility
