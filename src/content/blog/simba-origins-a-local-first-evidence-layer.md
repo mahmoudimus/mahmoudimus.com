@@ -97,7 +97,9 @@ hook system. Six lifecycle hooks do the work:
 | `Stop` | turn ends | reinforces core rules, watches for the confirmation signal |
 
 The protocol is deliberately boring: each hook reads JSON from stdin and writes
-`{ hookSpecificOutput: { hookEventName, additionalContext } }` to stdout. Hooks fail
+`{ hookSpecificOutput: { hookEventName, additionalContext } }` to stdout. (The exact
+output shapes have since evolved in lockstep with the host's own hook schema, but the
+boring part — JSON in, JSON out — is the contract.) Hooks fail
 *silently*: if the daemon is down or a condition isn't met, they exit 0 and get out of
 the way. A memory layer that breaks your agent is worse than no memory layer.
 
@@ -114,9 +116,10 @@ error string, the file path that an embedding smears into its neighborhood. Fusi
 is strictly better than either alone, and it's cheap.
 
 Embeddings[^embedding] are **[GGUF](https://huggingface.co/docs/hub/gguf) models loaded in-process** via [llama-cpp-python](https://github.com/abetlen/llama-cpp-python), with no embedding
-service. The default is [nomic-embed-text-v1.5](https://huggingface.co/nomic-ai/nomic-embed-text-v1.5) (Q4_K_M, ~81MB, auto-downloaded on first
-run), with task prefixes that matter more than they look: `search_document` when storing,
-`search_query` when recalling. Two similarity thresholds gate behavior: `0.35` minimum to
+service. The launch default was [nomic-embed-text-v1.5](https://huggingface.co/nomic-ai/nomic-embed-text-v1.5) (Q4_K_M, ~81MB, auto-downloaded on first
+run) — bge-large-en-v1.5 has since won the embedder bake-off described in the coda below
+and ships as today's default — with task prefixes that matter more than they look:
+`search_document` when storing, `search_query` when recalling. Two similarity thresholds gate behavior: `0.35` minimum to
 surface a memory on recall, `0.92` to call two memories duplicates.
 
 That's the whole shape: hooks in, hybrid recall over a local vector store plus a keyword
